@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freelance', function (Blueprint $table) {
+        Schema::create('client', function (Blueprint $table) {
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
             $table->string('mobile_number',11)->unique(); // gagawan ng function sa controller na ph number dapat if pwede. hanap rin me reference. 
             // means 11 lang accepted number since ph number gagamitin
-
             $table->string('position'); //iba iba naman position ng freelance so pwede kahit ano enter nila. pero ang problem is pano ang categorization since gagawa tayo filter. 
             $table->string('email')->unique();
             $table->string('password');
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freelance');
+        Schema::dropIfExists('client');
     }
 };
