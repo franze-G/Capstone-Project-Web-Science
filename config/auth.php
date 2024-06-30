@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
     ],
 
     /*
@@ -62,7 +66,11 @@ return [
     'providers' => [
         'users' => [ //users = freelancers
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class), //need din to update lagi
+            'model' => env('AUTH_MODEL', App\Models\FreelanceUser::class), //need din to update lagi
+        ],
+        'client' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\ClientUser::class),
         ],
 
         // 'users' => [
