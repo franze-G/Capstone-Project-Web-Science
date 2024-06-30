@@ -13,21 +13,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 
-class RegisteredUserController extends Controller
+class RegisteredFreelancerController extends Controller
 {
     /**
      * Display the registration view.
      */
     public function create(): View
     {
-        // Example options for the position dropdown
-        $options = [
-            'freelancer' => 'Freelancer',
-            'client' => 'Client',
-        ];
-        // Pass the options to the view
-        return view('auth.register', compact('options'));
-
         return view('auth.register');
     }
 
@@ -42,12 +34,12 @@ class RegisteredUserController extends Controller
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'mobilenumber' => ['required', 'string', 'min:11', 'max:11'],
-            'position' => ['required', 'string'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'position' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . FreelanceUser::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $user = FreelanceUser::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'mobilenumber' => $request->mobilenumber,
