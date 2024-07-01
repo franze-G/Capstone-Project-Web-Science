@@ -1,1 +1,0 @@
-SELECT * FROM websci_capstone.tasks;

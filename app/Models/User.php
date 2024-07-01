@@ -11,12 +11,12 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'freelance_user_table';
-    
+    protected $table = 'accounts';
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'firstname',
@@ -40,7 +40,7 @@ class User extends Authenticatable
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array
      */
     protected function casts(): array
     {

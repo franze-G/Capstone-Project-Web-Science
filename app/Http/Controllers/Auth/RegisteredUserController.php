@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\FreelanceUser;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -19,6 +20,14 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        // Example options for the position dropdown
+        $options = [
+            'freelancer' => 'Freelancer',
+            'client' => 'Client',
+        ];
+        // Pass the options to the view
+        return view('auth.register', compact('options'));
+
         return view('auth.register');
     }
 
@@ -33,7 +42,7 @@ class RegisteredUserController extends Controller
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'mobilenumber' => ['required', 'string', 'min:11', 'max:11'],
-            'position' => ['required', 'string', 'max:255'],
+            'position' => ['required', 'string'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);

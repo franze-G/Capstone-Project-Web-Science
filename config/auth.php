@@ -60,9 +60,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'users' => [ //users = freelancers
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', App\Models\User::class), //need din to update lagi
         ],
 
         // 'users' => [
