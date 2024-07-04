@@ -17,13 +17,13 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->string('rate'); // kung magkano yung project
-            $table->string('status');
+            $table->string('status'); //ang ifefetch dapat nito is yung pending, in progress tyaka completed.
             $table->string('priority'); //low and high ang options
             $table->string('image_path')->nullable(); // for uploading ng image
-            $table->foreignId('assigned_user_id')->constrained('users'); // kung sino gumawa nung project
-            $table->foreignId('created_by')->constrained('users'); // kung sino gumawa nung project
+            $table->foreignId('assigned_user_id')->constrained('users'); // kung kanino na assigned yung project.
+            $table->foreignId('created_by')->constrained('users'); //si client ang nag create
             $table->foreignId('updated_by')->constrained('users'); // kung sino nag update ng project
-            $table->foreignId('project_id')->constrained('users'); // kung sino nag update ng project
+            $table->foreignId('project_id')->constrained('users'); // number ng task. 
             $table->timestamps();
         });
     }
