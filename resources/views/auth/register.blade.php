@@ -29,10 +29,16 @@
         <!-- Position -->
         <div class="mt-4">
             <x-input-label for="position" :value="__('Position')" />
-            <x-text-input id="position" class="block mt-1 w-full [&::-webkit-inner-spin-button]:appearance-none"
-                type="text" name="position" :value="old('position')" required autocomplete="position" />
-            <x-input-error :messages="$errors->get('position')" class="mt-2" />
+            <select name="position">
+                @foreach ($options as $key => $value)
+                <option value="{{ $key }}" @if ($key==old('position', $model->position ?? ''))
+                    selected="selected"
+                    @endif
+                    >{{ $value }}</option>
+                @endforeach
+            </select>
         </div>
+
 
         <!-- Email Address -->
         <div class="mt-4">
