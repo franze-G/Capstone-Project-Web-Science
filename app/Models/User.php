@@ -7,12 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Database\Eloquent\Model;
 
-class ClientUser extends Authenticatable
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    protected $table = 'client_user_table';
-
     /**
      * The attributes that are mass assignable.
      *

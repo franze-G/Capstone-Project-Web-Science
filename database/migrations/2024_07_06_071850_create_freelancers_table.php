@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('freelancers', function (Blueprint $table) {
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('mobilenumber', 11);
+            $table->string('mobilenumber', 11)->uniqe();
             $table->string('position');
-            $table->enum('role', ['freelancer', 'client'])->default('freelancer');
-            $table->enum('status', ['active', 'inactive'])->default('inactive'); //for email verification
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -32,7 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIf('freelance_user_table');
-        Schema::dropIf('client_user_table');
+        Schema::dropIfExists('freelancers');
     }
 };

@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+// use Illuminate\Database\Eloquent\Model;
 
-class FreelanceUser extends Authenticatable
+class Client extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    protected $table = 'freelance_user_table';
-
     /**
      * The attributes that are mass assignable.
      *

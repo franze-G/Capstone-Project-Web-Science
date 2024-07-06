@@ -40,9 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'client' => [
+        'client-acc' => [
             'driver' => 'session',
             'provider' => 'clients',
+        ],
+        'freelancer-acc' => [
+            'driver' => 'session',
+            'provider' => 'freelancers',
         ],
     ],
 
@@ -64,13 +68,17 @@ return [
     */
 
     'providers' => [
-        'users' => [ //users = freelancers
+        'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\FreelanceUser::class), //need din to update lagi
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'client' => [
+        'clients' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\ClientUser::class),
+            'model' => App\Models\Client::class,
+        ],
+        'freelancers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Freelancer::class,
         ],
 
         // 'users' => [
@@ -101,6 +109,18 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'clients' => [
+            'provider' => 'clients',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'freelancers' => [
+            'provider' => 'freelancers',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
