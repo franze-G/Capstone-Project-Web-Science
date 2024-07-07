@@ -30,4 +30,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks', [TaskController::class, 'AddTask'])->name('addtask.post'); // for form submission.
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/client.php';
