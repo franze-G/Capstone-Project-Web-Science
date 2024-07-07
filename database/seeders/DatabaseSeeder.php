@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
         ->hasTask(30)
         ->create();
 
+        $this->call(TaskSeeder::class);
+
     }
 }

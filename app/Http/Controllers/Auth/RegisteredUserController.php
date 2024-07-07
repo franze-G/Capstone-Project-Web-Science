@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Models\FreelanceUser;
-use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
-class RegisteredFreelancerController extends Controller
+class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
@@ -35,11 +34,11 @@ class RegisteredFreelancerController extends Controller
             'lastname' => ['required', 'string', 'max:255'],
             'mobilenumber' => ['required', 'string', 'min:11', 'max:11'],
             'position' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . FreelanceUser::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = FreelanceUser::create([
+        $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'mobilenumber' => $request->mobilenumber,

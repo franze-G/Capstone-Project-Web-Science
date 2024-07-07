@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,12 +13,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $userName = Auth::user()->firstname;
     $position = Auth::user()->position;
-    return view('dashboard', ['userName' => $userName, 'position' => $position]);
+    $tasks = Task::all();
+    return view('dashboard', ['userName' => $userName, 'position' => $position, 'tasks' => $tasks,]);
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/tasks', [TaskController::class, 'index'])->name('addtask');
-
-Route::post('/tasks', [TaskController::class, 'AddTask'])->name('addtask.post'); // for form submission.
 
 Route::middleware('auth')->group(function () {
     
@@ -26,6 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/tasks', [TaskController::class, 'index'])->name('addtask');
+
+    Route::post('/tasks', [TaskController::class, 'AddTask'])->name('addtask.post'); // for form submission.
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

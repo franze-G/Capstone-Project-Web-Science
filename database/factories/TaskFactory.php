@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,7 +15,10 @@ class TaskFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+
+    protected $model = Task::class;
+    
+    public function definition()
     {
         return [
             //

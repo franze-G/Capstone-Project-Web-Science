@@ -4,5 +4,5 @@
 
 @font-face {
     font-family: "Pearl";
-    src: url("../fonts/tan-pearl.otf");
+    src: url("/fonts/tan-pearl.otf") format("opentype");
 }

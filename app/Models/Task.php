@@ -7,9 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+   
     use HasFactory;
 
-    protected $table = 'tasks_table';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    
+    protected $table = 'tasks';
 
     protected $fillable = [
         'title',
@@ -17,6 +24,6 @@ class Task extends Model
         'rate',
         'priority',
         'due_date',
-        'image'
+        'image_path',
     ];
 }

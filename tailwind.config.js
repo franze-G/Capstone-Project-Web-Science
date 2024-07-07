@@ -20,7 +20,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-                pearl: ["Pearl", "sans-serif"],
+                pearl: ['"Pearl"', "sans-serif"],
             },
         },
     },

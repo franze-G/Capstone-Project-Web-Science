@@ -12,6 +12,7 @@ class DashboardController extends Controller
     {
         $userName = Auth::freelance_user_table()->firstname;
         $position = Auth::freelance_user_table()->position;
-        return view('dashboard', ['userName' => $userName, 'position' => $position]);
+        $title = Auth::tasks_table()->title;
+        return view('dashboard', ['userName' => $userName, 'position' => $position, 'title' => $title]);
     }
 }
