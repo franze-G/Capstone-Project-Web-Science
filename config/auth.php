@@ -36,14 +36,17 @@ return [
     */
 
     'guards' => [
+        
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
         'client-acc' => [
             'driver' => 'session',
             'provider' => 'clients',
         ],
+
         'freelancer-acc' => [
             'driver' => 'session',
             'provider' => 'freelancers',
@@ -68,14 +71,17 @@ return [
     */
 
     'providers' => [
+        
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+
         'clients' => [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,
         ],
+        
         'freelancers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Freelancer::class,

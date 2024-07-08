@@ -16,7 +16,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('client.auth.login');
+        return view('Client.auth.login');
     }
 
     /**
@@ -36,12 +36,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('client-acc.')->logout();
+        Auth::guard('client-acc')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('client.auth.login');
+        return redirect()->route('clients-acc.login');
     }
 }
