@@ -1,34 +1,24 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TaskController;
-use App\Models\Task;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('/dashboard', function () {
-    $userName = Auth::user()->firstname;
-    $position = Auth::user()->position;
-    $tasks = Task::all();
-    return view('dashboard', ['userName' => $userName, 'position' => $position, 'tasks' => $tasks,]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/tasks', [TaskController::class, 'index'])->name('addtask');
-
-    Route::post('/tasks', [TaskController::class, 'AddTask'])->name('addtask.post'); // for form submission.
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 });
-
-require __DIR__ . '/auth.php';
-require __DIR__ . '/client.php';

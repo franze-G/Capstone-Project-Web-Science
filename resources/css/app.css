@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: "Pearl";
-    src: url("/fonts/tan-pearl.otf") format("opentype");
+[x-cloak] {
+    display: none;
 }
