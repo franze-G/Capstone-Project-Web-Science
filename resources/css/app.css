@@ -26,4 +26,16 @@
         font-weight: bold;
         font-style: normal;
     }
+    @font-face {
+        font-family: "SF-Pro";
+        src: url("../../public/fonts/sf-pro.ttf") format("ttf");
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: "SF-Pro-Display";
+        src: url("../../public/fonts/sf-pro-display.otf") format("otf");
+        font-weight: normal;
+        font-style: normal;
+    }
 }

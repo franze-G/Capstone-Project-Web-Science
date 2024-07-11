@@ -16,9 +16,11 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-            },
-            fontFamily: {
                 pearl: ["TANPEARL", "sans-serif"],
+                apercu: ["Apercu", "serif"],
+                //SF Pro
+                sfpro: ["SF-Pro", "sans-serif"],
+                sfprodisplay: ["SF-Pro-Display, 'sans-serif"],
             },
             colors: {
                 olivegreen: "#97A97C",
