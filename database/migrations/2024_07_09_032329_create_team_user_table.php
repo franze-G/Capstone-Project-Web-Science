@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('team_id');
-            $table->foreignId('user_id');
-            $table->string('role')->nullable();
-            $table->timestamps();
+        // Check if the 'team_user' table already exists before creating it
+        if (!Schema::hasTable('team_user')) {
+            Schema::create('team_user', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('team_id')->constrained()->onDelete('cascade');
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->string('role')->nullable();
+                $table->timestamps();
 
-            $table->unique(['team_id', 'user_id']);
-        });
+                $table->unique(['team_id', 'user_id']);
+            });
+        }
     }
 
     /**
@@ -27,6 +30,13 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Drop foreign key constraints referencing the 'team_user' table
+        Schema::table('team_user', function (Blueprint $table) {
+            $table->dropForeign(['team_id']);
+            $table->dropForeign(['user_id']);
+        });
+
+        // Drop the 'team_user' table
         Schema::dropIfExists('team_user');
     }
 };

@@ -5,3 +5,10 @@
 [x-cloak] {
     display: none;
 }
+
+@font-face {
+    font-family: "Pearl";
+    src: url("/Fonts/tan-pearl.otf");
+    font-weight: 500;
+    font-style: normal;
+}
