@@ -10,6 +10,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'imageUrl' => asset('storage/model.svg'), //putangina eto na yon guys
     ]);
 });
 
