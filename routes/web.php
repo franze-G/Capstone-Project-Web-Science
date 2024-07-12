@@ -10,9 +10,8 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-        'imageUrl' => asset('storage/model.svg'), //putangina eto na yon guys
+        'clientRegister' => Route::has('client.client.register'),
+        'imageUrl' => asset('storage/model.svg'),
     ]);
 });
 
@@ -33,7 +32,7 @@ Route::prefix('client')->name('client.')->group(function () {
     Route::get('/register', [ClientAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [ClientAuthController::class, 'register']);
     Route::post('/logout', [ClientAuthController::class, 'logout'])->name('logout');
-    
+
     Route::middleware('auth:client')->group(function () {
         Route::get('/dashboard', [ClientAuthController::class, 'dashboard'])->name('dashboard');
         Route::get('/profile', [ClientAuthController::class, 'showProfile'])->name('profile');

@@ -22,10 +22,10 @@ class  ClientAuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('Client.auth.register');
+        return view('client.auth.register');
     }
 
-    // for client registration. which is nagana pero di nag reredirect sa dashboard. 
+    // for client registration. which is nagana pero di nag reredirect sa dashboard.
 
     public function Register(Request $request)
     {
@@ -48,7 +48,6 @@ class  ClientAuthController extends Controller
         Auth::guard('client')->login($client);
 
         return redirect()->route('client.dashboard');
-
     }
 
     // for function ng login which is indicated sa action route ng login.blade.php under ng Client folder.
@@ -78,16 +77,12 @@ class  ClientAuthController extends Controller
 
     public function dashboard()
     {
-        return view('Client.dashboard');
+        return view('client.dashboard');
     }
 
 
     public function showLoginForm()
     {
-        return view('Client.auth.login');
+        return view('client.auth.login');
     }
-
 }
-
-
-
