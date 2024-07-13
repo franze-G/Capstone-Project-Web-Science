@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Team;
 use App\Models\User;
-use App\Models\Client;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
@@ -12,53 +11,66 @@ class TeamPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user/client can view the team.
-     *
-     * @param  User|Client  $user
-     * @param  Team  $team
-     * @return bool
+     * Determine whether the user can view any models.
      */
-
-    //  dito not sure sa function HAHHAHAHA
-    public function view($user, Team $team)
+    public function viewAny(User $user): bool
     {
-        return $user instanceof User || $user instanceof Client;
+        return true;
     }
 
     /**
-     * Determine whether the user/client can create teams.
-     *
-     * @param  User|Client  $user
-     * @return bool
+     * Determine whether the user can view the model.
      */
-    public function create($user)
+    public function view(User $user, Team $team): bool
     {
-        return $user instanceof User || $user instanceof Client;
+        return $user->belongsToTeam($team);
     }
 
     /**
-     * Determine whether the user/client can update the team.
-     *
-     * @param  User|Client  $user
-     * @param  Team  $team
-     * @return bool
+     * Determine whether the user can create models.
      */
-    public function update($user, Team $team)
+    public function create(User $user): bool
     {
-        return $user instanceof User || $user instanceof Client;
+        return true;
     }
 
     /**
-     * Determine whether the user/client can delete the team.
-     *
-     * @param  User|Client  $user
-     * @param  Team  $team
-     * @return bool
+     * Determine whether the user can update the model.
      */
-    public function delete($user, Team $team)
+    public function update(User $user, Team $team): bool
     {
-        return $user instanceof User || $user instanceof Client;
+        return $user->ownsTeam($team);
     }
 
-    // Other policy methods...
+    /**
+     * Determine whether the user can add team members.
+     */
+    public function addTeamMember(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team);
+    }
+
+    /**
+     * Determine whether the user can update team member permissions.
+     */
+    public function updateTeamMember(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team);
+    }
+
+    /**
+     * Determine whether the user can remove team members.
+     */
+    public function removeTeamMember(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team);
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team);
+    }
 }

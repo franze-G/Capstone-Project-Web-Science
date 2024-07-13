@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Jetstream\Http\Livewire\TeamMemberManager;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class LeaveTeamTest extends TestCase
@@ -20,7 +22,8 @@ class LeaveTeamTest extends TestCase
 
         $this->actingAs($otherUser);
 
-        $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id);
+        Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])
+            ->call('leaveTeam');
 
         $this->assertCount(0, $user->currentTeam->fresh()->users);
     }
@@ -29,9 +32,9 @@ class LeaveTeamTest extends TestCase
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$user->id);
-
-        $response->assertSessionHasErrorsIn('removeTeamMember', ['team']);
+        Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])
+            ->call('leaveTeam')
+            ->assertHasErrors(['team']);
 
         $this->assertNotNull($user->currentTeam->fresh());
     }

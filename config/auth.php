@@ -36,24 +36,10 @@ return [
     */
 
     'guards' => [
-
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
-        // yung icacall dito is 'client' tyaka 'freelancer'. provider pangalan ng db yan. 
-
-        'client' => [
-            'driver' => 'session',
-            'provider' => 'clients',
-        ],
-
-        'freelancer' => [
-            'driver' => 'session',
-            'provider' => 'freelancers',
-        ],
-      
     ],
 
     /*
@@ -74,23 +60,10 @@ return [
     */
 
     'providers' => [
-
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
-        'clients' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Client::class),
-        ],
-
-        'freelancers' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Freelancer::class),
-        ],
-
-   
 
         // 'users' => [
         //     'driver' => 'database',
@@ -118,23 +91,8 @@ return [
     */
 
     'passwords' => [
-        
         'users' => [
             'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'clients' => [
-            'provider' => 'clients',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'freelancers' => [
-            'provider' => 'freelancers',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

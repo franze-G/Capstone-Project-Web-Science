@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'stack' => 'inertia',
+    'stack' => 'livewire',
 
     /*
      |--------------------------------------------------------------------------
@@ -44,9 +44,7 @@ return [
     |
     */
 
-    // default nito is sanctum
-    
-    'guard' => 'web',
+    'guard' => 'sanctum',
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +59,7 @@ return [
 
     'features' => [
         // Features::termsAndPrivacyPolicy(),
-        Features::profilePhotos(),
+        // Features::profilePhotos(),
         // Features::api(),
         Features::teams(['invitations' => true]),
         Features::accountDeletion(),
