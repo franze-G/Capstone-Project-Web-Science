@@ -10,6 +10,7 @@ $alignmentClasses = match ($align) {
 
 $width = match ($width) {
     '48' => 'w-48',
+    default => 'w-auto', // Handle unhandled width values
 };
 @endphp
 
