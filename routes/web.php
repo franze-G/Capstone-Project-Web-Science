@@ -17,4 +17,12 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/home',[ClientController::class, 'index']);
+// Show registration form
+Route::get('register', [ClientController::class, 'showRegistrationForm'])->name('register.form');
+
+// Handle registration
+Route::post('register', [ClientController::class, 'register'])->name('register');
+
+// Redirect based on user role
+Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
+Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
