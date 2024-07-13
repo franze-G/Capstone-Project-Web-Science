@@ -51,15 +51,19 @@ class ClientController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-
+            $role = $user->role;
+    
             if ($user->role === 'client') {
-                return view('dashboard');
+                // Redirect to client dashboard
+                return view('dashboard', compact('role'));
             } else {
-                return view('freelance.home');
+                // Redirect to freelancer dashboard
+                return view('freelance.home', compact('role'));
             }
         }
-
+    
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+    
 }
