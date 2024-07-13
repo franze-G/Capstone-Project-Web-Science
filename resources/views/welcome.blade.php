@@ -37,7 +37,7 @@
                                 @else
                                     <a
                                         href="{{ route('login') }}"
-                                        class="rounded-md px-3 py-2 text-olivegreen"
+                                        class="rounded-md px-3 py-2 text-olivegreen font-tanpearl"
                                     >
                                         Log in
                                     </a>

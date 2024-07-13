@@ -16,6 +16,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sfpro: ["SF-Pro", "sans-serif"],
+                tanpearl: ["Tan-Pearl", "sans-serif"],
             },
 
             colors: {
