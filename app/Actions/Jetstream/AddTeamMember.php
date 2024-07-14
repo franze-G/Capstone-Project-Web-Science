@@ -47,6 +47,8 @@ class AddTeamMember implements AddsTeamMembers
             'email.exists' => __('We were unable to find a registered user with this email address.'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
+        )->after(
+            $this->ensureUserIsFreelancer($email)
         )->validateWithBag('addTeamMember');
     }
 
@@ -58,7 +60,7 @@ class AddTeamMember implements AddsTeamMembers
     protected function rules(): array
     {
         return array_filter([
-            'email' => ['required', 'email', 'exists:users'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'role' => Jetstream::hasRoles()
                             ? ['required', 'string', new Role]
                             : null,
@@ -77,5 +79,26 @@ class AddTeamMember implements AddsTeamMembers
                 __('This user already belongs to the team.')
             );
         };
+    }
+
+    /**
+     * Ensure that the user has the role of freelancer.
+     */
+    protected function ensureUserIsFreelancer(string $email): Closure
+    {
+        return function ($validator) use ($email) {
+            if (!$this->isFreelancer($email)) {
+                $validator->errors()->add('email', __('Only freelancers can be added as team members.'));
+            }
+        };
+    }
+
+    /**
+     * Check if the user is a freelancer.
+     */
+    protected function isFreelancer(string $email): bool
+    {
+        $user = User::where('email', $email)->first();
+        return $user && $user->role === 'freelancer';
     }
 }

@@ -49,6 +49,8 @@ class InviteTeamMember implements InvitesTeamMembers
             'email.unique' => __('This user has already been invited to the team.'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
+        )->after(
+            $this->ensureUserIsFreelancer($email)
         )->validateWithBag('addTeamMember');
     }
 
@@ -84,5 +86,26 @@ class InviteTeamMember implements InvitesTeamMembers
                 __('This user already belongs to the team.')
             );
         };
+    }
+
+    /**
+     * Ensure that the user has the role of freelancer.
+     */
+    protected function ensureUserIsFreelancer(string $email): Closure
+    {
+        return function ($validator) use ($email) {
+            if (!$this->isFreelancer($email)) {
+                $validator->errors()->add('email', __('Only freelancers can be invited as team members.'));
+            }
+        };
+    }
+
+    /**
+     * Check if the user is a freelancer.
+     */
+    protected function isFreelancer(string $email): bool
+    {
+        $user = User::where('email', $email)->first();
+        return $user && $user->role === 'freelancer';
     }
 }
