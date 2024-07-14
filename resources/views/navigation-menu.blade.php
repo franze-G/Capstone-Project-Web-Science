@@ -12,6 +12,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    
+                    {{-- cinacall nya yung isClient sa model which is mag dedetermine kung yung currently login user is client or isFreelancer na nasa models din. --}}
+                    
                     @if (Auth::user()->isClient())
                         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
