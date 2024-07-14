@@ -9,7 +9,7 @@
 @layer base {
     @font-face {
         font-family: "SF-Pro";
-        src: url("/public/fonts/SF-pro.ttf") format("ttf");
+        src: url("/public/fonts/sf-pro.ttf") format("ttf");
         font-weight: normal;
         font-style: normal;
     }
@@ -22,19 +22,21 @@
         font-style: normal;
     }
 
-    /* @font-face {
+    @font-face {
         font-family: "SF-Pro-Display";
         src: url("public/fonts/sf-pro-display.otf") format("otf");
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: "SF-Pro-Rounded";
+        src: url("/public/fonts/SF-Pro-Rounded.ttf") format("ttf");
         font-weight: normal;
         font-style: normal;
     }
 
     @font-face {
         font-family: "Apercu";
-        src: url("https://db.onlinewebfonts.com/t/bb99de1682ee75602d351c1dde11a054.eot");
-        src: url("../../public/fonts/tan-pearl.woff") format("woff"),
-            url("../../public/fonts/tan-pearl.woff2") format("woff2");
-        font-weight: normal;
-        font-style: normal;
-    } */
+        src: url("/public/fonts/apercu-bold.ttf") format("ttf");
+    }
 }
