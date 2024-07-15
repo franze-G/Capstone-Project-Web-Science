@@ -69,4 +69,23 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    //ito yung need para madetermine yung function ng dynamic page and navigation menu
+
+    public function isClient()
+    {
+        return $this->role === 'client'; // Adjust this to your role implementation
+    }
+
+    public function isFreelancer()
+    {
+        return $this->role === 'freelancer'; // Adjust this to your role implementation
+    }
+
+    //ito for displaying ng current team ng user and client. belongs to many ibig sabihin galing sya from different table. "team"table name "user" column name.
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id');
+    }
 }
