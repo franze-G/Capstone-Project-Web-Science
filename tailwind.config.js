@@ -19,6 +19,7 @@ export default {
                 tanpearl: ["Tan-Pearl", "sans-serif"],
                 sfpro: ["SF-Pro", "sans-serif"],
                 sfprodisplay: ["SF-Pro-Display", "sans-serif"],
+                sfprodisplayblack: ["SF-Pro-Display-Black", "sans-serif"],
                 sfprorounded: ["SF-Pro-Rounded", "sans-serif"],
                 apercu: ["Apercu", "sans-serif"],
             },
@@ -27,6 +28,7 @@ export default {
                 // Changed from 'color' to 'colors'
                 black: "#151515",
                 yellow: "#ffd60a",
+                gray: "#828282",
                 //greens
                 emerald: "#718355",
                 emeraldlight1: "#87986A",
