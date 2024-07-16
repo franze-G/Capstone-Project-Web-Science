@@ -36,7 +36,7 @@ class AddTeamMember implements AddsTeamMembers
         $team->users()->attach(
             $newTeamMember->id, [
 
-                // same syntax sa creating ng team. need idagdag yung tatlong fillables which is firstname, lastname and teams name. yung team name wala sya fillable ng team.php kasi ifefetch lang sya from team table.
+                // same syntax sa creating ng team. need idagdag yung tatlong fillables which is firstname and lastname. yung team_name, name ang value nya sa fillables ng team.php tapos ifefetch lang sa team_user table.
                 'user_firstname' => $newTeamMember->firstname, // Include firstname
                 'user_lastname' => $newTeamMember->lastname,   // Include lastname
                 'team_name' => $team->name, // Include team name
