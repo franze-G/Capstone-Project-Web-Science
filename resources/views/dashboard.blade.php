@@ -1,10 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Client Dashboard') }}
             {{ __('Dashboard') }}
             {{-- {{ auth()->user()->currentTeam->name }} Dashboard --}}
         </h2>
-        {{-- <p>Role: {{ $role }}</p> <!-- Display the role here --> --}}
+
+
     </x-slot>
 
     <!-- body -->
@@ -60,4 +62,7 @@
             </div>
         </div>
     </div>
+
+
+
 </x-app-layout>
