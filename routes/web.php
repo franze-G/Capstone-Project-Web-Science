@@ -27,3 +27,6 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 // Redirect based on user role
 Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
 Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
+
+Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
+Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
