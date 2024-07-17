@@ -42,7 +42,7 @@ class Team extends JetstreamTeam
      *
      * @return array<string, string>
      */
-    protected function casts(): array  
+    protected function casts(): array
     {
         return [
             'personal_team' => 'boolean',
@@ -58,5 +58,16 @@ class Team extends JetstreamTeam
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Scope a query to only include archived teams.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeArchived($query)
+    {
+        return $query->where('archived', true);
     }
 }

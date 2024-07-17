@@ -23,9 +23,9 @@
                     @endif
 
                     @if (Auth::user()->isClient())
-                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        {{-- <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
                             {{ __('Team') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
                     @elseif (Auth::user()->isFreelancer())
                         <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
                             {{ __('Task') }}
@@ -76,6 +76,12 @@
                                             </x-dropdown-link>
                                         @endif
 
+                                        @if (Auth::user()->isClient() && auth()->user()->can('create', Laravel\Jetstream\Jetstream::newTeamModel()))
+                                            <x-dropdown-link href="{{ route('teams.index') }}">
+                                                {{ __('Archive Teams') }}
+                                            </x-dropdown-link>
+                                        @endif
+
                                         <!-- Team Switcher -->
                                         @if (Auth::user()->isClient() && Auth::user()->allTeams()->count() > 0)
                                             <div class="border-t border-gray-200"></div>
@@ -85,7 +91,9 @@
                                             </div>
 
                                             @foreach (Auth::user()->allTeams() as $team)
-                                                <x-switchable-team :team="$team" />
+                                                @if (!$team->archived)
+                                                    <x-switchable-team :team="$team" />
+                                                @endif
                                             @endforeach
                                         @elseif (Auth::user()->isFreelancer() && Auth::user()->teams->count() > 0)
                                             <div class="border-t border-gray-200"></div>
@@ -95,7 +103,9 @@
                                             </div>
 
                                             @foreach (Auth::user()->teams as $team)
-                                                <x-switchable-team :team="$team" />
+                                                @if (!$team->archived)
+                                                    <x-switchable-team :team="$team" />
+                                                @endif
                                             @endforeach
                                         @endif
                                     </div>
@@ -177,6 +187,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Responsive Navigation Menu -->
+
+
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
@@ -261,7 +275,9 @@
                         </div>
 
                         @foreach (Auth::user()->allTeams() as $team)
-                            <x-switchable-team :team="$team" component="responsive-nav-link" />
+                            @if (!$team->archived)
+                                <x-switchable-team :team="$team" component="responsive-nav-link" />
+                            @endif
                         @endforeach
                     @elseif (Auth::user()->isFreelancer() && Auth::user()->teams->count() > 0)
                         <div class="border-t border-gray-200"></div>
@@ -271,7 +287,9 @@
                         </div>
 
                         @foreach (Auth::user()->teams as $team)
-                            <x-switchable-team :team="$team" component="responsive-nav-link" />
+                            @if (!$team->archived)
+                                <x-switchable-team :team="$team" component="responsive-nav-link" />
+                            @endif
                         @endforeach
                     @endif
                 @endif

@@ -27,4 +27,5 @@ class DeleteTeam
     {
         $team->update(['archived' => true]);
     }
+
 }
