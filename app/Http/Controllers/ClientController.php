@@ -13,9 +13,10 @@ class ClientController extends Controller
     public function showRegistrationForm(Request $request)
     {
         // Fetch role from query parameters or session
-        $userType = $request->query('role') ?? session('user_type');
+        $userType = $request->query('role') ?? session('user_type'); 
+        // binase sa session yung user_type para mafetch sa register blade.
 
-        return view('auth.register', compact('userType'));
+        return view('auth.register', compact('userType')); //compact('userType') para mafetch yung role.
     }
 
     // Handle registration
@@ -42,7 +43,7 @@ class ClientController extends Controller
         // Log in the newly created user
         Auth::login($user);
 
-        // Redirect based on account type
+        // Redirect based on account type.
         if ($user->role === 'client') {
             return redirect()->route('dashboard'); // Redirect to client dashboard
         } else {
@@ -89,7 +90,7 @@ class ClientController extends Controller
     public function recoverTeam($id)
     {
         $team = Team::findOrFail($id);
-        $team->archived = false;
+        $team->archived = false; // uupdate nya yung status ng team into false.
         $team->save();
 
         return redirect()->route('teams.index')->with('status', 'Team recovered successfully!');

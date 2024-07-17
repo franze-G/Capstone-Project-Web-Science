@@ -32,6 +32,7 @@
                     <input type="radio" name="role" value="client" id="client"
                         {{ old('role', $userType) === 'client' ? 'checked' : '' }} class="mr-2" required />
                     <x-label for="client" value="{{ __('Client') }}" class="mr-4" />
+                    {{-- ito yung nag fefetch ng role from welcome blade --}}
 
                     <input type="radio" name="role" value="freelancer" id="freelancer"
                         {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }} class="mr-2" required />
@@ -69,17 +70,17 @@
                                         '<a target="_blank" href="' .
                                         route('terms.show') .
                                         '"
-                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                         __('Terms
-                                                                                                                                                                                                                                                                of Service') .
+                                                                                                                                                                                                                                                                                                of Service') .
                                         '</a>',
                                     'privacy_policy' =>
                                         '<a target="_blank" href="' .
                                         route('policy.show') .
                                         '"
-                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                         __('Privacy
-                                                                                                                                                                                                                                                                Policy') .
+                                                                                                                                                                                                                                                                                                Policy') .
                                         '</a>',
                                 ]) !!}
                             </div>
