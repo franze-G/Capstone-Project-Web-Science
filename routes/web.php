@@ -30,3 +30,5 @@ Route::get('freelance/home', [ClientController::class, 'index'])->name('freelanc
 
 Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
 Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
+
+Route::get('/teams', [ClientController::class, 'teamIndex'])->name('teams.index');

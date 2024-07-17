@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_lastname')->nullable(); // Change foreignId to string para madetect nya yung name.
             $table->string('name');
             $table->boolean('personal_team');
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

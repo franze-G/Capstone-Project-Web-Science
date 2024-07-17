@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -64,6 +65,20 @@ class ClientController extends Controller
     
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
+    }
+
+    public function teamIndex()
+    {
+         // Fetch active teams
+         $teams = Team::where('archived', false)->get();
+        
+         // Fetch archived teams
+         $archivedTeams = Team::where('archived', true)->get();
+         
+         return view('teams.show-archive', [
+             'teams' => $teams,
+             'archivedTeams' => $archivedTeams,
+         ]);
     }
     
 }
