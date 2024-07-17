@@ -29,10 +29,10 @@
             <div class="mt-4">
                 <x-label value="{{ __('Role') }}" />
                 <div class="flex items-center">
-                    <x-input id="client" type="radio" name="role" value="Client" class="mr-2" required />
+                    <x-input id="client" type="radio" name="role" value="client" class="mr-2" required />
                     <x-label for="client" value="{{ __('Client') }}" class="mr-4" />
 
-                    <x-input id="freelancer" type="radio" name="role" value="Freelancer" class="mr-2" required />
+                    <x-input id="freelancer" type="radio" name="role" value="freelancer" class="mr-2" required />
                     <x-label for="freelancer" value="{{ __('Freelancer') }}" />
                 </div>
             </div>
