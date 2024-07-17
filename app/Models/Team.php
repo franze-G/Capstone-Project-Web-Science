@@ -21,12 +21,9 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
-
-        // ito yung dinagdag na fillables since meron na syang column sa migration. basically every column need may fillable kasi mag papasok ng data. 
-
         'user_firstname',
         'user_lastname',
-// Include the user_firstname field
+        'archived', // Add 'archived' to fillable
     ];
 
     /**
@@ -45,19 +42,19 @@ class Team extends JetstreamTeam
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected function casts(): array  
     {
         return [
             'personal_team' => 'boolean',
-            // Add other casts if necessary
+            'archived' => 'boolean', // Add cast for 'archived'
         ];
     }
 
     /**
      * Get the owner of the team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-
-     // ifefetch yung user_id from users table para malaman yung firstname and lastname ng owner.
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
