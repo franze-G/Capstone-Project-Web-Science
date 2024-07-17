@@ -12,7 +12,7 @@
     <!-- body -->
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-black overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
 
                 <!-- Project Summary -->
                 <div class="p-5 bg-slate-800">

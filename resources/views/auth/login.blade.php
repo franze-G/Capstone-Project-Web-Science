@@ -23,14 +23,10 @@
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
                     autofocus autocomplete="username" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                    autofocus autocomplete="username" />
             </div>
 
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                    autocomplete="current-password" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
                     autocomplete="current-password" />
             </div>
@@ -40,7 +36,7 @@
                     <x-checkbox id="remember_me" name="remember" />
                     <span class="ms-2">{{ __('Remember me') }}</span>
                 </label>
-                <a class="underline underline-offset-1 hover:text-emeraldlight1 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emeraldlight1"
+                <a class="underline underline-offset-1 hover:text-emeraldlight1 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emeraldlight1"
                     href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
@@ -48,7 +44,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                <a class=" text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <a class=" text-sm text-gray-600 hover:text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald p-1"
                     href="{{ route('register') }}">
 
                     {{ __('Register') }}
