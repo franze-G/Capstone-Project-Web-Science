@@ -5,18 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
-    <title>Laravel</title>
+        <title>Lokalista</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    @vite('resources/css/app.css')
-</head>
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        @vite('resources/css/app.css')
+    </head>
 
 <body class="antialiased">
     <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
@@ -97,7 +96,6 @@
                                             I'm a freelancer, looking for work
                                         </div>
                                     </a>
-
                                     <a href="{{route('register')}}"
                                         class="group flex flex-col justify-center items-center gap-2.5 w-56 h-32 p-6 bg-emerald/75 rounded-xl shadow-innershadow hover:bg-emerald">
                                         <!-- icons -->

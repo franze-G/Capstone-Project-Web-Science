@@ -71,10 +71,10 @@ class ClientController extends Controller
     {
          // Fetch active teams
          $teams = Team::where('archived', false)->get();
-        
+
          // Fetch archived teams
          $archivedTeams = Team::where('archived', true)->get();
-         
+
          return view('teams.show-archive', [
              'teams' => $teams,
              'archivedTeams' => $archivedTeams,
