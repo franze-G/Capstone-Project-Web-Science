@@ -41,9 +41,9 @@ class ClientController extends Controller
 
         // Redirect based on account type
         if ($user->role === 'client') {
-            return redirect()->route('client.dashboard');
+            return view('dashboard',);
         } else {
-            return redirect()->route('freelancer.home');
+            return view('freelance.home', compact('role'));
         }
     }
 
@@ -53,7 +53,7 @@ class ClientController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $role = $user->role;
-    
+
             if ($user->role === 'client') {
                 // Redirect to client dashboard
                 return view('dashboard', compact('role'));
@@ -62,7 +62,7 @@ class ClientController extends Controller
                 return view('freelance.home', compact('role'));
             }
         }
-    
+
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
