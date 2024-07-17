@@ -32,3 +32,4 @@ Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'
 Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
 
 Route::get('/teams', [ClientController::class, 'teamIndex'])->name('teams.index');
+Route::put('/teams/{team}/recover', [ClientController::class, 'recoverTeam'])->name('teams.recover');

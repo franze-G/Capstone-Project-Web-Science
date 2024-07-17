@@ -41,9 +41,9 @@ class ClientController extends Controller
 
         // Redirect based on account type
         if ($user->role === 'client') {
-            return view('dashboard',);
+            return redirect()->route('dashboard'); // Assuming 'dashboard' is the named route for the client dashboard
         } else {
-            return view('freelance.home', compact('role'));
+            return redirect()->route('freelance.home'); // Assuming 'freelance.home' is the named route for the freelancer home
         }
     }
 
@@ -69,16 +69,23 @@ class ClientController extends Controller
 
     public function teamIndex()
     {
-         // Fetch active teams
-         $teams = Team::where('archived', false)->get();
+        // Fetch active teams
+        $teams = Team::where('archived', false)->get();
 
-         // Fetch archived teams
-         $archivedTeams = Team::where('archived', true)->get();
+        // Fetch archived teams
+        $archivedTeams = Team::where('archived', true)->get();
 
-         return view('teams.show-archive', [
-             'teams' => $teams,
-             'archivedTeams' => $archivedTeams,
-         ]);
+        return view('teams.show-archive', [
+            'teams' => $teams,
+            'archivedTeams' => $archivedTeams,
+        ]);
     }
+    public function recoverTeam($id)
+    {
+        $team = Team::findOrFail($id);
+        $team->archived = false;
+        $team->save();
 
+        return redirect()->route('teams.index')->with('status', 'Team recovered successfully!');
+    }
 }
