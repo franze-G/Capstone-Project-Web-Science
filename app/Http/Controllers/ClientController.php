@@ -9,10 +9,13 @@ use App\Models\User;
 
 class ClientController extends Controller
 {
-    // Show registration form
-    public function showRegistrationForm()
+    // Show registration form with optional role pre-filled
+    public function showRegistrationForm(Request $request)
     {
-        return view('auth.register');
+        // Fetch role from query parameters or session
+        $userType = $request->query('role') ?? session('user_type');
+
+        return view('auth.register', compact('userType'));
     }
 
     // Handle registration
@@ -41,9 +44,9 @@ class ClientController extends Controller
 
         // Redirect based on account type
         if ($user->role === 'client') {
-            return redirect()->route('dashboard'); // Assuming 'dashboard' is the named route for the client dashboard
+            return redirect()->route('dashboard'); // Redirect to client dashboard
         } else {
-            return redirect()->route('freelance.home'); // Assuming 'freelance.home' is the named route for the freelancer home
+            return redirect()->route('freelancer.home'); // Redirect to freelancer home
         }
     }
 
@@ -54,7 +57,7 @@ class ClientController extends Controller
             $user = Auth::user();
             $role = $user->role;
 
-            if ($user->role === 'client') {
+            if ($role === 'client') {
                 // Redirect to client dashboard
                 return view('dashboard', compact('role'));
             } else {
@@ -67,6 +70,7 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
+    // Fetch and display teams, both active and archived
     public function teamIndex()
     {
         // Fetch active teams
@@ -80,6 +84,8 @@ class ClientController extends Controller
             'archivedTeams' => $archivedTeams,
         ]);
     }
+
+    // Recover an archived team
     public function recoverTeam($id)
     {
         $team = Team::findOrFail($id);

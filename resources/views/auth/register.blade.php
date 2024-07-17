@@ -29,11 +29,13 @@
             <div class="mt-4">
                 <x-label value="{{ __('Role') }}" />
                 <div class="flex items-center">
-                    <x-input id="client" type="radio" name="role" value="client" class="mr-2" required />
+                    <input type="radio" name="role" value="client" id="client"
+                        {{ old('role', $userType) === 'client' ? 'checked' : '' }} class="mr-2" required />
                     <x-label for="client" value="{{ __('Client') }}" class="mr-4" />
 
-                    <x-input id="freelancer" type="radio" name="role" value="freelancer" class="mr-2" required />
-                    <x-label for="freelancer" value="{{ __('Freelance') }}" />
+                    <input type="radio" name="role" value="freelancer" id="freelancer"
+                        {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }} class="mr-2" required />
+                    <x-label for="freelancer" value="{{ __('Freelancer') }}" />
                 </div>
             </div>
 
@@ -67,17 +69,17 @@
                                         '<a target="_blank" href="' .
                                         route('terms.show') .
                                         '"
-                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                         __('Terms
-                                                                                                                                                                                                                                of Service') .
+                                                                                                                                                                                                                                                                of Service') .
                                         '</a>',
                                     'privacy_policy' =>
                                         '<a target="_blank" href="' .
                                         route('policy.show') .
                                         '"
-                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                         __('Privacy
-                                                                                                                                                                                                                                Policy') .
+                                                                                                                                                                                                                                                                Policy') .
                                         '</a>',
                                 ]) !!}
                             </div>
