@@ -14,9 +14,9 @@ class ClientController extends Controller
     {
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type'); 
-        // binase sa session yung user_type para mafetch sa register blade.
+        // Use the session to fetch the user_type
 
-        return view('auth.register', compact('userType')); //compact('userType') para mafetch yung role.
+        return view('auth.register', compact('userType')); // Pass userType to the view
     }
 
     // Handle registration
@@ -71,14 +71,26 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
-    // Fetch and display teams, both active and archived
+    // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()
     {
-        // Fetch active teams
-        $teams = Team::where('archived', false)->get();
+        $user = Auth::user();
 
-        // Fetch archived teams
-        $archivedTeams = Team::where('archived', true)->get();
+        // Fetch active teams owned by the user
+        $teams = Team::where([
+            ['archived', false],
+            ['user_id', $user->id],
+            ['user_firstname', $user->firstname],
+            ['user_lastname', $user->lastname],
+        ])->get();
+
+        // Fetch archived teams owned by the user
+        $archivedTeams = Team::where([
+            ['archived', true],
+            ['user_id', $user->id],
+            ['user_firstname', $user->firstname],
+            ['user_lastname', $user->lastname],
+        ])->get();
 
         return view('teams.show-archive', [
             'teams' => $teams,
@@ -90,7 +102,14 @@ class ClientController extends Controller
     public function recoverTeam($id)
     {
         $team = Team::findOrFail($id);
-        $team->archived = false; // uupdate nya yung status ng team into false.
+
+        // Ensure the team belongs to the currently logged-in user before recovering
+        $user = Auth::user();
+        if ($team->user_id !== $user->id || $team->user_firstname !== $user->firstname || $team->user_lastname !== $user->lastname) {
+            return redirect()->route('teams.index')->with('error', 'You do not have permission to recover this team.');
+        }
+
+        $team->archived = false; // Update the team's archived status to false
         $team->save();
 
         return redirect()->route('teams.index')->with('status', 'Team recovered successfully!');

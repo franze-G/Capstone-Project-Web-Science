@@ -4,6 +4,7 @@ namespace App\Actions\Jetstream;
 
 use App\Models\Team;
 use App\Models\User;
+use App\Models\TeamInvitation as TeamInvitationModel;
 use Closure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Gate;
@@ -13,14 +14,11 @@ use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Contracts\InvitesTeamMembers;
 use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
-use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Rules\Role;
+use App\Mail\TeamInvitation as TeamInvitationMail;
 
 class InviteTeamMember implements InvitesTeamMembers
 {
-    /**
-     * Invite a new team member to the given team.
-     */
     public function invite(User $user, Team $team, string $email, ?string $role = null): void
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
@@ -29,17 +27,23 @@ class InviteTeamMember implements InvitesTeamMembers
 
         InvitingTeamMember::dispatch($team, $email, $role);
 
-        $invitation = $team->teamInvitations()->create([
+        $invitation = TeamInvitationModel::create([
+            'team_id' => $team->id,
+            'team_name' => $team->name,
+            'team_user_id' => $team->owner->id,
+            'team_user_firstname' => $team->owner->firstname,
+            'team_user_lastname' => $team->owner->lastname,
+            'user_id' => $user->id,
+            // ito yung pang fetch ng mga info from team_invitation table
             'email' => $email,
             'role' => $role,
         ]);
 
-        Mail::to($email)->send(new TeamInvitation($invitation));
+        $acceptUrl = url('/team-invitation/accept/' . $invitation->id);
+
+        Mail::to($email)->send(new TeamInvitationMail($invitation, $acceptUrl));
     }
 
-    /**
-     * Validate the invite member operation.
-     */
     protected function validate(Team $team, string $email, ?string $role): void
     {
         Validator::make([
@@ -54,17 +58,12 @@ class InviteTeamMember implements InvitesTeamMembers
         )->validateWithBag('addTeamMember');
     }
 
-    /**
-     * Get the validation rules for inviting a team member.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
-     */
     protected function rules(Team $team): array
     {
         return array_filter([
             'email' => [
                 'required', 'email',
-                Rule::unique(Jetstream::teamInvitationModel())->where(function (Builder $query) use ($team) {
+                Rule::unique('team_invitations')->where(function (Builder $query) use ($team) {
                     $query->where('team_id', $team->id);
                 }),
             ],
@@ -74,9 +73,6 @@ class InviteTeamMember implements InvitesTeamMembers
         ]);
     }
 
-    /**
-     * Ensure that the user is not already on the team.
-     */
     protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
@@ -88,9 +84,6 @@ class InviteTeamMember implements InvitesTeamMembers
         };
     }
 
-    /**
-     * Ensure that the user has the role of freelancer.
-     */
     protected function ensureUserIsFreelancer(string $email): Closure
     {
         return function ($validator) use ($email) {
@@ -100,9 +93,6 @@ class InviteTeamMember implements InvitesTeamMembers
         };
     }
 
-    /**
-     * Check if the user is a freelancer.
-     */
     protected function isFreelancer(string $email): bool
     {
         $user = User::where('email', $email)->first();
