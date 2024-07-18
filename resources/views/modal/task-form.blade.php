@@ -20,22 +20,27 @@
             <!-- Input fields -->
             <div class="">
                 <x-input-label class="mt-4" for="title" :value="__('Title')" />
-                <x-text-input id="title" class="block mt-2 w-full" type="text" name="title" value="{{ old('title') }}" required />
+                <x-text-input id="title" class="block mt-2 w-full" type="text" name="title" value="{{ old('title') }}"
+                    required />
 
                 <x-input-label class="mt-2" for="description" :value="__('Description')" />
-                <textarea id="description" name="description" class="block mt-2 w-full text-black rounded-md">{{ old('description') }}</textarea>
+                <textarea id="description" name="description"
+                    class="block mt-2 w-full text-black rounded-xl">{{ old('description') }}</textarea>
 
                 <x-input-label class="mt-2" for="rate" :value="__('Service Fee')" />
-                <x-text-input id="rate" class="block mt-2 w-full" type="number" name="rate" value="{{ old('rate') }}" required />
+                <x-text-input id="rate" class="block mt-2 w-full" type="number" name="rate" value="{{ old('rate') }}"
+                    required />
 
                 <x-input-label class="mt-2" for="priority" :value="__('Priority')" />
-                <select id="priority" name="priority" class="block mt-2 w-full text-black rounded-md">
-                    <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
-                    <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
+                <select id="priority" name="priority" class="block mt-2 w-full text-black rounded-xl">
+                    <option value="low" {{ old('priority')=='low' ? 'selected' : '' }}>Low</option>
+                    <option value="high" {{ old('priority')=='high' ? 'selected' : '' }}>High</option>
                 </select>
 
                 <x-input-label class="mt-2" for="due_date" :value="__('Due Date')" />
-                <input id="due_date" name="due_date" type="datetime-local" class="block mt-2 w-full rounded-md border-black text-black shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ old('due_date') }}" required>
+                <input id="due_date" name="due_date" type="datetime-local"
+                    class="block mt-2 w-full rounded-xl border-black text-black shadow-sm focus:border-emerald focus:ring focus:ring-emerald focus:ring-opacity-50"
+                    value="{{ old('due_date') }}" required>
 
                 <x-input-label class="mt-4" for="image" :value="__('Image')" />
                 <input id="image" class="block mt-2 w-full text-black" type="file" name="image[]" multiple>
