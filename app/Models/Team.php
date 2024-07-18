@@ -70,4 +70,9 @@ class Team extends JetstreamTeam
     {
         return $query->where('archived', true);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

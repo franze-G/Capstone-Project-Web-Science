@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\TeamInviteController;
+use App\Mail\TeamInvitation;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -25,11 +27,22 @@ Route::get('register', [ClientController::class, 'showRegistrationForm'])->name(
 Route::post('register', [ClientController::class, 'register'])->name('register');
 
 // Redirect based on user role
-Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
-Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
+    Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
+    
+    Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
+    Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
+    
+    Route::get('/teams', [ClientController::class, 'teamIndex'])->name('teams.index');
+    Route::put('/teams/{team}/recover', [ClientController::class, 'recoverTeam'])->name('teams.recover');
 
-Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
-Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
+    Route::get('/team/invite', [TeamInviteController::class, 'index'])->name('team.invite');
 
-Route::get('/teams', [ClientController::class, 'teamIndex'])->name('teams.index');
-Route::put('/teams/{team}/recover', [ClientController::class, 'recoverTeam'])->name('teams.recover');
+    Route::get('/team-invitations/accept/{invitation}', [TeamInviteController::class, 'accept'])->name('team-invitation.accept');
+
+    Route::delete('/team-invitations/{invitation}', [TeamInviteController::class, 'destroy'])->name('team-invitation.destroy');
+});
+
+
+
