@@ -12,15 +12,15 @@
             </div>
 
             <!-- names -->
-            <div class="grid w-full gap-6 md:grid-cols-2 mt-4">
+            <div class="grid w-full gap-6 mt-4 md:grid-cols-2">
                 <div>
                     <x-label for="firstname" value="{{ __('First Name') }}" />
-                    <x-input id="firstname" class="block mt-1 w-full" type="text" name="firstname"
+                    <x-input id="firstname" class="block w-full mt-1" type="text" name="firstname"
                         :value="old('firstname')" required autofocus autocomplete="firstname" />
                 </div>
                 <div>
                     <x-label for="lastname" value="{{ __('Last Name') }}" />
-                    <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname"
+                    <x-input id="lastname" class="block w-full mt-1" type="text" name="lastname"
                         :value="old('lastname')" required autofocus autocomplete="lastname" />
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <input type="radio" name="role" value="client" id="client" {{ old('role', $userType)==='client'
                         ? 'checked' : '' }} class="hidden peer" />
                     <label for="client"
-                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-xl cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div class="block">
                             <div class="w-full text-lg font-semibold">Client</div>
                             <div class="w-full">managing a project</div>
@@ -64,7 +64,7 @@
                     <input type="radio" name="role" value="freelancer" id="freelancer" {{ old('role',
                         $userType)==='freelancer' ? 'checked' : '' }} class="hidden peer" required />
                     <label for="freelancer"
-                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-xl cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer e rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div class="block">
                             <div class="w-full text-lg font-semibold">Freelance</div>
                             <div class="w-full">looking for work</div>
@@ -80,7 +80,7 @@
 
             <div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
+                <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required
                     autocomplete="username" />
             </div>
 
@@ -88,13 +88,13 @@
             <div class="grid w-full gap-6 md:grid-cols-2">
                 <div class="mt-4">
                     <x-label for="password" value="{{ __('Password') }}" />
-                    <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                    <x-input id="password" class="block w-full mt-1" type="password" name="password" required
                         autocomplete="new-password" />
                 </div>
 
                 <div class="mt-4">
                     <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                    <x-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                    <x-input id="password_confirmation" class="block w-full mt-1" type="password"
                         name="password_confirmation" required autocomplete="new-password" />
                 </div>
             </div>
@@ -112,7 +112,7 @@
                             '<a target="_blank" href="' .
                                         route('terms.show') .
                                         '"
-                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald p-1">'
+                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">'
                                 .
                                 __('Terms
                                 of Service') .
@@ -121,7 +121,7 @@
                             '<a target="_blank" href="' .
                                         route('policy.show') .
                                         '"
-                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald p-1">'
+                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">'
                                 .
                                 __('Privacy
                                 Policy') .
@@ -134,16 +134,16 @@
             @endif
 
             <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald rounded-xl p-1"
+                <a class="p-1 text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald rounded-xl"
                     href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
 
-                <x-button class="ms-4 p-2">
+                <x-button class="p-2 ms-4">
                     {{ __('Register') }}
                 </x-button>
             </div>
         </form>
-        <x-validation-errors class="mt-4 flex flex-col items-center" />
+        <x-validation-errors class="flex flex-col items-center mt-4" />
     </x-authentication-card>
 </x-guest-layout>
