@@ -14,8 +14,6 @@ class TeamInvitation extends Model
         'team_user_firstname',
         'team_user_lastname',
         'user_id',
-        'user_firstname',
-        'user_lastname',
         // new columns sa table kaya need idagdag sa fillable
         'email',
         'role',

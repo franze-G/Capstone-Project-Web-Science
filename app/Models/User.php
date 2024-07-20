@@ -86,7 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id');
+        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id')->withPivot('user_firstname','user_lastname','team_name', 'role');
     }
 
     public function teamInvitations()
