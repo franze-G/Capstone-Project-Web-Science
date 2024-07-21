@@ -63,7 +63,9 @@
 
                                         <!-- Team Settings -->
                                         @if (Auth::user()->currentTeam)
-                                            @if (Auth::user()->isFreelancer() && Auth::user()->currentTeam->archived)
+                                            @if (
+                                                (Auth::user()->isClient() && Auth::user()->allTeams()->where('archived', false)->isEmpty()) ||
+                                                    (Auth::user()->isFreelancer() && Auth::user()->teams->where('archived', false)->isEmpty()))
                                                 <x-dropdown-link class="opacity-50 cursor-not-allowed">
                                                     {{ __('Team Settings') }}
                                                 </x-dropdown-link>
@@ -90,30 +92,38 @@
                                         @endif
 
                                         <!-- Team Switcher -->
-                                        @if (Auth::user()->isClient() && Auth::user()->allTeams()->count() > 0)
-                                            <div class="border-t border-gray-200"></div>
+                                        @if (Auth::user()->isClient())
+                                            @if (Auth::user()->allTeams()->where('archived', false)->isEmpty())
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('No Active Teams') }}
+                                                </div>
+                                            @else
+                                                <div class="border-t border-gray-200"></div>
 
-                                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                                {{ __('Switch Teams') }}
-                                            </div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('Switch Teams') }}
+                                                </div>
 
-                                            @foreach (Auth::user()->allTeams() as $team)
-                                                @if (!$team->archived)
+                                                @foreach (Auth::user()->allTeams()->where('archived', false) as $team)
                                                     <x-switchable-team :team="$team" />
-                                                @endif
-                                            @endforeach
-                                        @elseif (Auth::user()->isFreelancer() && Auth::user()->teams->count() > 0)
-                                            <div class="border-t border-gray-200"></div>
+                                                @endforeach
+                                            @endif
+                                        @elseif (Auth::user()->isFreelancer())
+                                            @if (Auth::user()->teams->where('archived', false)->isEmpty())
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('No Active Teams') }}
+                                                </div>
+                                            @else
+                                                <div class="border-t border-gray-200"></div>
 
-                                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                                {{ __('Your Teams') }}
-                                            </div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('Your Teams') }}
+                                                </div>
 
-                                            @foreach (Auth::user()->teams as $team)
-                                                @if (!$team->archived)
+                                                @foreach (Auth::user()->teams->where('archived', false) as $team)
                                                     <x-switchable-team :team="$team" />
-                                                @endif
-                                            @endforeach
+                                                @endforeach
+                                            @endif
                                         @endif
 
                                         <!-- Team Invitations for Freelancers -->
@@ -198,7 +208,7 @@
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -214,15 +224,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if (Auth::user()->isClient())
-                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            @elseif (Auth::user()->isFreelancer())
-                <x-responsive-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
-                    {{ __('Overview') }}
-                </x-responsive-nav-link>
-            @endif
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -242,16 +246,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <!-- Account Management -->
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
-
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-responsive-nav-link>
-                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
@@ -261,63 +258,6 @@
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
-
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
-
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    @if (Auth::user()->currentTeam)
-                        @if (Auth::user()->isFreelancer() && Auth::user()->currentTeam->archived)
-                            <x-responsive-nav-link class="opacity-50 cursor-not-allowed">
-                                {{ __('Team Settings') }}
-                            </x-responsive-nav-link>
-                        @else
-                            <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                                :active="request()->routeIs('teams.show')">
-                                {{ __('Team Settings') }}
-                            </x-responsive-nav-link>
-                        @endif
-                    @endif
-
-                    <!-- Only show "Create New Team" for users who can create teams -->
-                    @if (Auth::user()->isClient() && auth()->user()->can('create', Laravel\Jetstream\Jetstream::newTeamModel()))
-                        <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-responsive-nav-link>
-                    @endif
-
-                    <!-- Team Switcher -->
-                    @if (Auth::user()->isClient() && Auth::user()->allTeams()->count() > 0)
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->allTeams() as $team)
-                            @if (!$team->archived)
-                                <x-switchable-team :team="$team" component="responsive-nav-link" />
-                            @endif
-                        @endforeach
-                    @elseif (Auth::user()->isFreelancer() && Auth::user()->teams->count() > 0)
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Your Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->teams as $team)
-                            @if (!$team->archived)
-                                <x-switchable-team :team="$team" component="responsive-nav-link" />
-                            @endif
-                        @endforeach
-                    @endif
-                @endif
             </div>
         </div>
     </div>

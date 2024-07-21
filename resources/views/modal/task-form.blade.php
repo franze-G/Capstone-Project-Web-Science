@@ -1,60 +1,50 @@
-<section class="space-y-6">
-    <header class="text-lg font-medium text-gray-900 dark:text-gray-100">
-        Add Task
-    </header>
+<!-- resources/views/modal/task-form.blade.php -->
+<div id="assignTaskModal" class="fixed inset-0 z-50 overflow-auto bg-smoke-light flex hidden">
+    <div class="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg">
+        <h2 class="text-2xl font-semibold mb-4">Assign Task</h2>
 
-    <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'task-form')">
-        {{ __('Add new task') }}
-    </x-danger-button>
-
-    <x-modal name="task-form" class="bg-black" focusable>
-
-        <form action="{{ route('addtask.post') }}" method="POST" class="p-6" enctype="multipart/form-data">
-            @csrf
-            <h2 class="text-black">Meow</h2>
-
-            <h2 class="text-lg font-medium text-black dark:text-gray-100">
-                {{ __('Are you sure you want to delete your account?') }}
-            </h2>
-
-            <!-- Input fields -->
-            <div class="">
-                <x-input-label class="mt-4" for="title" :value="__('Title')" />
-                <x-text-input id="title" class="block mt-2 w-full" type="text" name="title" value="{{ old('title') }}"
-                    required />
-
-                <x-input-label class="mt-2" for="description" :value="__('Description')" />
-                <textarea id="description" name="description"
-                    class="block mt-2 w-full text-black rounded-xl">{{ old('description') }}</textarea>
-
-                <x-input-label class="mt-2" for="rate" :value="__('Service Fee')" />
-                <x-text-input id="rate" class="block mt-2 w-full" type="number" name="rate" value="{{ old('rate') }}"
-                    required />
-
-                <x-input-label class="mt-2" for="priority" :value="__('Priority')" />
-                <select id="priority" name="priority" class="block mt-2 w-full text-black rounded-xl">
-                    <option value="low" {{ old('priority')=='low' ? 'selected' : '' }}>Low</option>
-                    <option value="high" {{ old('priority')=='high' ? 'selected' : '' }}>High</option>
-                </select>
-
-                <x-input-label class="mt-2" for="due_date" :value="__('Due Date')" />
-                <input id="due_date" name="due_date" type="datetime-local"
-                    class="block mt-2 w-full rounded-xl border-black text-black shadow-sm focus:border-emerald focus:ring focus:ring-emerald focus:ring-opacity-50"
-                    value="{{ old('due_date') }}" required>
-
-                <x-input-label class="mt-4" for="image" :value="__('Image')" />
-                <input id="image" class="block mt-2 w-full text-black" type="file" name="image[]" multiple>
+        <form id="assignTaskForm" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="taskTitle" class="block text-gray-700">Task Title:</label>
+                <input id="taskTitle" type="text" class="w-full p-2 border rounded-lg" required>
             </div>
 
-            <!-- Submit buttons -->
-            <div class="mt-8 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-                <x-submit-button class="ms-3">
-                    {{ __('Create Task') }}
-                </x-submit-button>
+            <div class="mb-4">
+                <label for="taskDescription" class="block text-gray-700">Task Description:</label>
+                <textarea id="taskDescription" rows="4" class="w-full p-2 border rounded-lg" required></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="serviceFee" class="block text-gray-700">Service Fee ($):</label>
+                <input id="serviceFee" type="number" step="0.01" class="w-full p-2 border rounded-lg" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="dueDate" class="block text-gray-700">Due Date and Time:</label>
+                <input id="dueDate" type="datetime-local" class="w-full p-2 border rounded-lg" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="priority" class="block text-gray-700">Priority:</label>
+                <select id="priority" class="w-full p-2 border rounded-lg" required>
+                    <option value="low">Low</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="taskImages" class="block text-gray-700">Upload Images (up to 3):</label>
+                <input id="taskImages" type="file" name="taskImages[]" accept="image/*" multiple
+                    class="w-full p-2 border rounded-lg">
+                <small class="text-gray-500">You can upload up to 3 images.</small>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="button" class="bg-white text-black py-2 px-4 border rounded-lg mr-2"
+                    onclick="hideAssignTaskModal()">Cancel</button>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg">Assign Task</button>
             </div>
         </form>
-    </x-modal>
-</section>
+
+    </div>
+</div>

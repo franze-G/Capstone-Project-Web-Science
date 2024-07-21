@@ -2,10 +2,8 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             @if (isset($team))
-                <!-- Display team name if the user is on a team -->
                 {{ $team->name }} Dashboard
             @else
-                <!-- Display default client dashboard text -->
                 {{ __('Client Dashboard') }}
             @endif
         </h2>
@@ -14,7 +12,6 @@
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
-
                 @if (isset($team))
                     <!-- Team Members -->
                     <div class="p-5 bg-slate-800">
@@ -30,10 +27,9 @@
                                 </div>
 
                                 <div class="flex items-center">
-                                    <!-- Display role if applicable -->
                                     @if (Gate::check('updateTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
                                         <button class="ms-2 text-sm text-gray-400 underline"
-                                            wire:click="manageRole('{{ $user->id }}')">
+                                            onclick="manageRole('{{ $user->id }}')">
                                             {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
                                         </button>
                                     @elseif (Laravel\Jetstream\Jetstream::hasRoles())
@@ -41,6 +37,12 @@
                                             {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
                                         </div>
                                     @endif
+
+                                    <!-- Assign Task Button -->
+                                    <button class="ms-2 text-sm text-blue-500 underline"
+                                        onclick="showAssignTaskModal('{{ $user->firstname }} {{ $user->lastname }}')">
+                                        Assign Task
+                                    </button>
                                 </div>
                             </div>
                         @endforeach
@@ -48,7 +50,6 @@
                 @else
                     <!-- Default Dashboard -->
                     <div class="p-5 bg-slate-800">
-                        <!-- title container -->
                         <div class="flex justify-between items-center">
                             <div
                                 class="flex flex-col justify-center items-start gap-1 font-sfprodisplay tracking-tight">
@@ -65,16 +66,12 @@
                                 <p class="text-center font-semibold tracking-tight">Add Project</p>
                             </a>
                         </div>
-                        <!-- card container -->
                         <div class="flex justify-start items-center gap-4">
-                            <!-- cards -->
                             <div class="flex flex-col justify-between items-start p-6 rounded-2xl bg-black/80">
-                                <!-- icon -->
                                 <svg width="60" height="60" viewBox="0 0 60 60" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="30" cy="30" r="30" fill="#D9D9D9" />
                                 </svg>
-                                <!-- dito ipapass number ng kung ano -->
                                 <p class="text-center text-7xl font-black font-sfprodisplayblack">10</p>
                                 <div
                                     class="flex flex-col justify-center items-start text-center font-sfprodisplay tracking-tight">
@@ -85,8 +82,55 @@
                         </div>
                     </div>
                 @endif
-
             </div>
         </div>
     </div>
+
+    @include('modal.task-form')
+
+    <script>
+        function showAssignTaskModal(userFullName) {
+            const modal = document.getElementById('assignTaskModal');
+            modal.querySelector('h2').innerText = `Assign Task to ${userFullName}`;
+            modal.classList.remove('hidden');
+        }
+
+        function hideAssignTaskModal() {
+            const modal = document.getElementById('assignTaskModal');
+            modal.classList.add('hidden');
+        }
+
+        document.getElementById('assignTaskForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const taskDescription = document.getElementById('taskDescription').value;
+
+            // Perform AJAX request to assign task
+            // Assuming you have a route to handle task assignment
+
+            fetch('/assign-task', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    },
+                    body: JSON.stringify({
+                        taskDescription: taskDescription,
+                        userFullName: document.querySelector('#assignTaskModal h2').innerText.split(
+                            ' to ')[1]
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Task assigned successfully.');
+                        hideAssignTaskModal();
+                    } else {
+                        alert('Failed to assign task.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
 </x-app-layout>
