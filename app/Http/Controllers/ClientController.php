@@ -57,19 +57,28 @@ class ClientController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $role = $user->role;
+            $team = $user->currentTeam; // Get the current team if available
 
+            // Return view based on the user's role
             if ($role === 'client') {
-                // Redirect to client dashboard
-                return view('dashboard', compact('role'));
-            } else {
-                // Redirect to freelancer dashboard
-                return view('freelance.home', compact('role'));
+                // For clients (owners), display the default dashboard
+                return view('dashboard', [
+                    'role' => $role,
+                    'team' => $team
+                ]);
+            } elseif ($role === 'freelancer') {
+                // For freelancers (members), display the freelancer dashboard
+                return view('freelance.home', [
+                    'role' => $role,
+                    'team' => $team // Pass the team if needed in the freelancer view
+                ]);
             }
         }
 
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+    
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()

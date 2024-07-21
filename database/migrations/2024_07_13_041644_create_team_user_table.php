@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('team_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id');
             $table->string('user_firstname')->nullable();
             $table->string('user_lastname')->nullable();
-            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('team_id');
             $table->string('team_name')->nullable();
             $table->string('role')->nullable();
             $table->timestamps();
