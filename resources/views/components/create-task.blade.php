@@ -9,8 +9,9 @@
         class="bg-transparent border-none rounded-none shadow-none bg-n placeholder-slate-200 focus:ring-0">
       <!-- buttons -->
       <div>
-        <x-buttons.gray-button>Assign</x-buttons.gray-button>
-          <x-button>Due Date</x-button>
+        <x-buttons.gray-button>
+        </x-buttons.gray-button>
+        <x-button>Due Date</x-button>
       </div>
 
 
