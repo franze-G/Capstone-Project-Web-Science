@@ -4,6 +4,11 @@
 
         <form method="POST" action="{{ route('projects.save') }}" enctype="multipart/form-data">
             @csrf
+
+            <!-- Hidden Inputs -->
+            <input type="hidden" name="assigned_id" id="assignedId">
+            <input type="hidden" name="assigned_fullname" id="assignedFullName">
+
             <!-- Title Field -->
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Task Title:</label>

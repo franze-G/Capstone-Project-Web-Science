@@ -14,7 +14,7 @@ class DeleteTeam
      * @param  \App\Models\Team  $team
      * @return void
      */
-    public function delete($team)
+   public function delete(Team $team)
     {
         $team->purge();
     }

@@ -15,7 +15,6 @@
         </div>
     @endif
 
-
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
@@ -47,7 +46,7 @@
 
                                     <!-- Assign Task Button -->
                                     <button class="ms-2 text-sm text-blue-500 underline"
-                                        onclick="showAssignTaskModal('{{ $user->id }} {{ $user->firstname }} {{ $user->lastname }}')">
+                                        onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
                                         Assign Task
                                     </button>
                                 </div>
@@ -97,26 +96,35 @@
 @include('modal.task-form')
 
 <script>
-    function showAssignTaskModal(userFullName) {
-
+    function showAssignTaskModal(userId, userFullName) {
         // Show the modal
         const modal = document.getElementById('assignTaskModal');
-        modal.querySelector('h2').innerText = `Assign Task to ${userFullName}`;
-        modal.classList.remove('hidden');
+        if (modal) {
+            modal.querySelector('h2').innerText = `Assign Task to ${userFullName}`;
+
+            // Store user details in hidden inputs
+            modal.querySelector('input[name="assigned_id"]').value = userId;
+            modal.querySelector('input[name="assigned_fullname"]').value = userFullName;
+
+            modal.classList.remove('hidden');
+        }
     }
 
     function hideAssignTaskModal() {
         const modal = document.getElementById('assignTaskModal');
-        modal.classList.add('hidden');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
     }
-
     document.getElementById('assignTaskForm').addEventListener('submit', function(event) {
         event.preventDefault();
+
+        // Retrieve task details and user info
         const taskDescription = document.getElementById('taskDescription').value;
+        const userId = document.querySelector('input[name="userId"]').value;
+        const userFullName = document.querySelector('input[name="userFullName"]').value;
 
         // Perform AJAX request to assign task
-        // Assuming you have a route to handle task assignment
-
         fetch('/assign-task', {
                 method: 'POST',
                 headers: {
@@ -126,8 +134,8 @@
                 },
                 body: JSON.stringify({
                     taskDescription: taskDescription,
-                    userFullName: document.querySelector('#assignTaskModal h2').innerText.split(
-                        ' to ')[1]
+                    userId: userId,
+                    userFullName: userFullName
                 })
             })
             .then(response => response.json())

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
@@ -20,8 +21,14 @@ class ProjectController extends Controller
             'service_fee' => 'required|numeric|min:0',
             'due_date' => 'required|date',
             'priority' => 'required|string|in:low,high',
+            'assigned_id' => 'required|exists:users,id', // Validate assigned_id
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validate images
         ]);
+
+        // Fetch assigned user details
+        $assignedUser = User::find($validated['assigned_id']);
+        $assignedFirstname = $assignedUser ? $assignedUser->firstname : null;
+
 
         // Create a new project instance and save it to the database
         $project = new Project();
@@ -33,7 +40,9 @@ class ProjectController extends Controller
         $project->created_by = Auth::id();
         $project->user_firstname = auth()->user()->firstname;
         $project->user_lastname = auth()->user()->lastname;
-        $project->assigned_id  = Auth::id();
+        $project->assigned_id = $validated['assigned_id'];
+        $project->assigned_firstname = $assignedFirstname;
+
         // Handle image uploads
         $imagePaths = [];
         if ($request->hasFile('images')) {

@@ -41,4 +41,9 @@ class Project extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_id');
+    }
+
 }

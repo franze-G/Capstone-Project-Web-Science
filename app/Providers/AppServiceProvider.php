@@ -19,9 +19,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // Bind DeletesTeams interface to DeleteTeam implementation
         $this->app->bind(DeletesTeams::class, DeleteTeam::class);
-
-        // Bind DeletesUsers interface to DeleteUser implementation
-        $this->app->bind(DeletesUsers::class, DeleteUser::class);
     }
 
     /**
