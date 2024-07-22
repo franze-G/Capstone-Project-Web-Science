@@ -5,10 +5,17 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
+                    @if (auth()->user()->isClient())
+                        <a href="{{ route('dashboard') }}">
+                            <x-application-mark class="block h-9 w-auto" />
+                        </a>
+                    @elseif(auth()->user()->isFreelancer())
+                        <a href="{{ route('freelancer.home') }}">
+                            <x-application-mark class="block h-9 w-auto" />
+                        </a>
+                    @endif
                 </div>
+
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -60,18 +67,21 @@
                                     {{ __('Manage Team') }}
                                 </div>
 
-                                <!-- Team Settings -->
-                                @if (Auth::user()->currentTeam)
-                                @if (Auth::user()->isFreelancer() && Auth::user()->currentTeam->archived)
-                                <x-dropdown-link class="opacity-50 cursor-not-allowed">
-                                    {{ __('Team Settings') }}
-                                </x-dropdown-link>
-                                @else
-                                <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                    {{ __('Team Settings') }}
-                                </x-dropdown-link>
-                                @endif
-                                @endif
+                                        <!-- Team Settings -->
+                                        @if (Auth::user()->currentTeam)
+                                            @if (
+                                                (Auth::user()->isClient() && Auth::user()->allTeams()->where('archived', false)->isEmpty()) ||
+                                                    (Auth::user()->isFreelancer() && Auth::user()->teams->where('archived', false)->isEmpty()))
+                                                <x-dropdown-link class="opacity-50 cursor-not-allowed">
+                                                    {{ __('Team Settings') }}
+                                                </x-dropdown-link>
+                                            @else
+                                                <x-dropdown-link
+                                                    href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                                    {{ __('Team Settings') }}
+                                                </x-dropdown-link>
+                                            @endif
+                                        @endif
 
                                 <!-- Only show "Create New Team" for users who can create teams -->
                                 @if (Auth::user()->isClient() && auth()->user()->can('create',
@@ -89,32 +99,40 @@
                                 </x-dropdown-link>
                                 @endif
 
-                                <!-- Team Switcher -->
-                                @if (Auth::user()->isClient() && Auth::user()->allTeams()->count() > 0)
-                                <div class="border-t border-gray-200"></div>
+                                        <!-- Team Switcher -->
+                                        @if (Auth::user()->isClient())
+                                            @if (Auth::user()->allTeams()->where('archived', false)->isEmpty())
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('No Active Teams') }}
+                                                </div>
+                                            @else
+                                                <div class="border-t border-gray-200"></div>
 
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Switch Teams') }}
-                                </div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('Switch Teams') }}
+                                                </div>
 
-                                @foreach (Auth::user()->allTeams() as $team)
-                                @if (!$team->archived)
-                                <x-switchable-team :team="$team" />
-                                @endif
-                                @endforeach
-                                @elseif (Auth::user()->isFreelancer() && Auth::user()->teams->count() > 0)
-                                <div class="border-t border-gray-200"></div>
+                                                @foreach (Auth::user()->allTeams()->where('archived', false) as $team)
+                                                    <x-switchable-team :team="$team" />
+                                                @endforeach
+                                            @endif
+                                        @elseif (Auth::user()->isFreelancer())
+                                            @if (Auth::user()->teams->where('archived', false)->isEmpty())
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('No Active Teams') }}
+                                                </div>
+                                            @else
+                                                <div class="border-t border-gray-200"></div>
 
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Your Teams') }}
-                                </div>
+                                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                                    {{ __('Your Teams') }}
+                                                </div>
 
-                                @foreach (Auth::user()->teams as $team)
-                                @if (!$team->archived)
-                                <x-switchable-team :team="$team" />
-                                @endif
-                                @endforeach
-                                @endif
+                                                @foreach (Auth::user()->teams->where('archived', false) as $team)
+                                                    <x-switchable-team :team="$team" />
+                                                @endforeach
+                                            @endif
+                                        @endif
 
                                 <!-- Team Invitations for Freelancers -->
                                 @if (Auth::user()->isFreelancer())
@@ -197,7 +215,7 @@
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -213,6 +231,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
             @if (Auth::user()->isClient())
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -242,7 +263,6 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <!-- Account Management -->
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>

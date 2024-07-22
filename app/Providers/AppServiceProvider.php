@@ -2,14 +2,18 @@
 
 namespace App\Providers;
 
-use App\Actions\Jetstream\DeleteTeam;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Contracts\DeletesTeams;
+use Laravel\Jetstream\Contracts\DeletesUsers;
+use App\Actions\Jetstream\DeleteTeam;
+use App\Actions\Jetstream\DeleteUser;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
+     *
+     * @return void
      */
     public function register()
     {
@@ -19,8 +23,10 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
         //
     }

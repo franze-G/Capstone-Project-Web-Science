@@ -10,6 +10,7 @@ use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Jetstream\Contracts\DeletesTeams;
 use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
@@ -20,6 +21,7 @@ class JetstreamServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->app->bind(DeletesTeams::class, DeleteTeam::class);
     }
 
     /**
