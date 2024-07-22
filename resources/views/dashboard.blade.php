@@ -9,6 +9,13 @@
         </h2>
     </x-slot>
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
@@ -40,7 +47,7 @@
 
                                     <!-- Assign Task Button -->
                                     <button class="ms-2 text-sm text-blue-500 underline"
-                                        onclick="showAssignTaskModal('{{ $user->firstname }} {{ $user->lastname }}')">
+                                        onclick="showAssignTaskModal('{{ $user->id }} {{ $user->firstname }} {{ $user->lastname }}')">
                                         Assign Task
                                     </button>
                                 </div>
@@ -85,52 +92,53 @@
             </div>
         </div>
     </div>
-
-    @include('modal.task-form')
-
-    <script>
-        function showAssignTaskModal(userFullName) {
-            const modal = document.getElementById('assignTaskModal');
-            modal.querySelector('h2').innerText = `Assign Task to ${userFullName}`;
-            modal.classList.remove('hidden');
-        }
-
-        function hideAssignTaskModal() {
-            const modal = document.getElementById('assignTaskModal');
-            modal.classList.add('hidden');
-        }
-
-        document.getElementById('assignTaskForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const taskDescription = document.getElementById('taskDescription').value;
-
-            // Perform AJAX request to assign task
-            // Assuming you have a route to handle task assignment
-
-            fetch('/assign-task', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        taskDescription: taskDescription,
-                        userFullName: document.querySelector('#assignTaskModal h2').innerText.split(
-                            ' to ')[1]
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Task assigned successfully.');
-                        hideAssignTaskModal();
-                    } else {
-                        alert('Failed to assign task.');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
-
 </x-app-layout>
+
+@include('modal.task-form')
+
+<script>
+    function showAssignTaskModal(userFullName) {
+
+        // Show the modal
+        const modal = document.getElementById('assignTaskModal');
+        modal.querySelector('h2').innerText = `Assign Task to ${userFullName}`;
+        modal.classList.remove('hidden');
+    }
+
+    function hideAssignTaskModal() {
+        const modal = document.getElementById('assignTaskModal');
+        modal.classList.add('hidden');
+    }
+
+    document.getElementById('assignTaskForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const taskDescription = document.getElementById('taskDescription').value;
+
+        // Perform AJAX request to assign task
+        // Assuming you have a route to handle task assignment
+
+        fetch('/assign-task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content')
+                },
+                body: JSON.stringify({
+                    taskDescription: taskDescription,
+                    userFullName: document.querySelector('#assignTaskModal h2').innerText.split(
+                        ' to ')[1]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Task assigned successfully.');
+                    hideAssignTaskModal();
+                } else {
+                    alert('Failed to assign task.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>

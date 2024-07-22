@@ -23,12 +23,12 @@ return new class extends Migration
             
             // Foreign keys
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
-            
-            // Removed the following lines as they are incorrect
             $table->string('user_firstname')->constrained('users');
             $table->string('user_lastname')->constrained('users');
+            // $table->foreignId('updated_by')->constrained('users');
             
+            $table->foreignId('assigned_id')->constrained('users');
+            $table->string('assigned_firstname')->nullable();
             $table->timestamps(); // This will automatically create `created_at` and `updated_at`
         });
     }

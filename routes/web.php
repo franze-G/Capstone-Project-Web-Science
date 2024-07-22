@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
 use App\Mail\TeamInvitation;
 use App\Models\User;
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/team-invitations/accept/{invitation}', [TeamInviteController::class, 'accept'])->name('team-invitation.accept');
 
     Route::delete('/team-invitations/{invitation}', [TeamInviteController::class, 'destroy'])->name('team-invitation.destroy');
+
+    Route::post('/projects', [ProjectController::class, 'save'])->name('projects.save');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 });
 
 
