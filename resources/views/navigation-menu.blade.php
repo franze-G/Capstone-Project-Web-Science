@@ -23,11 +23,11 @@
                     <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
                         {{ __('Overview') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
+                    <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
                         {{ __('Task') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
-                        {{ __('Profile') }}
+                    <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
+                        {{ __('Teams') }}
                     </x-nav-link>
                     @endif
                 </div>

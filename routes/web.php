@@ -30,10 +30,12 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 Route::middleware('auth')->group(function () {
     Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
     Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
-    
+    Route::get('freelance/teams', [ClientController::class, 'freelancerTeams'])->name('freelancer.teams');
+    Route::get('freelance/tasks', [ClientController::class, 'freelancerTasks'])->name('freelancer.tasks');
+
     Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
     Route::get('/team/{teamId}/members', [ClientController::class, 'showTeamMembers'])->name('team.members');
-    
+
     Route::get('/teams', [ClientController::class, 'teamIndex'])->name('teams.index');
     Route::put('/teams/{team}/recover', [ClientController::class, 'recoverTeam'])->name('teams.recover');
 
@@ -43,6 +45,3 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/team-invitations/{invitation}', [TeamInviteController::class, 'destroy'])->name('team-invitation.destroy');
 });
-
-
-
