@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Jetstream\DeleteUser;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -122,5 +123,34 @@ class ClientController extends Controller
         $team->save();
 
         return redirect()->route('teams.index')->with('status', 'Team recovered successfully!');
+    }
+
+    protected DeleteUser $deleteUser;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param \App\Actions\Jetstream\DeleteUser $deleteUser
+     * @return void
+     */
+    public function __construct(DeleteUser $deleteUser)
+    {
+        $this->deleteUser = $deleteUser;
+    }
+ /**
+     * Remove the specified user from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, int $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Call the delete method from DeleteUser
+        $this->deleteUser->delete($user);
+
+        return response()->json(['message' => 'User deleted successfully']);
     }
 }

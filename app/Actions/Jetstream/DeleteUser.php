@@ -12,13 +12,18 @@ class DeleteUser implements DeletesUsers
 {
     /**
      * Create a new action instance.
+     *
+     * @param \Laravel\Jetstream\Contracts\DeletesTeams $deletesTeams
      */
-    public function __construct(protected DeletesTeams $deletesTeams)
-    {
-    }
+    // public function __construct(protected DeletesTeams $deletesTeams)
+    // {
+    // }
 
     /**
      * Delete the given user.
+     *
+     * @param \App\Models\User $user
+     * @return void
      */
     public function delete(User $user): void
     {
@@ -32,6 +37,9 @@ class DeleteUser implements DeletesUsers
 
     /**
      * Delete the teams and team associations attached to the user.
+     *
+     * @param \App\Models\User $user
+     * @return void
      */
     protected function deleteTeams(User $user): void
     {
