@@ -88,15 +88,27 @@ class ClientController extends Controller
         ]);
     }
 
-    public function freelancerTeams()
+    public function teams()
+    {
         $user = Auth::user();
         $role = $user->role;
         $team = $user->currentTeam;
-        return view('freelance.teams', [
-            'role' => $role,
-            'team' => $team,
-        ]);
+
+        if ($role === 'freelancer') {
+            return view('freelance.teams', [
+                'role' => $role,
+                'team' => $team,
+            ]);
+        } else if ($role === 'client') {
+            return view('client.teams', [
+                'role' => $role,
+                'team' => $team,
+            ]);
+        } else {
+            return redirect()->back()->withErrors(__('Invalid role.'));
+        }
     }
+
 
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
@@ -155,7 +167,7 @@ class ClientController extends Controller
     {
         $this->deleteUser = $deleteUser;
     }
- /**
+    /**
      * Remove the specified user from storage.
      *
      * @param \Illuminate\Http\Request $request

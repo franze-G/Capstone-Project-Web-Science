@@ -29,9 +29,14 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
+    //for clients
     Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
+    Route::get('client/teams', [ClientController::class, 'teams'])->name('client.teams');
+
+
+    //for freelancers
     Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
-    Route::get('freelance/teams', [ClientController::class, 'freelancerTeams'])->name('freelancer.teams');
+    Route::get('freelance/teams', [ClientController::class, 'teams'])->name('freelancer.teams');
     Route::get('freelance/tasks', [ClientController::class, 'freelancerTasks'])->name('freelancer.tasks');
 
     Route::post('/team/{teamId}/add-user', [ClientController::class, 'addUserToTeam'])->name('team.addUser');
