@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('priority');
             $table->string('service_fee');
             $table->string('image_path')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('pending');
             
             // Foreign keys
             $table->foreignId('created_by')->constrained('users');

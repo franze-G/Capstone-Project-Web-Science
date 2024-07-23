@@ -29,6 +29,7 @@ export default {
                 black: "#151515",
                 yellow: "#ffd60a",
                 gray: "#828282",
+                lightgray: "#e9ecef",
                 //greens
                 emerald: "#718355",
                 emeraldlight1: "#87986A",

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FreelanceController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
 use App\Mail\TeamInvitation;
@@ -46,6 +47,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/projects', [ProjectController::class, 'save'])->name('projects.save');
     Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
+    Route::get('/tasks', [FreelanceController::class, 'index'])->name('tasks.index');
+    Route::post('/freelance/tasks/{id}/start', [FreelanceController::class, 'startTask'])->name('tasks.start');
+    Route::post('/freelance/tasks/{id}/complete', [FreelanceController::class, 'completeTask'])->name('tasks.complete');
 });
 
 
