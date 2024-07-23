@@ -2,8 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             @if (isset($team))
-            <!-- Display team name if the user is on a team -->
-            {{ $team->name }} Dashboard
+                <!-- Display team name if the user is on a team -->
                 {{ $team->name }} Dashboard
             @else
                 {{ __('Client Dashboard') }}
@@ -21,18 +20,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
                 @if (isset($team))
-                <!-- Team Members -->
-                <div class="p-5 bg-slate-800">
-                    <h2 class="text-2xl font-semibold mb-4">Team Members</h2>
-                    @foreach ($team->users->sortBy('name') as $user)
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
-                                alt="{{ $user->firstname }}">
-                            <div class="ms-4">
-                                <p class="font-semibold">{{ $user->firstname }} {{ $user->lastname }}</p>
-                            </div>
-                        </div>
+                    <!-- Team Members -->
+                    <div class="p-5 bg-slate-800">
+                        <h2 class="text-2xl font-semibold mb-4">Team Members</h2>
+                        @foreach ($team->users->sortBy('name') as $user)
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
+                                        alt="{{ $user->firstname }}">
+                                    <div class="ms-4">
+                                        <p class="font-semibold">{{ $user->firstname }} {{ $user->lastname }}</p>
+                                    </div>
+                                </div>
 
                                 <div class="flex items-center">
                                     @if (Gate::check('updateTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())

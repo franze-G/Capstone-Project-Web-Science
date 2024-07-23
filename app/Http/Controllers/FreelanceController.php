@@ -43,4 +43,20 @@ class FreelanceController extends Controller
 
         return redirect()->back()->with('success', 'Task status updated to "Completed".');
     }
+
+    public function getTaskDetails($id)
+{
+    $task = Project::findOrFail($id);
+
+    return response()->json([
+        'title' => $task->title,
+        'description' => $task->description,
+        'due_date' => $task->due_date,
+        'priority' => $task->priority,
+        'service_fee' => $task->service_fee,
+        'assigned_firstname' => $task->assigned_firstname,
+        'assigned_lastname' => $task->assigned_lastname,
+        'status' => $task->status,
+    ]);
+}
 }

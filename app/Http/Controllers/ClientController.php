@@ -7,6 +7,7 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Project; // Add this import for Project model
 
 class ClientController extends Controller
 {
@@ -53,6 +54,8 @@ class ClientController extends Controller
     }
 
     // Show client dashboard or freelancer home based on user role
+// ClientController.php
+
     public function index()
     {
         if (Auth::check()) {
@@ -60,18 +63,27 @@ class ClientController extends Controller
             $role = $user->role;
             $team = $user->currentTeam; // Get the current team if available
 
+            // Get task counts
+            $taskCounts = $this->getTaskCounts($user);
+
             // Return view based on the user's role
             if ($role === 'client') {
                 // For clients (owners), display the default dashboard
                 return view('dashboard', [
                     'role' => $role,
-                    'team' => $team
+                    'team' => $team,
+                    'pendingCount' => $taskCounts['pending'],
+                    'inProgressCount' => $taskCounts['inProgress'],
+                    'completedCount' => $taskCounts['completed'],
                 ]);
             } elseif ($role === 'freelancer') {
                 // For freelancers (members), display the freelancer dashboard
                 return view('freelance.home', [
                     'role' => $role,
-                    'team' => $team // Pass the team if needed in the freelancer view
+                    'team' => $team,
+                    'pendingCount' => $taskCounts['pending'],
+                    'inProgressCount' => $taskCounts['inProgress'],
+                    'completedCount' => $taskCounts['completed'],
                 ]);
             }
         }
@@ -79,6 +91,41 @@ class ClientController extends Controller
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+
+
+    // Method to get task counts
+// ClientController.php
+
+    protected function getTaskCounts($user)
+    {
+        // Initialize counts
+        $pendingCount = 0;
+        $inProgressCount = 0;
+        $completedCount = 0;
+
+        if ($user->currentTeam) {
+            // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
+            $tasks = Project::where(function ($query) use ($user) {
+                $query->where('assigned_id', $user->id)
+                    ->orWhere('created_by', $user->id);
+            })->get();
+        } else {
+            // If the user is not part of a team, fetch tasks created by the user
+            $tasks = Project::where('created_by', $user->id)->get();
+        }
+
+        // Count tasks by status
+        $pendingCount = $tasks->where('status', 'pending')->count();
+        $inProgressCount = $tasks->where('status', 'in-progress')->count();
+        $completedCount = $tasks->where('status', 'completed')->count();
+
+        return [
+            'pending' => $pendingCount,
+            'inProgress' => $inProgressCount,
+            'completed' => $completedCount
+        ];
+    }
+
 
     public function freelancerTasks()
     {
@@ -89,6 +136,7 @@ class ClientController extends Controller
     }
 
     public function freelancerTeams()
+    {
         $user = Auth::user();
         $role = $user->role;
         $team = $user->currentTeam;
@@ -97,7 +145,6 @@ class ClientController extends Controller
             'team' => $team,
         ]);
     }
-
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()
@@ -155,7 +202,8 @@ class ClientController extends Controller
     {
         $this->deleteUser = $deleteUser;
     }
- /**
+
+    /**
      * Remove the specified user from storage.
      *
      * @param \Illuminate\Http\Request $request
