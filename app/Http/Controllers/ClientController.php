@@ -14,7 +14,7 @@ class ClientController extends Controller
     public function showRegistrationForm(Request $request)
     {
         // Fetch role from query parameters or session
-        $userType = $request->query('role') ?? session('user_type'); 
+        $userType = $request->query('role') ?? session('user_type');
         // Use the session to fetch the user_type
 
         return view('auth.register', compact('userType')); // Pass userType to the view
@@ -79,7 +79,25 @@ class ClientController extends Controller
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
-    
+
+    public function freelancerTasks()
+    {
+        $user = Auth::user();
+        return view('freelance.tasks', [
+            'user' => $user,
+        ]);
+    }
+
+    public function freelancerTeams()
+        $user = Auth::user();
+        $role = $user->role;
+        $team = $user->currentTeam;
+        return view('freelance.teams', [
+            'role' => $role,
+            'team' => $team,
+        ]);
+    }
+
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()

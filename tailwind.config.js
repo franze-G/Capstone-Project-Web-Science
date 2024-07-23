@@ -28,8 +28,9 @@ export default {
                 // Changed from 'color' to 'colors'
                 black: "#151515",
                 yellow: "#ffd60a",
-                gray: "#828282",
-                lightgray: "#e9ecef",
+                //grays
+                gray: "#8E8E93",
+                lightgray: "#AEAEB2",
                 //greens
                 emerald: "#718355",
                 emeraldlight1: "#87986A",
