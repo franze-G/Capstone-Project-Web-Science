@@ -20,39 +20,63 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
                 @if (isset($team))
-                    <!-- Team Members -->
-                    <div class="p-5 bg-slate-800">
+                    <!-- Team Members Card View -->
+                    <div class="p-5 bg-black">
                         <h2 class="text-2xl font-semibold mb-4">Team Members</h2>
-                        @foreach ($team->users->sortBy('name') as $user)
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center">
-                                    <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
-                                        alt="{{ $user->firstname }}">
-                                    <div class="ms-4">
-                                        <p class="font-semibold">{{ $user->firstname }} {{ $user->lastname }}</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-black text-black">
+                            @foreach ($team->users->sortBy('name') as $user)
+                                <div class="bg-white p-4 rounded-lg shadow-md opacity-90">
+                                    <div class="flex items-center">
+                                        <img class="w-16 h-16 rounded-full object-cover"
+                                            src="{{ $user->profile_photo_url }}" alt="{{ $user->firstname }}">
+                                        <div class="ms-4">
+                                            <p class="text-xl font-semibold">{{ $user->firstname }}
+                                                {{ $user->lastname }}</p>
+                                            <p class="text-sm text-gray-400">{{ $user->email }}</p>
+                                            <p class="text-sm text-gray-300 mt-2">
+                                                Tasks Assigned:
+                                                {{ $user->assignedProjects ? $user->assignedProjects->count() : 0 }}
+                                            </p>
+                                            @if ($user->assignedProjects)
+                                                <p class="text-sm text-gray-300 mt-1">
+                                                    Pending:
+                                                    {{ $user->assignedProjects->where('status', 'pending')->count() }}
+                                                </p>
+                                                <p class="text-sm text-gray-300 mt-1">
+                                                    In-Progress:
+                                                    {{ $user->assignedProjects->where('status', 'in-progress')->count() }}
+                                                </p>
+                                                <p class="text-sm text-gray-300 mt-1">
+                                                    Completed:
+                                                    {{ $user->assignedProjects->where('status', 'completed')->count() }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 flex items-center">
+                                        @if (Gate::check('updateTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
+                                            <button class="text-sm text-gray-400 underline"
+                                                onclick="manageRole('{{ $user->id }}')">
+                                                {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
+                                            </button>
+                                        @elseif (Laravel\Jetstream\Jetstream::hasRoles())
+                                            <div class="text-sm text-gray-400">
+                                                {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
+                                            </div>
+                                        @endif
+
+                                        <!-- Assign Task Button -->
+                                        <button class="ms-2 text-sm text-blue-500 underline"
+                                            onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
+                                            Assign Task
+                                        </button>
+
                                     </div>
                                 </div>
-
-                                <div class="flex items-center">
-                                    @if (Gate::check('updateTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
-                                        <button class="ms-2 text-sm text-gray-400 underline"
-                                            onclick="manageRole('{{ $user->id }}')">
-                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                        </button>
-                                    @elseif (Laravel\Jetstream\Jetstream::hasRoles())
-                                        <div class="ms-2 text-sm text-gray-400">
-                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                        </div>
-                                    @endif
-
-                                    <!-- Assign Task Button -->
-                                    <button class="ms-2 text-sm text-blue-500 underline"
-                                        onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
-                                        Assign Task
-                                    </button>
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 @else
                     <!-- Default Dashboard -->
@@ -93,6 +117,7 @@
         </div>
     </div>
 </x-app-layout>
+
 
 @include('modal.task-form')
 

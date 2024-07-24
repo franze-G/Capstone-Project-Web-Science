@@ -27,13 +27,13 @@ class ClientController extends Controller
         // Validate the registration data
         $validatedData = $request->validate([
             'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'], 
-            //regex para di sya mag accept ng special characters and symbols sa firstname and lastname.
+            // regex para di sya mag accept ng special characters and symbols sa firstname and lastname.
 
             'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
 
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[A-Z]/'],
-             //regex para mag require ng 1 capital letter sa password.
+            // regex para mag require ng 1 capital letter sa password.
             'role' => 'required|string|in:client,freelancer',
         ]);
     
@@ -57,11 +57,7 @@ class ClientController extends Controller
         }
     }
     
-    
-
     // Show client dashboard or freelancer home based on user role
-// ClientController.php
-
     public function index()
     {
         if (Auth::check()) {
@@ -98,7 +94,6 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
-
     // Method to get task counts
     protected function getTaskCounts($user)
     {
@@ -107,11 +102,14 @@ class ClientController extends Controller
         $inProgressCount = 0;
         $completedCount = 0;
 
+        // Initialize tasks collection as empty if null
+        $tasks = collect();
+
         if ($user->currentTeam) {
             // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
             $tasks = Project::where(function ($query) use ($user) {
                 $query->where('assigned_id', $user->id)
-                    ->orWhere('created_by', $user->id);
+                      ->orWhere('created_by', $user->id);
             })->get();
         } else {
             // If the user is not part of a team, fetch tasks created by the user
@@ -129,7 +127,6 @@ class ClientController extends Controller
             'completed' => $completedCount
         ];
     }
-
 
     public function freelancerTasks()
     {
