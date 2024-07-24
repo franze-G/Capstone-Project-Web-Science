@@ -27,13 +27,9 @@ class ClientController extends Controller
         // Validate the registration data
         $validatedData = $request->validate([
             'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'], 
-            // regex para di sya mag accept ng special characters and symbols sa firstname and lastname.
-
             'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
-
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[A-Z]/'],
-            // regex para mag require ng 1 capital letter sa password.
             'role' => 'required|string|in:client,freelancer',
         ]);
     
@@ -107,10 +103,9 @@ class ClientController extends Controller
 
         if ($user->currentTeam) {
             // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
-            $tasks = Project::where(function ($query) use ($user) {
-                $query->where('assigned_id', $user->id)
-                      ->orWhere('created_by', $user->id);
-            })->get();
+            $tasks = Project::where('created_by', $user->id)
+                             ->orWhere('assigned_id', $user->id)
+                             ->get();
         } else {
             // If the user is not part of a team, fetch tasks created by the user
             $tasks = Project::where('created_by', $user->id)->get();

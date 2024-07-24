@@ -10,12 +10,6 @@
         </h2>
     </x-slot>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
@@ -36,20 +30,20 @@
                                             <p class="text-sm text-gray-400">{{ $user->email }}</p>
                                             <p class="text-sm text-gray-300 mt-2">
                                                 Tasks Assigned:
-                                                {{ $user->assignedProjects ? $user->assignedProjects->count() : 0 }}
+                                                {{ $user->assignedProjects->where('created_by', auth()->user()->id)->count() }}
                                             </p>
-                                            @if ($user->assignedProjects)
+                                            @if ($user->assignedProjects->where('created_by', auth()->user()->id)->count() > 0)
                                                 <p class="text-sm text-gray-300 mt-1">
                                                     Pending:
-                                                    {{ $user->assignedProjects->where('status', 'pending')->count() }}
+                                                    {{ $user->assignedProjects->where('status', 'pending')->where('created_by', auth()->user()->id)->count() }}
                                                 </p>
                                                 <p class="text-sm text-gray-300 mt-1">
                                                     In-Progress:
-                                                    {{ $user->assignedProjects->where('status', 'in-progress')->count() }}
+                                                    {{ $user->assignedProjects->where('status', 'in-progress')->where('created_by', auth()->user()->id)->count() }}
                                                 </p>
                                                 <p class="text-sm text-gray-300 mt-1">
                                                     Completed:
-                                                    {{ $user->assignedProjects->where('status', 'completed')->count() }}
+                                                    {{ $user->assignedProjects->where('status', 'completed')->where('created_by', auth()->user()->id)->count() }}
                                                 </p>
                                             @endif
                                         </div>
