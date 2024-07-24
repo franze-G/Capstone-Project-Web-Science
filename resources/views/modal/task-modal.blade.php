@@ -10,10 +10,8 @@
 
         <div id="taskActions" class="flex justify-end mt-4">
             <!-- Actions will be inserted here by JavaScript -->
-            <button onclick="document.getElementById('taskModal').classList.add('hidden');"
-                class="bg-gray-500 text-black px-4 py-2 rounded">Close</button>
         </div>
+        <button onclick="document.getElementById('taskModal').classList.add('hidden');"
+            class="bg-emeraldlight2 text-black px-4 py-2 rounded mt-4">Close</button>
     </div>
 </div>
-
-

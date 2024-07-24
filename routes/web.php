@@ -57,8 +57,10 @@ Route::middleware('auth')->group(function () {
 
     //modals and task counts
     Route::get('/tasks', [FreelanceController::class, 'index'])->name('tasks.index');
+    
     Route::post('/freelance/tasks/{id}/start', [FreelanceController::class, 'startTask'])->name('tasks.start');
     Route::post('/freelance/tasks/{id}/complete', [FreelanceController::class, 'completeTask'])->name('tasks.complete');
+    
     Route::get('/task-counts', [FreelanceController::class, 'taskCounts'])->name('task.counts');
     
     // for details ng tasks
