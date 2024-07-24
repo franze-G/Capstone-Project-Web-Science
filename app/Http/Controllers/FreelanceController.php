@@ -26,6 +26,7 @@ class FreelanceController extends Controller
         return view('freelance.projects', compact('tasks'));
     }
 
+    //function ng button for starting taks.
     public function startTask($id)
     {
         $task = Project::findOrFail($id);
@@ -34,6 +35,8 @@ class FreelanceController extends Controller
 
         return redirect()->back()->with('success', 'Task status updated to "In-Progress".');
     }
+
+    //function ng button for completed task. 
 
     public function completeTask($id)
     {
@@ -44,19 +47,20 @@ class FreelanceController extends Controller
         return redirect()->back()->with('success', 'Task status updated to "Completed".');
     }
 
+    //function for getting details ng task, para madisplay sa modal. 
     public function getTaskDetails($id)
-{
-    $task = Project::findOrFail($id);
+    {
+        $task = Project::findOrFail($id);
 
-    return response()->json([
-        'title' => $task->title,
-        'description' => $task->description,
-        'due_date' => $task->due_date,
-        'priority' => $task->priority,
-        'service_fee' => $task->service_fee,
-        'assigned_firstname' => $task->assigned_firstname,
-        'assigned_lastname' => $task->assigned_lastname,
-        'status' => $task->status,
-    ]);
-}
+        return response()->json([
+            'title' => $task->title,
+            'description' => $task->description,
+            'due_date' => $task->due_date,
+            'priority' => $task->priority,
+            'service_fee' => $task->service_fee,
+            'assigned_firstname' => $task->assigned_firstname,
+            'assigned_lastname' => $task->assigned_lastname,
+            'status' => $task->status,
+        ]);
+    }
 }

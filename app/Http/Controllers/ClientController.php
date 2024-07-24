@@ -26,13 +26,17 @@ class ClientController extends Controller
     {
         // Validate the registration data
         $validatedData = $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'], 
+            //regex para di sya mag accept ng special characters and symbols sa firstname and lastname.
+
+            'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
+
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+            'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[A-Z]/'],
+             //regex para mag require ng 1 capital letter sa password.
             'role' => 'required|string|in:client,freelancer',
         ]);
-
+    
         // Create a new user
         $user = User::create([
             'firstname' => $validatedData['firstname'],
@@ -41,10 +45,10 @@ class ClientController extends Controller
             'password' => bcrypt($validatedData['password']),
             'role' => $validatedData['role'],
         ]);
-
+    
         // Log in the newly created user
         Auth::login($user);
-
+    
         // Redirect based on account type.
         if ($user->role === 'client') {
             return redirect()->route('dashboard'); // Redirect to client dashboard
@@ -52,6 +56,8 @@ class ClientController extends Controller
             return redirect()->route('freelancer.home'); // Redirect to freelancer home
         }
     }
+    
+    
 
     // Show client dashboard or freelancer home based on user role
 // ClientController.php
@@ -94,8 +100,6 @@ class ClientController extends Controller
 
 
     // Method to get task counts
-// ClientController.php
-
     protected function getTaskCounts($user)
     {
         // Initialize counts

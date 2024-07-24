@@ -30,8 +30,12 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
+
+    //index ng client and freelance
     Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
     Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
+
+    //route for freelance
     Route::get('freelance/teams', [ClientController::class, 'freelancerTeams'])->name('freelancer.teams');
     Route::get('freelance/tasks', [ClientController::class, 'freelancerTasks'])->name('freelancer.tasks');
 
@@ -43,18 +47,21 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/team/invite', [TeamInviteController::class, 'index'])->name('team.invite');
 
+    //accept and decline ng team invite
     Route::get('/team-invitations/accept/{invitation}', [TeamInviteController::class, 'accept'])->name('team-invitation.accept');
-
     Route::delete('/team-invitations/{invitation}', [TeamInviteController::class, 'destroy'])->name('team-invitation.destroy');
 
+    //creating ng task
     Route::post('/projects', [ProjectController::class, 'save'])->name('projects.save');
     Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
+    //modals and task counts
     Route::get('/tasks', [FreelanceController::class, 'index'])->name('tasks.index');
     Route::post('/freelance/tasks/{id}/start', [FreelanceController::class, 'startTask'])->name('tasks.start');
     Route::post('/freelance/tasks/{id}/complete', [FreelanceController::class, 'completeTask'])->name('tasks.complete');
     Route::get('/task-counts', [FreelanceController::class, 'taskCounts'])->name('task.counts');
-
+    
+    // for details ng tasks
     Route::get('/tasks/{id}', [FreelanceController::class, 'getTaskDetails']);
 
 
