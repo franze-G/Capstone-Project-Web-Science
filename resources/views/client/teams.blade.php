@@ -3,7 +3,9 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <!-- Team Name -->
       <div>
+        @if(auth()->user()->currentTeam)
         {{ auth()->user()->currentTeam->name }} Dashboard
+        @endif
       </div>
       <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
         <div class="p-5 bg-slate-800">

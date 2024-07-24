@@ -22,6 +22,10 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('client.freelance-display') }}"
+                        :active="request()->routeIs('client.freelance-display')">
+                        {{ __('Freelancers') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('client.teams') }}" :active="request()->routeIs('client.teams')">
                         {{ __('Teams') }}
                     </x-nav-link>

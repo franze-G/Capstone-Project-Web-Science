@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\Jetstream\DeleteUser;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class ClientController extends Controller
 {
@@ -16,7 +16,6 @@ class ClientController extends Controller
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type');
         // Use the session to fetch the user_type
-
         return view('auth.register', compact('userType')); // Pass userType to the view
     }
 
@@ -31,7 +30,6 @@ class ClientController extends Controller
             'password' => 'required|string|confirmed|min:8',
             'role' => 'required|string|in:client,freelancer',
         ]);
-
         // Create a new user
         $user = User::create([
             'firstname' => $validatedData['firstname'],
@@ -75,17 +73,16 @@ class ClientController extends Controller
                 ]);
             }
         }
-
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
 
-    public function freelancerTasks()
+    //Client
+    public function displayRegisteredFreelancers()
     {
-        $user = Auth::user();
-        return view('freelance.tasks', [
-            'user' => $user,
-        ]);
+        $freelancers = User::where('role', 'freelance')->get();
+
+        return view('client.freelance-display', compact('freelancers'));
     }
 
     public function teams()
@@ -108,8 +105,6 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(__('Invalid role.'));
         }
     }
-
-
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()
