@@ -60,4 +60,14 @@ class ProjectController extends Controller
         // Redirect to the dashboard with a success message
         return redirect()->route('dashboard')->with('success', 'Project assigned successfully.');
     }
+
+    public function verifyTask($id)
+    {
+        $task = Project::findOrFail($id);
+        $task->status = 'verified'; // Adjust according to your verification logic
+        $task->save();
+
+        return redirect()->route('activity.index')->with('success', 'Task has been verified.');
+    }
+
 }

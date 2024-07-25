@@ -67,6 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{id}', [FreelanceController::class, 'getTaskDetails']);
 
     Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
-
-
+    // Add this to your routes file
+    Route::post('/tasks/{id}/verify', [ProjectController::class, 'verifyTask'])->name('tasks.verify');
 });

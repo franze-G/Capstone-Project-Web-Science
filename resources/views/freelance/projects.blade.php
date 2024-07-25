@@ -56,7 +56,7 @@
                                                 due_date: "{{ \Carbon\Carbon::parse($task->due_date)->format('F j, Y g:i A') }}",
                                                 priority: "{{ $task->priority }}",
                                                 service_fee: "{{ $task->service_fee }}",
-                                                assigned_to: "{{ $task->assigned_to }}",
+                                                assigned_to: "{{ $task->assigned_firstname }} {{ $task->assigned_lastname }}",
                                                 status: "{{ $task->status }}"
                                             })'
                                                 class="bg-blue-500 text-white px-4 py-2 rounded">View Task</button>
@@ -77,7 +77,7 @@
                                             due_date: "{{ \Carbon\Carbon::parse($task->due_date)->format('F j, Y g:i A') }}",
                                             priority: "{{ $task->priority }}",
                                             service_fee: "{{ $task->service_fee }}",
-                                            assigned_to: "{{ $task->assigned_to }}",
+                                            assigned_to: "{{ $task->assigned_firstname }} {{ $task->assigned_lastname }}",
                                             status: "{{ $task->status }}"
                                         })'
                                             class="bg-blue-500 text-white px-4 py-2 rounded">View Task</button>
@@ -128,6 +128,11 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <button type="submit" class="bg-emerald text-black px-4 py-2 rounded">Complete Task</button>
                     </form>
+                `;
+            }
+            if (task.status === "completed") {
+                actionsDiv.innerHTML += `
+                    <p class="bg-yellow-300 text-black px-4 py-2 rounded">Waiting for Payment and Verification</p>
                 `;
             }
 
