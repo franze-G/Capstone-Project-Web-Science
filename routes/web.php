@@ -66,5 +66,7 @@ Route::middleware('auth')->group(function () {
     // for details ng tasks
     Route::get('/tasks/{id}', [FreelanceController::class, 'getTaskDetails']);
 
+    Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
+
 
 });

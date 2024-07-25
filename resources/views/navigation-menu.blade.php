@@ -23,9 +23,14 @@
                         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        {{-- <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
-                        {{ __('Team') }}
-                    </x-nav-link> --}}
+
+                        <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
+                            {{ __('Team') }}
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('activity.index') }}" :active="request()->routeIs('activity.index')">
+                            {{ __('Activity') }}
+                        </x-nav-link>
                     @elseif (Auth::user()->isFreelancer())
                         <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
                             {{ __('Overview') }}

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project; // Add this import for Project model
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -214,5 +215,26 @@ class ClientController extends Controller
         $this->deleteUser->delete($user);
 
         return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    public function activityView()
+    {
+        // Ensure the user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            // Fetch completed tasks assigned by the currently logged-in client
+            $completedTasks = Project::where('created_by', $user->id)
+                                    ->where('status', 'completed')
+                                    ->get();
+
+            // Return the view with the completed tasks
+            return view('client.activity', [
+                'completedTasks' => $completedTasks
+            ]);
+        }
+
+        // Redirect to login if user is not authenticated
+        return redirect()->route('login');
     }
 }
