@@ -13,7 +13,8 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/payment.js', 'resources/js/taskModal.js'])
+
 
     <!-- Styles -->
     @livewireStyles
@@ -36,6 +37,7 @@
         <!-- Page Content -->
         <main class="flex-grow">
             {{ $slot }}
+
         </main>
     </div>
 
@@ -43,5 +45,7 @@
 
     @livewireScripts
 </body>
+
+
 
 </html>

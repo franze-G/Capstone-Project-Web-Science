@@ -28,6 +28,7 @@ class ProjectController extends Controller
         // Fetch assigned user details
         $assignedUser = User::find($validated['assigned_id']);
         $assignedFirstname = $assignedUser ? $assignedUser->firstname : null;
+        $assignedLastname = $assignedUser ? $assignedUser->lastname : null;
 
 
         // Create a new project instance and save it to the database
@@ -42,6 +43,7 @@ class ProjectController extends Controller
         $project->user_lastname = auth()->user()->lastname;
         $project->assigned_id = $validated['assigned_id'];
         $project->assigned_firstname = $assignedFirstname;
+        $project->assigned_lastname = $assignedLastname;
 
         // Handle image uploads
         $imagePaths = [];
@@ -58,4 +60,14 @@ class ProjectController extends Controller
         // Redirect to the dashboard with a success message
         return redirect()->route('dashboard')->with('success', 'Project assigned successfully.');
     }
+
+    public function verifyTask($id)
+    {
+        $task = Project::findOrFail($id);
+        $task->status = 'verified'; // Adjust according to your verification logic
+        $task->save();
+
+        return redirect()->route('activity.index')->with('success', 'Task has been verified.');
+    }
+
 }

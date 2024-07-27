@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('priority');
             $table->string('service_fee');
             $table->string('image_path')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('pending');
             
             // Foreign keys
             $table->foreignId('created_by')->constrained('users');
@@ -29,6 +29,7 @@ return new class extends Migration
             
             $table->foreignId('assigned_id')->constrained('users');
             $table->string('assigned_firstname')->nullable();
+            $table->string('assigned_lastname')->nullable();
             $table->timestamps(); // This will automatically create `created_at` and `updated_at`
         });
     }

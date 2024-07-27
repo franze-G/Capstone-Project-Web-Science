@@ -7,6 +7,8 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Project; // Add this import for Project model
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -24,12 +26,13 @@ class ClientController extends Controller
     {
         // Validate the registration data
         $validatedData = $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
+            'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+            'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[A-Z]/'],
             'role' => 'required|string|in:client,freelancer',
         ]);
+
         // Create a new user
         $user = User::create([
             'firstname' => $validatedData['firstname'],
@@ -58,24 +61,69 @@ class ClientController extends Controller
             $role = $user->role;
             $team = $user->currentTeam; // Get the current team if available
 
+            // Get task counts
+            $taskCounts = $this->getTaskCounts($user);
+
             // Return view based on the user's role
             if ($role === 'client') {
                 // For clients (owners), display the default dashboard
                 return view('dashboard', [
                     'role' => $role,
-                    'team' => $team
+                    'team' => $team,
+                    'pendingCount' => $taskCounts['pending'],
+                    'inProgressCount' => $taskCounts['inProgress'],
+                    'completedCount' => $taskCounts['completed'],
                 ]);
             } elseif ($role === 'freelancer') {
                 // For freelancers (members), display the freelancer dashboard
                 return view('freelance.home', [
                     'role' => $role,
-                    'team' => $team // Pass the team if needed in the freelancer view
+                    'team' => $team,
+                    'pendingCount' => $taskCounts['pending'],
+                    'inProgressCount' => $taskCounts['inProgress'],
+                    'completedCount' => $taskCounts['completed'],
                 ]);
             }
         }
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+
+    // Method to get task counts
+    protected function getTaskCounts($user)
+    {
+        // Initialize counts
+        $pendingCount = 0;
+        $inProgressCount = 0;
+        $completedCount = 0;
+
+        // Initialize tasks collection as empty if null
+        $tasks = collect();
+
+        if ($user->currentTeam) {
+            // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
+            $tasks = Project::where('created_by', $user->id)
+                ->orWhere('assigned_id', $user->id)
+                ->get();
+        } else {
+            // If the user is not part of a team, fetch tasks created by the user
+            $tasks = Project::where('created_by', $user->id)->get();
+        }
+
+        // Count tasks by status
+        $pendingCount = $tasks->where('status', 'pending')->count();
+        $inProgressCount = $tasks->where('status', 'in-progress')->count();
+        $completedCount = $tasks->where('status', 'completed')->count();
+
+        return [
+            'pending' => $pendingCount,
+            'inProgress' => $inProgressCount,
+            'completed' => $completedCount
+        ];
+    }
+    
+
+
 
     //Client
     public function displayRegisteredFreelancers()
@@ -106,6 +154,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(__('Invalid role.'));
         }
     }
+
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()
@@ -178,5 +227,26 @@ class ClientController extends Controller
         $this->deleteUser->delete($user);
 
         return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    public function activityView()
+    {
+        // Ensure the user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Fetch completed tasks assigned by the currently logged-in client
+            $completedTasks = Project::where('created_by', $user->id)
+                ->where('status', 'completed')
+                ->get();
+
+            // Return the view with the completed tasks
+            return view('client.activity', [
+                'completedTasks' => $completedTasks
+            ]);
+        }
+
+        // Redirect to login if user is not authenticated
+        return redirect()->route('login');
     }
 }

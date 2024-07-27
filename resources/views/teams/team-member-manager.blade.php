@@ -95,7 +95,7 @@
 
                 <x-slot name="description">
                     {{ __('These people have been invited to your team and have been sent an invitation email. They may join
-                                                                                                                                        the team by accepting the email invitation.') }}
+                                                                                                                                                                                the team by accepting the email invitation.') }}
                 </x-slot>
 
                 <x-slot name="content">
