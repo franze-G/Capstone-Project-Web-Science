@@ -13,6 +13,7 @@ class FreelanceSeeder extends Seeder
     public function run(): void
     {
         //gets the freelancer factory change mo count kung gano karami gusto mo
-        \App\Models\User::factory(FreelanceFactory::class)->count(20)->create();
+        //php artisan db:seed --class=FreelanceSeeder
+        \App\Models\User::factory(FreelanceFactory::class)->count(25)->create();
     }
 }
