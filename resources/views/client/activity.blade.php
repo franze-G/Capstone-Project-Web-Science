@@ -38,18 +38,12 @@
                                             </button>
                                         </form>
 
-                                        <form action="#" method="POST" id="pay-form-{{ $task->id }}"
-                                            style="display: none;">
-                                            @csrf
-                                            @method('POST')
-                                            <input type="hidden" name="amount" value="{{ $task->service_fee }}">
-                                            <input type="hidden" name="description"
-                                                value="Payment for task {{ $task->title }}">
-                                            <button type="button" onclick="payTask('{{ $task->id }}')"
-                                                class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600">
-                                                Pay
-                                            </button>
-                                        </form>
+                                        <button
+                                            onclick="payTask('{{ $task->id }}', {{ $task->service_fee }}, '{{ $task->title }}')"
+                                            class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 ml-2"
+                                            style="display: none;" id="pay-button-{{ $task->id }}">
+                                            Pay
+                                        </button>
                                     </div>
                                 </li>
                             @endforeach
@@ -67,45 +61,44 @@
                     event.preventDefault();
                     const taskId = this.id.replace('verify-form-', '');
                     this.style.display = 'none'; // Hide the verify button
-                    document.getElementById(`pay-form-${taskId}`).style.display =
+                    document.getElementById(`pay-button-${taskId}`).style.display =
                     'inline'; // Show the pay button
 
                     fetch(this.action, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                        body: JSON.stringify({
-                            _method: 'POST'
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
+                            },
+                            body: JSON.stringify({
+                                _method: 'POST'
+                            })
+                        }).then(response => response.json())
+                        .then(data => {
+                            if (!data.ok) {
+                                console.error('Verify request failed:', data);
+                            }
                         })
-                    }).then(response => {
-                        if (!response.ok) {
-                            console.error('Verify request failed');
-                        }
-                    });
+                        .catch(error => console.error('Fetch error:', error));
                 });
             });
         });
 
-        function payTask(taskId) {
-            const amount = document.querySelector(`#pay-form-${taskId} input[name="amount"]`).value;
-            const description = document.querySelector(`#pay-form-${taskId} input[name="description"]`).value;
-
+        function payTask(taskId, amount, description) {
             const options = {
                 method: 'POST',
                 headers: {
                     'accept': 'application/json',
                     'content-type': 'application/json',
-                    'authorization': 'Basic ' + btoa('{{ env('PAYMONGO_SECRET_KEY') }}:')
+                    'authorization': 'Basic c2tfdGVzdF9hVGpHOWI0Zmh4a1dGcWlSZ0g3cjhLYVI6'
                 },
                 body: JSON.stringify({
                     data: {
                         attributes: {
-                            amount: parseInt(amount) * 100, // Amount in cents
+                            amount: parseInt(amount * 100), // Convert to cents
                             description: description,
-                            remarks: 'Thank you'
+                            remarks: 'Thank you for your payment'
                         }
                     }
                 })
@@ -114,14 +107,18 @@
             fetch('https://api.paymongo.com/v1/links', options)
                 .then(response => response.json())
                 .then(response => {
-                    console.log(response);
-                    if (response.data && response.data.attributes && response.data.attributes.client_key) {
-                        window.location.href = response.data.attributes.client_key; // Redirect to the payment link
+                    console.log('PayMongo API Response:', response);
+                    if (response.data && response.data.attributes && response.data.attributes.checkout_url) {
+                        window.location.href = response.data.attributes.checkout_url; // Redirect to the payment link
                     } else {
-                        console.error('Payment link creation failed.');
+                        console.error('Payment link creation failed:', response);
+                        alert('Failed to create payment link. Please try again.');
                     }
                 })
-                .catch(err => console.error('Error:', err));
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    alert('An error occurred. Please try again.');
+                });
         }
     </script>
 </x-app-layout>

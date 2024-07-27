@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -35,13 +36,14 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Accept: application/json',
             'Content-Type: application/json',
-            'Authorization: Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY') . ':')
+            'Authorization: Basic c2tfdGVzdF9hVGpHOWI0Zmh4a1dGcWlSZ0g3cjhLYVI6'
         ]);
 
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            // Handle error
+            // Handle cURL error
+            Log::error('cURL Error:', ['error' => curl_error($ch)]);
             curl_close($ch);
             return response()->json(['error' => 'Failed to create payment link.'], 500);
         }
@@ -49,6 +51,9 @@ class PaymentController extends Controller
         curl_close($ch);
 
         $data = json_decode($response, true);
+
+        // Log the response for debugging
+        Log::info('PayMongo API Response:', $data);
 
         if (isset($data['data']['attributes']['client_key'])) {
             $clientKey = $data['data']['attributes']['client_key'];
