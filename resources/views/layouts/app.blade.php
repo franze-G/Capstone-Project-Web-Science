@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Lokalista') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,9 +22,8 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-black">
+    <div class="flex flex-col min-h-screen bg-black">
         @livewire('navigation-menu')
-
         <!-- Page Heading -->
         @if (isset($header))
         <header class="bg-white shadow">
@@ -35,7 +34,7 @@
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
     </div>

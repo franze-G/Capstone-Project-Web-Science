@@ -81,8 +81,9 @@ class ClientController extends Controller
     public function displayRegisteredFreelancers()
     {
         $freelancers = User::where('role', 'freelance')->get();
+        $freelancerCount = $freelancers->count();
 
-        return view('client.freelance-display', compact('freelancers'));
+        return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
     }
 
     public function teams()

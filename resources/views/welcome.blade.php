@@ -31,7 +31,6 @@
                     @if (Route::has('login'))
                     <nav class="-mx-3 flex flex-1 justify-end text-xl font-apercu">
                         @auth
-                        <p class="px-3 py-2 text-olivegreen">Welcome back</p>
                         <a href="{{ url('/dashboard') }}"
                             class="rounded-xl px-3 py-2 text-olivegreen ring-1 ring-transparent transition">
                             Dashboard
