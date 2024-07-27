@@ -25,7 +25,11 @@
                                     src="{{ auth()->user()->currentTeam->owner->profile_photo_url }}"
                                     alt="{{ auth()->user()->currentTeam->owner->firstname }}">
                                 <div class="ms-4 leading-tight">
-                                    <div class="text-gray-900">{{ auth()->user()->currentTeam->owner->firstname }}</div>
+                                    <div class="text-gray-900">{{ auth()->user()->currentTeam->owner->firstname }}
+                                        {{ auth()->user()->currentTeam->owner->lastname }}</div>
+                                    <div class="text-gray-700 text-sm mt-1">
+                                        {{ ucfirst(auth()->user()->currentTeam->owner->role) }}
+                                    </div>
                                     <div class="text-gray-700 text-sm">{{ auth()->user()->currentTeam->owner->email }}
                                     </div>
                                 </div>

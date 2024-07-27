@@ -11,8 +11,6 @@
 
                 <!-- Display Completed Tasks -->
                 <div class="p-5 bg-black">
-                    <h2 class="text-2xl font-semibold mb-4">Completed Tasks</h2>
-
                     @if ($completedTasks->isEmpty())
                         <p class="text-gray-400">No completed tasks found.</p>
                     @else
@@ -40,19 +38,19 @@
                                             </button>
                                         </form>
 
-                                        {{-- task.pay iintegrate paymongo. --}}
-                                        {{-- <form action="{{ route('tasks.pay', $task->id) }}" method="POST"
-                                            id="pay-form-{{ $task->id }}" style="display: none;">
+                                        <form action="#" method="POST" id="pay-form-{{ $task->id }}"
+                                            style="display: none;">
                                             @csrf
                                             @method('POST')
-                                           
-                                        </form> --}}
-                                        <button type="submit"
-                                            class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600">
-                                            Pay
-                                        </button>
+                                            <input type="hidden" name="amount" value="{{ $task->service_fee }}">
+                                            <input type="hidden" name="description"
+                                                value="Payment for task {{ $task->title }}">
+                                            <button type="button" onclick="payTask('{{ $task->id }}')"
+                                                class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600">
+                                                Pay
+                                            </button>
+                                        </form>
                                     </div>
-
                                 </li>
                             @endforeach
                         </ul>
@@ -61,35 +59,69 @@
             </div>
         </div>
     </div>
-</x-app-layout>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('form[id^="verify-form-"]').forEach(form => {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const taskId = this.id.replace('verify-form-', '');
-                // Simulate verifying the task
-                this.style.display = 'none'; // Hide the verify button
-                document.getElementById(`pay-form-${taskId}`).style.display =
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('form[id^="verify-form-"]').forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const taskId = this.id.replace('verify-form-', '');
+                    this.style.display = 'none'; // Hide the verify button
+                    document.getElementById(`pay-form-${taskId}`).style.display =
                     'inline'; // Show the pay button
-                // You can also perform an AJAX request here if needed
-                fetch(this.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector(
-                            'meta[name="csrf-token"]').getAttribute('content'),
-                    },
-                    body: JSON.stringify({
-                        _method: 'POST'
-                    })
-                }).then(response => {
-                    if (!response.ok) {
-                        // Handle error
-                    }
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify({
+                            _method: 'POST'
+                        })
+                    }).then(response => {
+                        if (!response.ok) {
+                            console.error('Verify request failed');
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
+
+        function payTask(taskId) {
+            const amount = document.querySelector(`#pay-form-${taskId} input[name="amount"]`).value;
+            const description = document.querySelector(`#pay-form-${taskId} input[name="description"]`).value;
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'authorization': 'Basic ' + btoa('{{ env('PAYMONGO_SECRET_KEY') }}:')
+                },
+                body: JSON.stringify({
+                    data: {
+                        attributes: {
+                            amount: parseInt(amount) * 100, // Amount in cents
+                            description: description,
+                            remarks: 'Thank you'
+                        }
+                    }
+                })
+            };
+
+            fetch('https://api.paymongo.com/v1/links', options)
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                    if (response.data && response.data.attributes && response.data.attributes.client_key) {
+                        window.location.href = response.data.attributes.client_key; // Redirect to the payment link
+                    } else {
+                        console.error('Payment link creation failed.');
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+        }
+    </script>
+</x-app-layout>

@@ -25,11 +25,17 @@
                                         {{ auth()->user()->currentTeam->owner->firstname }}
                                         {{ auth()->user()->currentTeam->owner->lastname }}
                                     </div>
+                                    <div class="text-gray-700 text-sm mt-1">
+                                        {{ ucfirst(auth()->user()->currentTeam->owner->role) }}
+                                    </div>
+
                                     <div class="text-gray-700 text-sm">{{ auth()->user()->currentTeam->owner->email }}
                                     </div>
+                                    <!-- Added role -->
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 @endif
 

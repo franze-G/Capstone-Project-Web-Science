@@ -29,7 +29,7 @@
 
             <!-- Service Fee Field -->
             <div class="mb-4">
-                <label for="serviceFee" class="block text-gray-700">Service Fee ($):</label>
+                <label for="serviceFee" class="block text-gray-700">Service Fee (₱):</label>
                 <input id="service_fee" name="service_fee" type="number" step="0.01"
                     class="w-full p-2 border rounded-lg" required>
                 @error('service_fee')

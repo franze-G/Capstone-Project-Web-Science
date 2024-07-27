@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FreelanceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
 use App\Mail\TeamInvitation;
@@ -69,4 +70,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
     // Add this to your routes file
     Route::post('/tasks/{id}/verify', [ProjectController::class, 'verifyTask'])->name('tasks.verify');
+
+    Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent'])->name('payment.create');
+    Route::post('/confirm-payment-intent/{id}', [PaymentController::class, 'confirmPaymentIntent'])->name('payment.confirm');
+    Route::post('/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.webhook');
+
+    Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
 });
