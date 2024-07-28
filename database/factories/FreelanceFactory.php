@@ -25,7 +25,7 @@ class FreelanceFactory extends Factory
             //di eto nagagamit eh, mas prio ni laravel yung UserFactory, kahit specified sa seeder na eto gamitin
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
-            'role' => 'freelance',
+            'role' => 'freelancer',
             'email' => $this->faker->unique()->safeEmail,
             'password' => Hash::make('password'),
         ];

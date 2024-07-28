@@ -4,7 +4,7 @@
   <!-- details -->
   <h3 class="text-lg font-semibold mt-2">{{$user->firstname}} {{$user->lastname}}</h3>
   <!-- position -->
-  <p class="text-slate-600 "> {{--{{$user->$position}}--}}</p>
+  <p class="text-slate-600 "> {{$user->position}}</p>
   <!-- for additional stats nalang, iterate lang mga marked na completed stats (not sure kung ma aadd pa natin yung stats) -->
   <p class="mt-2 ">Completed Tasks<span class="font-semibold"> {{--{{$user->tasks->count()}}--}}</span></p>
   <p>Rating <span class="font-semibold">★ {{--{{$user->rating}}--}}</span></p>

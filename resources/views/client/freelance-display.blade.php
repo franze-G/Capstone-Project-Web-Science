@@ -1,8 +1,4 @@
 <x-app-layout>
-
-  <!-- search bar, gawing component later -->
-
-  <!-- body -->
   <div class="m-10 text-white">
     <x-texts.title>People</x-texts.title>
     <!-- card/freelance display container -->
@@ -27,5 +23,4 @@
       @endforeach
     </div>
   </div>
-
 </x-app-layout>

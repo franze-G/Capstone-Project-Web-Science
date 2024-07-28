@@ -4,7 +4,9 @@
     @method('PUT')
     @csrf
     <!-- Hidden Team ID -->
-    <!-- <input type="hidden" name="team_id" value="{{ $team->id }}"> -->
+    <input type="hidden" name="team_id" value="{{ $team->id }}">
+
+    <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
 
     <x-dynamic-component :component="$component" href="#" x-on:click.prevent="$root.submit();">
         <div class="flex items-center">

@@ -28,7 +28,6 @@
           @endif
         </div>
       </section>
-
       <!-- Team Owner -->
       <section class="mb-6">
         @if(auth()->user()->currentTeam)

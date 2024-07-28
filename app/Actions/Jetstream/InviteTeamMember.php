@@ -106,6 +106,6 @@ class InviteTeamMember implements InvitesTeamMembers
     protected function isFreelancer(string $email): bool
     {
         $user = User::where('email', $email)->first();
-        return $user && $user->role === 'freelancer';
+        return $user && $user->role === 'freelancer'; //should be freelance wo r, check ko pa ibang code to verify if this causes error
     }
 }

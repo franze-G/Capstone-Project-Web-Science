@@ -5,8 +5,6 @@ use App\Http\Controllers\FreelanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
-use App\Mail\TeamInvitation;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +21,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
 // Show registration form
 Route::get('register', [ClientController::class, 'showRegistrationForm'])->name('register.form');
 
@@ -31,13 +30,16 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
+
+
+
     //for clients
     Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
     Route::get('client/teams', [ClientController::class, 'teams'])->name('client.teams');
     Route::get('client/freelance-display', [ClientController::class, 'displayRegisteredFreelancers'])->name('client.freelance-display');
 
     //for freelancers
-    Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
+    Route::get('freelancer/home', [ClientController::class, 'index'])->name('freelancer.home');
     Route::get('freelance/teams', [ClientController::class, 'teams'])->name('freelancer.teams');
     Route::get('freelance/tasks', [FreelanceController::class, 'freelancerTasks'])->name('freelancer.tasks');
 

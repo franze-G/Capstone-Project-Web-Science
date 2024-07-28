@@ -49,7 +49,7 @@ class ClientController extends Controller
         if ($user->role === 'client') {
             return redirect()->route('dashboard'); // Redirect to client dashboard
         } else {
-            return redirect()->route('freelancer.home'); // Redirect to freelancer home
+            return redirect()->route('freelancer.home'); // Redirect to freelancer home not sure too if this should be w r or wo r
         }
     }
 
@@ -121,14 +121,11 @@ class ClientController extends Controller
             'completed' => $completedCount
         ];
     }
-    
-
-
 
     //Client
     public function displayRegisteredFreelancers()
     {
-        $freelancers = User::where('role', 'freelance')->get();
+        $freelancers = User::where('role', 'freelancer')->get();
         $freelancerCount = $freelancers->count();
 
         return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
