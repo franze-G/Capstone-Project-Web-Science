@@ -115,4 +115,4 @@
 
 @include('modal.task-form')
 
-<script src="{{ asset('js/taskModal.js') }}"></script>
+{{-- <script src="{{ asset('js/taskModal.js') }}"></script> --}}

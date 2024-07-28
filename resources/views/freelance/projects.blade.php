@@ -92,4 +92,4 @@
 
 </x-app-layout>
 
-<script src="{{ asset('js/modal.js') }}"></script>
+{{-- <script src="{{ asset('js/modal.js') }}"></script> --}}

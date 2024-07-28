@@ -57,4 +57,4 @@
 
 </x-app-layout>
 
-<script src="{{ asset('js/payment.js') }}"></script>
+{{-- <script src="{{ asset('js/payment.js') }}"></script> --}}
