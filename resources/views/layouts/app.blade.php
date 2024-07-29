@@ -13,17 +13,18 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/payment.js', 'resources/js/taskModal.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/payment.js',
+    'resources/js/taskModal.js'])
 
 
     <!-- Styles -->
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-black">
     <x-banner />
 
-    <div class="flex flex-col min-h-screen bg-black">
+    <div class="flex flex-col min-h-screen ">
         @livewire('navigation-menu')
         <!-- Page Heading -->
         @if (isset($header))
