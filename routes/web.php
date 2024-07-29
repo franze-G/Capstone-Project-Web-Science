@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     //index ng client and freelance
     Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
+    
     Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
 
     //route for freelance
@@ -72,4 +73,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/{id}/verify', [ProjectController::class, 'verifyTask'])->name('tasks.verify');
 
     Route::post('/pay', [PaymentController::class, 'pay'])->name('payment.pay');
+    Route::post('/payment/callback', [PaymentController::class, 'handlePaymentCallback'])->name('payment.callback');
+
+
+    Route::post('/tasks/rate', [ProjectController::class, 'rateTask'])->name('tasks.rate');
+
+    Route::post('/rate-user', [ClientController::class, 'rateUser'])->name('rateUser');
 });

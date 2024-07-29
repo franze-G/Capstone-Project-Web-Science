@@ -68,6 +68,35 @@
                                         </button>
 
                                     </div>
+
+                                    <!-- Star Rating Section -->
+                                    <div class="mt-4">
+                                        <form method="POST" action="{{ route('rateUser') }}"
+                                            class="flex items-center">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                            <input type="hidden" name="team_id" value="{{ $team->id ?? '' }}">
+                                            <div class="flex">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <input type="radio" name="rating" value="{{ $i }}"
+                                                        id="star-{{ $user->id }}-{{ $i }}"
+                                                        class="hidden" @if ($user->star_rating == $i) checked @endif>
+                                                    <label for="star-{{ $user->id }}-{{ $i }}"
+                                                        class="cursor-pointer">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M12 2L14.09 8.26L21 9.27L16 14.14L17.18 21.02L12 17.27L6.82 21.02L8 14.14L3 9.27L9.91 8.26L12 2Z"
+                                                                fill="currentColor" />
+                                                        </svg>
+                                                    </label>
+                                                @endfor
+                                            </div>
+                                            <button type="submit"
+                                                class="ms-2 text-sm text-blue-500 underline">Rate</button>
+                                        </form>
+                                    </div>
+
                                 </div>
                             @endforeach
                         </div>
@@ -111,8 +140,3 @@
         </div>
     </div>
 </x-app-layout>
-
-
-@include('modal.task-form')
-
-{{-- <script src="{{ asset('js/taskModal.js') }}"></script> --}}

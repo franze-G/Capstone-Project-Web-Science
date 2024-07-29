@@ -1,4 +1,3 @@
-// Ensure the code runs after the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     // Task verification functionality
     document.querySelectorAll('form[id^="verify-form-"]').forEach((form) => {
@@ -32,67 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 .catch((error) => console.error("Fetch error:", error));
         });
     });
-
-    // Task modal functionality
-    window.showAssignTaskModal = function (userId, userFullName) {
-        const modal = document.getElementById("assignTaskModal");
-        if (modal) {
-            modal.querySelector(
-                "h2"
-            ).innerText = `Assign Task to ${userFullName}`;
-            modal.querySelector('input[name="assigned_id"]').value = userId;
-            modal.querySelector('input[name="assigned_fullname"]').value =
-                userFullName;
-            modal.classList.remove("hidden");
-        }
-    };
-
-    window.hideAssignTaskModal = function () {
-        const modal = document.getElementById("assignTaskModal");
-        if (modal) {
-            modal.classList.add("hidden");
-        }
-    };
-
-    const assignTaskForm = document.getElementById("assignTaskForm");
-    if (assignTaskForm) {
-        assignTaskForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-            const taskDescription =
-                document.getElementById("taskDescription").value;
-            const userId = document.querySelector(
-                'input[name="assigned_id"]'
-            ).value;
-            const userFullName = document.querySelector(
-                'input[name="assigned_fullname"]'
-            ).value;
-
-            fetch("/assign-task", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        .getAttribute("content"),
-                },
-                body: JSON.stringify({
-                    taskDescription: taskDescription,
-                    userId: userId,
-                    userFullName: userFullName,
-                }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        alert("Task assigned successfully.");
-                        hideAssignTaskModal();
-                    } else {
-                        alert("Failed to assign task.");
-                    }
-                })
-                .catch((error) => console.error("Error:", error));
-        });
-    }
 
     // Payment functionality
     window.payTask = function (taskId, amount, description) {
@@ -134,6 +72,97 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch((err) => {
                 console.error("Fetch error:", err);
                 alert("An error occurred. Please try again.");
+            });
+    };
+
+    // Handle PayMongo payment completion and redirect to activity.index
+    window.checkPaymentStatus = function (paymentId) {
+        const options = {
+            method: "GET",
+            headers: {
+                accept: "application/json",
+                authorization:
+                    "Basic c2tfdGVzdF9hVGpHOWI0Zmh4a1dGcWlSZ0g3cjhLYVI6",
+            },
+        };
+
+        fetch(`https://api.paymongo.com/v1/payments/${paymentId}`, options)
+            .then((response) => response.json())
+            .then((data) => {
+                if (
+                    data.data &&
+                    data.data.attributes &&
+                    data.data.attributes.status === "paid"
+                ) {
+                    fetch(`/tasks/update-status/${paymentId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document
+                                .querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content"),
+                        },
+                        body: JSON.stringify({ status: "paid" }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                window.location.href = `/activities?task_id=${data.task_id}`; // Redirect to the activity index page with task ID
+                            } else {
+                                console.error(
+                                    "Failed to update task status:",
+                                    data
+                                );
+                            }
+                        })
+                        .catch((err) => console.error("Fetch error:", err));
+                } else {
+                    console.error("Payment status check failed:", data);
+                }
+            })
+            .catch((err) => console.error("Fetch error:", err));
+    };
+
+    // Star rating functionality
+    window.rateTask = function (taskId, rating) {
+        // Highlight selected stars
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById(`star-${taskId}-${i}`);
+            if (star) {
+                if (i <= rating) {
+                    star.classList.add("text-yellow-400");
+                    star.classList.remove("text-gray-300");
+                } else {
+                    star.classList.add("text-gray-300");
+                    star.classList.remove("text-yellow-400");
+                }
+            }
+        }
+
+        // Send rating to server
+        fetch("/tasks/rate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+            body: JSON.stringify({
+                taskId: taskId,
+                rating: rating,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("Rating saved successfully");
+                } else {
+                    console.error("Failed to save rating:", data);
+                }
+            })
+            .catch((error) => {
+                console.error("Error saving rating:", error);
             });
     };
 });
