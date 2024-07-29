@@ -237,33 +237,4 @@ class ClientController extends Controller
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
-
-    // Method to handle rating user
-    public function rateUser(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'rating' => 'required|integer|min:1|max:5',
-        ]);
-    
-        // Find the user to be rated
-        $user = User::find($request->user_id);
-    
-        // Find the project assigned to the user
-        $project = Project::where('assigned_id', $user->id)
-                           ->where('team_id', $request->team_id)
-                           ->first();
-    
-        // Check if a project was found and update the star rating
-        if ($project) {
-            $project->star_rating = $request->rating;
-            $project->save();
-            
-            return redirect()->back()->with('success', 'Rating updated successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Project not found or invalid team.');
-        }
-    }
-    
 }

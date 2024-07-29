@@ -23,7 +23,7 @@
                                             {{ $task->assigned_lastname }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Due Date: {{ $task->due_date }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Priority: {{ $task->priority }}</p>
-                                        <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task->service_fee }}</p>
+                                        <p class="text-sm text-gray-300 mt-2">Service Fee: ${{ $task->service_fee }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Status: {{ $task->status }}</p>
                                     </div>
                                     <!-- Verify Task and Pay Buttons -->
@@ -40,26 +40,11 @@
 
                                         <button
                                             onclick="payTask('{{ $task->id }}', {{ $task->service_fee }}, '{{ $task->title }}')"
-                                            class="bg-emeraldlight2 text-white px-4 py-2 rounded-md shadow-md hover:bg-emeraldlight3 ml-2"
+                                            class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 ml-2"
                                             style="display: none;" id="pay-button-{{ $task->id }}">
                                             Pay
                                         </button>
                                     </div>
-
-                                    <!-- Star Rating -->
-                                    {{-- <div class="mt-4" id="rating-container-{{ $task->id }}"
-                                        style="display: none;">
-                                        <p class="text-lg font-semibold mb-2">Rate the task completion:</p>
-                                        <div class="flex items-center">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <button onclick="rateTask({{ $task->id }}, {{ $i }})"
-                                                    class="text-3xl text-gray-300 hover:text-yellow-400 focus:outline-none"
-                                                    id="star-{{ $task->id }}-{{ $i }}">
-                                                    &#9733;
-                                                </button>
-                                            @endfor
-                                        </div>
-                                    </div> --}}
                                 </li>
                             @endforeach
                         </ul>
@@ -68,4 +53,8 @@
             </div>
         </div>
     </div>
+
+
 </x-app-layout>
+
+{{-- <script src="{{ asset('js/payment.js') }}"></script> --}}
