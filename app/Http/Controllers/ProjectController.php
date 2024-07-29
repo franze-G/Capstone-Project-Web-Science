@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Task;
 use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Auth;
 
@@ -70,4 +71,21 @@ class ProjectController extends Controller
         return redirect()->route('activity.index')->with('success', 'Task has been verified.');
     }
 
+    public function rateTask(Request $request)
+    {
+        // Validate request data
+        $request->validate([
+            'taskId' => 'required|exists:projects,id',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+    
+        // Find the task by ID and update its rating
+        $task = Project::findOrFail($request->taskId);
+        $task->rating = $request->rating;
+        $task->save();
+    
+        // Redirect to the activity index view with a success message
+        return redirect()->route('activity.index')->with('success', 'Task rating updated successfully.');
+    }
+    
 }
