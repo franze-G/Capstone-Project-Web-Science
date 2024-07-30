@@ -45,21 +45,6 @@
                                             Pay
                                         </button>
                                     </div>
-
-                                    <!-- Star Rating -->
-                                    {{-- <div class="mt-4" id="rating-container-{{ $task->id }}"
-                                        style="display: none;">
-                                        <p class="text-lg font-semibold mb-2">Rate the task completion:</p>
-                                        <div class="flex items-center">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <button onclick="rateTask({{ $task->id }}, {{ $i }})"
-                                                    class="text-3xl text-gray-300 hover:text-yellow-400 focus:outline-none"
-                                                    id="star-{{ $task->id }}-{{ $i }}">
-                                                    &#9733;
-                                                </button>
-                                            @endfor
-                                        </div>
-                                    </div> --}}
                                 </li>
                             @endforeach
                         </ul>

@@ -122,47 +122,4 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch((err) => console.error("Fetch error:", err));
     };
-
-    // Star rating functionality
-    window.rateTask = function (taskId, rating) {
-        // Highlight selected stars
-        for (let i = 1; i <= 5; i++) {
-            const star = document.getElementById(`star-${taskId}-${i}`);
-            if (star) {
-                if (i <= rating) {
-                    star.classList.add("text-yellow-400");
-                    star.classList.remove("text-gray-300");
-                } else {
-                    star.classList.add("text-gray-300");
-                    star.classList.remove("text-yellow-400");
-                }
-            }
-        }
-
-        // Send rating to server
-        fetch("/tasks/rate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-            },
-            body: JSON.stringify({
-                taskId: taskId,
-                rating: rating,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    console.log("Rating saved successfully");
-                } else {
-                    console.error("Failed to save rating:", data);
-                }
-            })
-            .catch((error) => {
-                console.error("Error saving rating:", error);
-            });
-    };
 });

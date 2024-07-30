@@ -134,7 +134,7 @@
 
 @include('modal.task-form')
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         const users = document.querySelectorAll('[data-user-id]');
         users.forEach(user => {
@@ -207,4 +207,4 @@
                 alert('An error occurred while submitting the rating');
             });
     }
-</script>
+</script> --}}
