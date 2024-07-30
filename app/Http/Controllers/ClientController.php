@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\Jetstream\DeleteUser;
 use App\Models\Team;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project; // Add this import for Project model
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator; // Import Validator for use in saveRating method
 
 class ClientController extends Controller
 {
@@ -17,9 +18,9 @@ class ClientController extends Controller
     {
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type');
-        // Use the session to fetch the user_type
 
-        return view('auth.register', compact('userType')); // Pass userType to the view
+        // Return registration view with the role parameter
+        return view('auth.register', compact('userType'));
     }
 
     // Handle registration
@@ -46,7 +47,7 @@ class ClientController extends Controller
         // Log in the newly created user
         Auth::login($user);
     
-        // Redirect based on account type.
+        // Redirect based on the user's role
         if ($user->role === 'client') {
             return redirect()->route('dashboard'); // Redirect to client dashboard
         } else {
@@ -94,7 +95,7 @@ class ClientController extends Controller
     // Method to get task counts
     protected function getTaskCounts($user)
     {
-        // Initialize counts
+        // Initialize task counts
         $pendingCount = 0;
         $inProgressCount = 0;
         $completedCount = 0;
@@ -238,32 +239,51 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
-    // Method to handle rating user
-    public function rateUser(Request $request)
+    public function rateUser(Request $request, $userId)
     {
-        // Validate the incoming request
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
             'rating' => 'required|integer|min:1|max:5',
         ]);
     
-        // Find the user to be rated
-        $user = User::find($request->user_id);
-    
-        // Find the project assigned to the user
-        $project = Project::where('assigned_id', $user->id)
-                           ->where('team_id', $request->team_id)
-                           ->first();
-    
-        // Check if a project was found and update the star rating
-        if ($project) {
-            $project->star_rating = $request->rating;
-            $project->save();
-            
-            return redirect()->back()->with('success', 'Rating updated successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Project not found or invalid team.');
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Invalid rating'
+            ], 400);
         }
-    }
     
+        $user = User::find($userId);
+    
+        if (!$user) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'User not found'
+            ], 404);
+        }
+    
+        // Update the user's star rating
+        $user->star_rating = $request->input('rating');
+        $user->save();
+    
+        return response()->json([
+            'success' => true, 
+            'message' => 'Rating submitted successfully'
+        ]);
+    }
+
+    public function getUserRating($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            return response()->json([
+                'rating' => $user->star_rating
+            ]);
+        }
+
+        return response()->json([
+            'rating' => null
+        ]);
+    }
 }

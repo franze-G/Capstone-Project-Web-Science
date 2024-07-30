@@ -75,8 +75,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/pay', [PaymentController::class, 'pay'])->name('payment.pay');
     Route::post('/payment/callback', [PaymentController::class, 'handlePaymentCallback'])->name('payment.callback');
 
-
-    Route::post('/tasks/rate', [ProjectController::class, 'rateTask'])->name('tasks.rate');
-
-    Route::post('/rate-user', [ClientController::class, 'rateUser'])->name('rateUser');
+    Route::post('rate-user/{userId}', [ClientController::class, 'rateUser']);
+    Route::get('user-rating/{id}', [ClientController::class, 'getUserRating']);
 });

@@ -2,7 +2,6 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             @if (isset($team))
-                <!-- Display team name if the user is on a team -->
                 {{ $team->name }} Dashboard
             @else
                 {{ __('Client Dashboard') }}
@@ -67,36 +66,28 @@
                                             Assign Task
                                         </button>
 
-                                    </div>
+                                        <!-- Star Rating Component -->
+                                        <div class="flex items-center mt-2">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg class="w-5 h-5 cursor-pointer {{ $user->star_rating >= $i ? 'text-yellow' : 'text-gray' }}"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    fill="currentColor" data-user-id="{{ $user->id }}"
+                                                    data-rating="{{ $i }}"
+                                                    onclick="rateUser({{ $user->id }}, {{ $i }})">
+                                                    <path
+                                                        d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
+                                                </svg>
+                                            @endfor
 
-                                    <!-- Star Rating Section -->
-                                    <div class="mt-4">
-                                        <form method="POST" action="{{ route('rateUser') }}"
-                                            class="flex items-center">
-                                            @csrf
-                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                            <input type="hidden" name="team_id" value="{{ $team->id ?? '' }}">
-                                            <div class="flex">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <input type="radio" name="rating" value="{{ $i }}"
-                                                        id="star-{{ $user->id }}-{{ $i }}"
-                                                        class="hidden" @if ($user->star_rating == $i) checked @endif>
-                                                    <label for="star-{{ $user->id }}-{{ $i }}"
-                                                        class="cursor-pointer">
-                                                        <svg width="24" height="24" viewBox="0 0 24 24"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M12 2L14.09 8.26L21 9.27L16 14.14L17.18 21.02L12 17.27L6.82 21.02L8 14.14L3 9.27L9.91 8.26L12 2Z"
-                                                                fill="currentColor" />
-                                                        </svg>
-                                                    </label>
-                                                @endfor
-                                            </div>
-                                            <button type="submit"
-                                                class="ms-2 text-sm text-blue-500 underline">Rate</button>
-                                        </form>
-                                    </div>
+                                        </div>
 
+                                        <!-- Rate Button -->
+                                        <button id="rate-button-{{ $user->id }}"
+                                            class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                            onclick="submitRating({{ $user->id }})">
+                                            Rate
+                                        </button>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -140,3 +131,80 @@
         </div>
     </div>
 </x-app-layout>
+
+@include('modal.task-form')
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const users = document.querySelectorAll('[data-user-id]');
+        users.forEach(user => {
+            const id = user.getAttribute('data-user-id');
+            fetchAndDisplayRating(id);
+        });
+    });
+
+    function fetchAndDisplayRating(userId) {
+        fetch(`/user-rating/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.rating !== undefined) {
+                    updateStars(userId, data.rating);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching rating:', error);
+            });
+    }
+
+    function updateStars(userId, rating) {
+        const stars = document.querySelectorAll(`svg[data-user-id='${userId}']`);
+        stars.forEach(star => {
+            const starRating = parseInt(star.getAttribute('data-rating'));
+            if (starRating <= rating) {
+                star.classList.remove('text-gray');
+                star.classList.add('text-yellow');
+            } else {
+                star.classList.remove('text-yellow');
+                star.classList.add('text-gray');
+            }
+        });
+    }
+
+    function rateUser(userId, rating) {
+        updateStars(userId, rating);
+    }
+
+    function submitRating(userId) {
+        const stars = document.querySelectorAll(`svg[data-user-id='${userId}']`);
+        const rating = Array.from(stars).filter(star => star.classList.contains('text-yellow')).length;
+
+        if (rating === 0) {
+            alert('Please select a rating before submitting.');
+            return;
+        }
+
+        fetch(`/rate-user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    rating: rating
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Rating submitted successfully');
+                    updateStars(userId, rating); // Update stars to reflect the submitted rating
+                } else {
+                    alert('Error submitting rating: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the rating');
+            });
+    }
+</script>
