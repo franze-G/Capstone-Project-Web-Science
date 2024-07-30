@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FreelanceController extends Controller
 {
@@ -26,7 +27,7 @@ class FreelanceController extends Controller
         return view('freelance.projects', compact('tasks'));
     }
 
-    //function ng button for starting taks.
+    // Function for starting a task.
     public function startTask($id)
     {
         $task = Project::findOrFail($id);
@@ -36,8 +37,7 @@ class FreelanceController extends Controller
         return redirect()->back()->with('success', 'Task status updated to "In-Progress".');
     }
 
-    //function ng button for completed task. 
-
+    // Function for completing a task.
     public function completeTask($id)
     {
         $task = Project::findOrFail($id);
@@ -47,7 +47,7 @@ class FreelanceController extends Controller
         return redirect()->back()->with('success', 'Task status updated to "Completed".');
     }
 
-    //function for getting details ng task, para madisplay sa modal. 
+    // Function for getting task details to display in the modal.
     public function getTaskDetails($id)
     {
         $task = Project::findOrFail($id);
@@ -58,6 +58,8 @@ class FreelanceController extends Controller
             'due_date' => $task->due_date,
             'priority' => $task->priority,
             'service_fee' => $task->service_fee,
+            'user_firstname' => $task->user_firstname,
+            'user_lastname' => $task->user_lastname,
             'assigned_firstname' => $task->assigned_firstname,
             'assigned_lastname' => $task->assigned_lastname,
             'status' => $task->status,

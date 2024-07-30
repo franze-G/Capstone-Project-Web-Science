@@ -54,11 +54,18 @@
                         </select>
                     </div>
 
-                    @if ($tasks->isEmpty())
+                    @php
+                        // Filter tasks based on the team owner assignment
+                        $filteredTasks = auth()->user()->currentTeam
+                            ? $tasks->filter(fn($task) => $task->created_by === auth()->user()->currentTeam->owner->id)
+                            : $tasks;
+                    @endphp
+
+                    @if ($filteredTasks->isEmpty())
                         <p class="text-white">No tasks assigned yet.</p>
                     @else
                         <div id="taskContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-black">
-                            @foreach ($tasks as $task)
+                            @foreach ($filteredTasks as $task)
                                 <div class="task-card p-4 bg-white rounded-lg shadow-md"
                                     data-priority="{{ $task->priority }}" data-due-date="{{ $task->due_date }}">
                                     <h3 class="text-xl font-semibold">{{ $task->title }}</h3>
@@ -88,8 +95,6 @@
     </div>
 
     @include('modal.task-modal')
-
-
 </x-app-layout>
 
 {{-- <script src="{{ asset('js/modal.js') }}"></script> --}}

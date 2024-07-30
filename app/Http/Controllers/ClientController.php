@@ -28,8 +28,8 @@ class ClientController extends Controller
     {
         // Validate the registration data
         $validatedData = $request->validate([
-            'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'], 
-            'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+$/'],
+            'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\-]+$/'], 
+            'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\-]+$/'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/[A-Z]/'],
             'role' => 'required|string|in:client,freelancer',
