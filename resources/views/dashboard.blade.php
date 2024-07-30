@@ -19,75 +19,58 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-black text-black">
                             @foreach ($team->users->sortBy('name') as $user)
-                                <div class="bg-white p-4 rounded-lg shadow-md opacity-90">
-                                    <div class="flex items-center">
-                                        <img class="w-16 h-16 rounded-full object-cover"
-                                            src="{{ $user->profile_photo_url }}" alt="{{ $user->firstname }}">
-                                        <div class="ms-4">
-                                            <p class="text-xl font-semibold">{{ $user->firstname }}
-                                                {{ $user->lastname }}</p>
-                                            <p class="text-sm text-gray-400">{{ $user->email }}</p>
-                                            <p class="text-sm text-gray-300 mt-2">
-                                                Tasks Assigned:
-                                                {{ $user->assignedProjects->where('created_by', auth()->user()->id)->count() }}
-                                            </p>
-                                            @if ($user->assignedProjects->where('created_by', auth()->user()->id)->count() > 0)
-                                                <p class="text-sm text-gray-300 mt-1">
-                                                    Pending:
-                                                    {{ $user->assignedProjects->where('status', 'pending')->where('created_by', auth()->user()->id)->count() }}
-                                                </p>
-                                                <p class="text-sm text-gray-300 mt-1">
-                                                    In-Progress:
-                                                    {{ $user->assignedProjects->where('status', 'in-progress')->where('created_by', auth()->user()->id)->count() }}
-                                                </p>
-                                                <p class="text-sm text-gray-300 mt-1">
-                                                    Completed:
-                                                    {{ $user->assignedProjects->where('status', 'completed')->where('created_by', auth()->user()->id)->count() }}
-                                                </p>
-                                            @endif
-                                        </div>
+                                <div class="p-4 rounded-lg shadow-lg text-slate-800 bg-zinc-100">
+                                    <!-- img -->
+                                    <img class="w-full h-32 object-cover rounded-lg" src="{{ $user->profile_photo_url }}"
+                                        alt="{{ $user->firstname }}">
+
+                                    <!-- details -->
+                                    <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}
+                                    </h3>
+                                    <p class="text-slate-600">{{ $user->email }}</p>
+
+                                    <!-- stats -->
+                                    <p class="mt-2">Tasks Assigned: <span
+                                            class="font-semibold">{{ $user->assignedProjects->where('created_by', auth()->user()->id)->count() }}</span>
+                                    </p>
+                                    @if ($user->assignedProjects->where('created_by', auth()->user()->id)->count() > 0)
+                                        <p class="text-sm text-gray-300 mt-1">Pending: <span
+                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'pending')->where('created_by', auth()->user()->id)->count() }}</span>
+                                        </p>
+                                        <p class="text-sm text-gray-300 mt-1">In-Progress: <span
+                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'in-progress')->where('created_by', auth()->user()->id)->count() }}</span>
+                                        </p>
+                                        <p class="text-sm text-gray-300 mt-1">Completed: <span
+                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'completed')->where('created_by', auth()->user()->id)->count() }}</span>
+                                        </p>
+                                    @endif
+
+                                    <!-- Assign Task Button -->
+                                    <button class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md"
+                                        onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
+                                        Assign Task
+                                    </button>
+
+                                    <!-- Star Rating Component -->
+                                    <div class="flex items-center mt-2">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 cursor-pointer {{ $user->star_rating >= $i ? 'text-yellow' : 'text-gray' }}"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" data-user-id="{{ $user->id }}"
+                                                data-rating="{{ $i }}"
+                                                onclick="rateUser({{ $user->id }}, {{ $i }})">
+                                                <path
+                                                    d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
+                                            </svg>
+                                        @endfor
                                     </div>
 
-                                    <div class="mt-4 flex items-center">
-                                        @if (Gate::check('updateTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
-                                            <button class="text-sm text-gray-400 underline"
-                                                onclick="manageRole('{{ $user->id }}')">
-                                                {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                            </button>
-                                        @elseif (Laravel\Jetstream\Jetstream::hasRoles())
-                                            <div class="text-sm text-gray-400">
-                                                {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                            </div>
-                                        @endif
-
-                                        <!-- Assign Task Button -->
-                                        <button class="ms-2 text-sm text-blue-500 underline"
-                                            onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
-                                            Assign Task
-                                        </button>
-
-                                        <!-- Star Rating Component -->
-                                        <div class="flex items-center mt-2">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <svg class="w-5 h-5 cursor-pointer {{ $user->star_rating >= $i ? 'text-yellow' : 'text-gray' }}"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    fill="currentColor" data-user-id="{{ $user->id }}"
-                                                    data-rating="{{ $i }}"
-                                                    onclick="rateUser({{ $user->id }}, {{ $i }})">
-                                                    <path
-                                                        d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
-                                                </svg>
-                                            @endfor
-
-                                        </div>
-
-                                        <!-- Rate Button -->
-                                        <button id="rate-button-{{ $user->id }}"
-                                            class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
-                                            onclick="submitRating({{ $user->id }})">
-                                            Rate
-                                        </button>
-                                    </div>
+                                    <!-- Rate Button -->
+                                    <button id="rate-button-{{ $user->id }}"
+                                        class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                        onclick="submitRating({{ $user->id }})">
+                                        Rate
+                                    </button>
                                 </div>
                             @endforeach
                         </div>
@@ -133,78 +116,3 @@
 </x-app-layout>
 
 @include('modal.task-form')
-
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const users = document.querySelectorAll('[data-user-id]');
-        users.forEach(user => {
-            const id = user.getAttribute('data-user-id');
-            fetchAndDisplayRating(id);
-        });
-    });
-
-    function fetchAndDisplayRating(userId) {
-        fetch(`/user-rating/${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.rating !== undefined) {
-                    updateStars(userId, data.rating);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching rating:', error);
-            });
-    }
-
-    function updateStars(userId, rating) {
-        const stars = document.querySelectorAll(`svg[data-user-id='${userId}']`);
-        stars.forEach(star => {
-            const starRating = parseInt(star.getAttribute('data-rating'));
-            if (starRating <= rating) {
-                star.classList.remove('text-gray');
-                star.classList.add('text-yellow');
-            } else {
-                star.classList.remove('text-yellow');
-                star.classList.add('text-gray');
-            }
-        });
-    }
-
-    function rateUser(userId, rating) {
-        updateStars(userId, rating);
-    }
-
-    function submitRating(userId) {
-        const stars = document.querySelectorAll(`svg[data-user-id='${userId}']`);
-        const rating = Array.from(stars).filter(star => star.classList.contains('text-yellow')).length;
-
-        if (rating === 0) {
-            alert('Please select a rating before submitting.');
-            return;
-        }
-
-        fetch(`/rate-user/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    rating: rating
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Rating submitted successfully');
-                    updateStars(userId, rating); // Update stars to reflect the submitted rating
-                } else {
-                    alert('Error submitting rating: ' + (data.message || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the rating');
-            });
-    }
-</script> --}}

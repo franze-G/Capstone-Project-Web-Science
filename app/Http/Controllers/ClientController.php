@@ -286,4 +286,33 @@ class ClientController extends Controller
             'rating' => null
         ]);
     }
+
+    public function getUserProfile($userId)
+    {
+        // Fetch the user details
+        $user = User::findOrFail($userId);
+
+        // Fetch assigned tasks for the user
+        $assignedProjects = $user->assignedProjects;
+
+        // Count the number of assigned tasks
+        $totalTasks = $assignedProjects->count();
+
+        // Count tasks by status
+        $pendingTasks = $assignedProjects->where('status', 'pending')->count();
+        $inProgressTasks = $assignedProjects->where('status', 'in-progress')->count();
+        $completedTasks = $assignedProjects->where('status', 'completed')->count();
+
+        return response()->json([
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'email' => $user->email,
+            'role' => $user->role, // Assuming you have a 'role' column in the User model
+            'star_rating' => $user->star_rating,
+            'total_tasks' => $totalTasks,
+            'pending_tasks' => $pendingTasks,
+            'in_progress_tasks' => $inProgressTasks,
+            'completed_tasks' => $completedTasks,
+        ]);
+    }
 }
