@@ -1,4 +1,4 @@
-<div class="flex p-1.5 w-full rounded-lg border-spacing-2 border-zinc-400 border-2 text-center">
+<div class="flex p-1.5 w-full rounded-lg border-spacing-2 border-zinc-400 border-2 text-center shadow-sm">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" id="Email" class="w-6 h-6 md:w-5 md:h-6">
     <g fill="#ffffff" class="color000000 svgShape">
       <path
