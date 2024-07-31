@@ -23,7 +23,7 @@
                                             {{ $task->assigned_lastname }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Due Date: {{ $task->due_date }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Priority: {{ $task->priority }}</p>
-                                        <p class="text-sm text-gray-300 mt-2">Service Fee: ${{ $task->service_fee }}</p>
+                                        <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task->service_fee }}</p>
                                         <p class="text-sm text-gray-300 mt-2">Status: {{ $task->status }}</p>
                                     </div>
                                     <!-- Verify Task and Pay Buttons -->
@@ -40,7 +40,7 @@
 
                                         <button
                                             onclick="payTask('{{ $task->id }}', {{ $task->service_fee }}, '{{ $task->title }}')"
-                                            class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 ml-2"
+                                            class="bg-emeraldlight2 text-white px-4 py-2 rounded-md shadow-md hover:bg-emeraldlight3 ml-2"
                                             style="display: none;" id="pay-button-{{ $task->id }}">
                                             Pay
                                         </button>
@@ -53,8 +53,4 @@
             </div>
         </div>
     </div>
-
-
 </x-app-layout>
-
-{{-- <script src="{{ asset('js/payment.js') }}"></script> --}}

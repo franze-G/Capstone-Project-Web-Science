@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Task;
 use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Auth;
 
@@ -69,5 +70,5 @@ class ProjectController extends Controller
 
         return redirect()->route('activity.index')->with('success', 'Task has been verified.');
     }
-
+    
 }

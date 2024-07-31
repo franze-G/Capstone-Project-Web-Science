@@ -5,6 +5,8 @@ use App\Http\Controllers\FreelanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
+use App\Mail\TeamInvitation;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -71,4 +73,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/{id}/verify', [ProjectController::class, 'verifyTask'])->name('tasks.verify');
 
     Route::post('/pay', [PaymentController::class, 'pay'])->name('payment.pay');
+    Route::post('/payment/callback', [PaymentController::class, 'handlePaymentCallback'])->name('payment.callback');
+
+    Route::post('rate-user/{userId}', [ClientController::class, 'rateUser']);
+    Route::get('user-rating/{id}', [ClientController::class, 'getUserRating']);
+
+    Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
 });

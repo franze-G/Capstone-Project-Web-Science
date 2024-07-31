@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Actions\Jetstream\DeleteUser;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Project; // Add this import for Project model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Project; // Add this import for Project model
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator; // Import Validator for use in saveRating method
 
 class ClientController extends Controller
 {
@@ -17,8 +18,9 @@ class ClientController extends Controller
     {
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type');
-        // Use the session to fetch the user_type
-        return view('auth.register', compact('userType')); // Pass userType to the view
+
+        // Return registration view with the role parameter
+        return view('auth.register', compact('userType'));
     }
 
     // Handle registration
@@ -85,6 +87,7 @@ class ClientController extends Controller
                 ]);
             }
         }
+
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
@@ -92,7 +95,7 @@ class ClientController extends Controller
     // Method to get task counts
     protected function getTaskCounts($user)
     {
-        // Initialize counts
+        // Initialize task counts
         $pendingCount = 0;
         $inProgressCount = 0;
         $completedCount = 0;
@@ -103,8 +106,8 @@ class ClientController extends Controller
         if ($user->currentTeam) {
             // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
             $tasks = Project::where('created_by', $user->id)
-                ->orWhere('assigned_id', $user->id)
-                ->get();
+                             ->orWhere('assigned_id', $user->id)
+                             ->get();
         } else {
             // If the user is not part of a team, fetch tasks created by the user
             $tasks = Project::where('created_by', $user->id)->get();
@@ -122,36 +125,24 @@ class ClientController extends Controller
         ];
     }
 
-    //Client
-    public function displayRegisteredFreelancers()
+    public function freelancerTasks()
     {
-        $freelancers = User::where('role', 'freelancer')->get();
-        $freelancerCount = $freelancers->count();
-
-        return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
+        $user = Auth::user();
+        return view('freelance.tasks', [
+            'user' => $user,
+        ]);
     }
 
-    public function teams()
+    public function freelancerTeams()
     {
         $user = Auth::user();
         $role = $user->role;
         $team = $user->currentTeam;
-
-        if ($role === 'freelancer') {
-            return view('freelance.teams', [
-                'role' => $role,
-                'team' => $team,
-            ]);
-        } else if ($role === 'client') {
-            return view('client.teams', [
-                'role' => $role,
-                'team' => $team,
-            ]);
-        } else {
-            return redirect()->back()->withErrors(__('Invalid role.'));
-        }
+        return view('freelance.teams', [
+            'role' => $role,
+            'team' => $team,
+        ]);
     }
-
 
     // Fetch and display teams, both active and archived, owned by the currently logged-in user
     public function teamIndex()
@@ -209,6 +200,7 @@ class ClientController extends Controller
     {
         $this->deleteUser = $deleteUser;
     }
+
     /**
      * Remove the specified user from storage.
      *
@@ -234,8 +226,8 @@ class ClientController extends Controller
 
             // Fetch completed tasks assigned by the currently logged-in client
             $completedTasks = Project::where('created_by', $user->id)
-                ->where('status', 'completed')
-                ->get();
+                                    ->where('status', 'completed')
+                                    ->get();
 
             // Return the view with the completed tasks
             return view('client.activity', [

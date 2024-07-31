@@ -1,4 +1,3 @@
-// Ensure the code runs after the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     // Make these functions global so they can be called from HTML
     window.showAssignTaskModal = function (userId, userFullName) {
@@ -25,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Add event listener to the form
+    // Add event listener to the form for assigning tasks
     const assignTaskForm = document.getElementById("assignTaskForm");
     if (assignTaskForm) {
         assignTaskForm.addEventListener("submit", function (event) {

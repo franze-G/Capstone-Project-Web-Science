@@ -27,12 +27,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'firstname' => fake()->firstName(),
-            'lastname' => fake()->lastName(),
+            'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            // 'role' => fake()->randomElement(['freelancer', 'client']),
-            'role' => 'freelancer',
-            'position' => fake()->jobTitle(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'two_factor_secret' => null,
@@ -58,14 +54,14 @@ class UserFactory extends Factory
      */
     public function withPersonalTeam(?callable $callback = null): static
     {
-        if (!Features::hasTeamFeatures()) {
+        if (! Features::hasTeamFeatures()) {
             return $this->state([]);
         }
 
         return $this->has(
             Team::factory()
                 ->state(fn (array $attributes, User $user) => [
-                    'name' => $user->name . '\'s Team',
+                    'name' => $user->name.'\'s Team',
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])

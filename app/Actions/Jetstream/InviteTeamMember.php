@@ -68,8 +68,8 @@ class InviteTeamMember implements InvitesTeamMembers
                 }),
             ],
             'role' => Jetstream::hasRoles()
-                ? ['required', 'string', new Role]
-                : null,
+                            ? ['required', 'string', new Role]
+                            : null,
         ]);
     }
 
@@ -87,25 +87,15 @@ class InviteTeamMember implements InvitesTeamMembers
     protected function ensureUserIsFreelancer(string $email): Closure
     {
         return function ($validator) use ($email) {
-            // Check if the email exists in the users table
-            $userExists = User::where('email', $email)->exists();
-
-            if (!$userExists) {
-                $validator->errors()->add('email', __('This email does not exist.'));
-                return;
-            }
-
-            // Check if the email belongs to a freelancer
             if (!$this->isFreelancer($email)) {
                 $validator->errors()->add('email', __('Only freelancers can be invited as team members.'));
             }
         };
     }
 
-
     protected function isFreelancer(string $email): bool
     {
         $user = User::where('email', $email)->first();
-        return $user && $user->role === 'freelancer'; //should be freelance wo r, check ko pa ibang code to verify if this causes error
+        return $user && $user->role === 'freelancer';
     }
 }
