@@ -15,26 +15,49 @@
             <div class="grid w-full gap-6 mt-4 md:grid-cols-2">
                 <div>
                     <x-label for="firstname" value="{{ __('First Name') }}" />
-                    <x-input id="firstname" class="block w-full mt-1" type="text" name="firstname" :value="old('firstname')"
-                        required autofocus autocomplete="firstname" />
+                    <x-input id="firstname" class="block w-full mt-1" type="text" name="firstname"
+                        :value="old('firstname')" required autofocus autocomplete="firstname" />
                 </div>
                 <div>
                     <x-label for="lastname" value="{{ __('Last Name') }}" />
-                    <x-input id="lastname" class="block w-full mt-1" type="text" name="lastname" :value="old('lastname')"
-                        required autofocus autocomplete="lastname" />
+                    <x-input id="lastname" class="block w-full mt-1" type="text" name="lastname"
+                        :value="old('lastname')" required autofocus autocomplete="lastname" />
                 </div>
             </div>
-
             <!-- roles -->
-            <!-- <div class="mt-4">
-                <x-label value="{{ __('Role') }}" />
-                <div class="flex items-center gap-6">
-                    <input type="radio" name="role" value="client" id="client" {{ old('role', $userType) === 'client' ? 'checked' : '' }} class="mr-2" required />
-                    <x-label for="client" value="{{ __('Client') }}" class="mr-4" />
-                    {{-- ito yung nag fefetch ng role from welcome blade --}}
-
-                    <input type="radio" name="role" value="freelancer" id="freelancer" {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }} class="mr-2" required />
-                    <x-label for="freelancer" value="{{ __('Freelancer') }}" />
+            <x-label value="{{ __('Role') }}" class="mt-4 mb-1 " />
+            <div class="grid w-full gap-6 md:grid-cols-2">
+                <div>
+                    <input type="radio" name="role" value="client" id="client" {{ old('role', $userType)==='client'
+                        ? 'checked' : '' }} class="hidden peer" />
+                    <label for="client"
+                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div class="block">
+                            <div class="w-full text-lg font-semibold">Client</div>
+                            <div class="w-full">managing a project</div>
+                        </div>
+                        <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" name="role" value="freelancer" id="freelancer" {{ old('role',
+                        $userType)==='freelancer' ? 'checked' : '' }} class="hidden peer" required />
+                    <label for="freelancer"
+                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer e rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div class="block">
+                            <div class="w-full text-lg font-semibold">Freelance</div>
+                            <div class="w-full">looking for work</div>
+                        </div>
+                        <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </label>
                 </div>
             </div> -->
 
@@ -80,8 +103,8 @@
 
             <div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')"
-                    required autocomplete="username" />
+                <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required
+                    autocomplete="username" />
             </div>
 
             <!-- password container -->
@@ -101,34 +124,36 @@
 
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
+            <div class="mt-4">
+                <x-label for="terms">
+                    <div class="flex items-center">
+                        <x-checkbox name="terms" id="terms" required />
 
-                            <div class="ms-2">
-                                {!! __('I agree to the Lokalista&#39s :terms_of_service and :privacy_policy', [
-                                    'terms_of_service' =>
-                                        '<a target="_blank" href="' .
+                        <div class="ms-2">
+                            {!! __('I agree to the Lokalista&#39s :terms_of_service and :privacy_policy', [
+                            'terms_of_service' =>
+                            '<a target="_blank" href="' .
                                         route('terms.show') .
                                         '"
-                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
-                                        __('Terms
-                                                                of Service') .
-                                        '</a>',
-                                    'privacy_policy' =>
-                                        '<a target="_blank" href="' .
+                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">'
+                                .
+                                __('Terms
+                                of Service') .
+                                '</a>',
+                            'privacy_policy' =>
+                            '<a target="_blank" href="' .
                                         route('policy.show') .
                                         '"
-                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
-                                        __('Privacy
-                                                                Policy') .
-                                        '</a>',
-                                ]) !!}
-                            </div>
+                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">'
+                                .
+                                __('Privacy
+                                Policy') .
+                                '</a>',
+                            ]) !!}
                         </div>
-                    </x-label>
-                </div>
+                    </div>
+                </x-label>
+            </div>
             @endif
 
             <div class="flex items-center justify-end mt-4">

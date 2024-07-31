@@ -9,6 +9,18 @@
         </h2>
     </x-slot>
 
+    <x-texts.title>Overview</x-texts.title>
+
+    <section class="">
+        <h2>Project Summary</h2>
+        <p>Summary of project details, tasks, and members</p>
+        <div class="grid grid-cols-3 gap-4 mt-6">
+            <x-card.dash-card title="Pending Tasks" count="{{ $pendingCount }}"></x-card.dash-card>
+            <x-card.dash-card title="In Progress" count="{{ $pendingCount }}"></x-card.dash-card>
+            <x-card.dash-card title="Completed" count="{{ $pendingCount }}"></x-card.dash-card>
+        </div>
+    </section>
+
     <div class="py-12 text-white">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
@@ -21,8 +33,8 @@
                             @foreach ($team->users->sortBy('name') as $user)
                                 <div class="p-4 rounded-lg shadow-lg text-slate-800 bg-zinc-100">
                                     <!-- img -->
-                                    <img class="w-full h-32 object-cover rounded-lg" src="{{ $user->profile_photo_url }}"
-                                        alt="{{ $user->firstname }}">
+                                    <img class="w-full h-32 object-cover rounded-lg"
+                                        src="{{ $user->profile_photo_url }}" alt="{{ $user->firstname }}">
 
                                     <!-- details -->
                                     <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}
@@ -95,3 +107,12 @@
 
 @include('modal.task-form')
 @include('modal.view-profile')
+
+@include('modal.task-form')
+@include('modal.view-profile')
+
+
+@include('modal.task-form')
+
+{{--
+<script src="{{ asset('js/taskModal.js') }}"></script> --}}

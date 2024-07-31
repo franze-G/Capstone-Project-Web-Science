@@ -73,6 +73,13 @@ class Team extends JetstreamTeam
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'team_id','team')->withPivot('user_firstname', 'team_name', 'role');
+        return $this->belongsTo(User::class, 'user_id', 'team_id', 'team')->withPivot('user_firstname', 'team_name', 'role');
+    }
+
+
+    public function usersInATeam()
+    {
+        return $this->belongsToMany(User::class, 'team_user', 'team_id', 'user_id');
+        // ->withPivot('user_firstname', 'user_lastname', 'team_name', 'role');
     }
 }
