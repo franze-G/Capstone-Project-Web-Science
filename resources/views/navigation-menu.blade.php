@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-none">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex text-white font-apercu">
                 <!-- Logo -->
@@ -21,6 +21,10 @@
                     @if (Auth::user()->isClient())
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('client.freelance-display') }}"
+                        :active="request()->routeIs('client.freelance-display')">
+                        {{ __('Freelancers') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('client.freelance-display') }}"
                         :active="request()->routeIs('client.freelance-display')">

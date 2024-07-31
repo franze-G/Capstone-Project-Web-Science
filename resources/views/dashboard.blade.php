@@ -4,9 +4,22 @@
         {{ session('success') }}
     </div>
     @endif
-
     <div class="m-10 text-white">
-        <x-texts.title>Dashboard</x-texts.title>
+        <x-texts.title>Overview</x-texts.title>
+
+        <section class="">
+            <h2>Project Summary</h2>
+            <p>Summary of project details, tasks, and members</p>
+            <div class="grid grid-cols-3 gap-4 mt-6">
+                <x-card.dash-card title="Pending Tasks" count="{{ $pendingCount }}"></x-card.dash-card>
+                <x-card.dash-card title="In Progress" count="{{ $pendingCount }}"></x-card.dash-card>
+                <x-card.dash-card title="Completed" count="{{ $pendingCount }}"></x-card.dash-card>
+            </div>
+        </section>
+
+
+
+
         <div class="flex flex-col md:flex-row itemset-center justify-between mb-5 border-b-2 border-slate-300/30">
             <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
                 @if (isset($team))

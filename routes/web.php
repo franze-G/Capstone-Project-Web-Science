@@ -21,7 +21,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
-
 // Show registration form
 Route::get('register', [ClientController::class, 'showRegistrationForm'])->name('register.form');
 
@@ -31,15 +30,14 @@ Route::post('register', [ClientController::class, 'register'])->name('register')
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
 
-
-
     //for clients
-    Route::get('/home', [ClientController::class, 'index'])->name('client.dashboard');
+    Route::get('/dashboard', [ClientController::class, 'index'])->name('dashboard');
     Route::get('client/teams', [ClientController::class, 'teams'])->name('client.teams');
+    Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
     Route::get('client/freelance-display', [ClientController::class, 'displayRegisteredFreelancers'])->name('client.freelance-display');
 
     //for freelancers
-    Route::get('freelancer/home', [ClientController::class, 'index'])->name('freelancer.home');
+    Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
     Route::get('freelance/teams', [ClientController::class, 'teams'])->name('freelancer.teams');
     Route::get('freelance/tasks', [FreelanceController::class, 'freelancerTasks'])->name('freelancer.tasks');
 
@@ -66,11 +64,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/freelance/tasks/{id}/complete', [FreelanceController::class, 'completeTask'])->name('tasks.complete');
 
     Route::get('/task-counts', [FreelanceController::class, 'taskCounts'])->name('task.counts');
-
     // for details ng tasks
     Route::get('/tasks/{id}', [FreelanceController::class, 'getTaskDetails']);
 
-    Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
     // Add this to your routes file
     Route::post('/tasks/{id}/verify', [ProjectController::class, 'verifyTask'])->name('tasks.verify');
 

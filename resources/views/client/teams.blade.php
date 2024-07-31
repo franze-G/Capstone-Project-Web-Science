@@ -51,13 +51,13 @@
     <!-- Team Owner -->
     <section class=" flex justify-between gap-10 items-start mb-6 m-4 border-b-2 border-slate-300/30 *:flex-col">
       @if(auth()->user()->currentTeam)
-      <div class="flex w-1/4">
+      <div class="flex w-2/4">
         <h2 class="text-2xl font-semibold mb-4">{{ __('Team Owner') }}</h2>
         <p class="text-white/50">The primary contact for the project team, facilitating collaboration and
           problem-solving to overcome
           challenges and achieve project goal.</p>
       </div>
-      <div class="flex w-3/4">
+      <div class="flex w-3/4 justify-center">
         <h2 class="font-semibold text-2xl mb-1">{{ auth()->user()->currentTeam->owner->firstname }}</h2>
         <div class=" mb-4 leading-tight text-gray-900">
           <img class="w-14 h-14 rounded-full object-cover mb-3"

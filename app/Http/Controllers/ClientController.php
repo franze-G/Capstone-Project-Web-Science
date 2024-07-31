@@ -47,9 +47,9 @@ class ClientController extends Controller
 
         // Redirect based on account type.
         if ($user->role === 'client') {
-            return redirect()->route('dashboard'); // Redirect to client dashboard
+            return redirect()->route('dashboard');
         } else {
-            return redirect()->route('freelancer.home'); // Redirect to freelancer home not sure too if this should be w r or wo r
+            return redirect()->route('freelancer.home'); //bugged, check client controller,routes/web.php, config/fortify
         }
     }
 
