@@ -30,7 +30,6 @@ return new class extends Migration
             $table->foreignId('assigned_id')->constrained('users');
             $table->string('assigned_firstname')->nullable();
             $table->string('assigned_lastname')->nullable();
-            
             $table->timestamps(); // This will automatically create `created_at` and `updated_at`
         });
     }

@@ -61,7 +61,7 @@
         <!-- Position -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="position" value="{{ __('Position') }}" />
-            <x-input id="position" type="text" class="mt-1 block w-full" wire:model="state.position" required
+            <x-input id="position" type="text" class="mt-1 block w-full" wire:model="state.position"
                 autocomplete="position" />
             <x-input-error for="position" class="mt-2" />
         </div>

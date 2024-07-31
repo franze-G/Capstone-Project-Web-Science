@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Project;
 
 class PaymentController extends Controller
 {
@@ -19,7 +18,7 @@ class PaymentController extends Controller
         $taskId = $request->input('task_id');
         $serviceFee = $request->input('service_fee');
 
-        // Set up cURL for PayMongo
+        // Set up cURL
         $ch = curl_init();
         
         curl_setopt($ch, CURLOPT_URL, 'https://api.paymongo.com/v1/links');
@@ -37,7 +36,7 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Accept: application/json',
             'Content-Type: application/json',
-            'Authorization: Basic ' . base64_encode('sk_test_aTjG9B4FhUq6FVVvHjWmCk4y' . ':')
+            'Authorization: Basic c2tfdGVzdF9hVGpHOWI0Zmh4a1dGcWlSZ0g3cjhLYVI6'
         ]);
 
         $response = curl_exec($ch);
@@ -58,39 +57,10 @@ class PaymentController extends Controller
 
         if (isset($data['data']['attributes']['client_key'])) {
             $clientKey = $data['data']['attributes']['client_key'];
-
-            // Store the task ID and client key in session
-            session()->put('task_id', $taskId);
-            session()->put('payment_client_key', $clientKey);
-
             // Redirect to the PayMongo checkout URL
             return redirect("https://paymongo.com/checkout/$clientKey");
         }
 
         return response()->json(['error' => 'Failed to retrieve payment link.'], 500);
     }
-
-    public function handlePaymentCallback(Request $request)
-    {
-        // Fetch the necessary data from the request
-        $taskId = session()->get('task_id');
-        $paymentStatus = $request->input('status'); // Adjust based on actual callback payload
-
-        if ($paymentStatus === 'paid') {
-            $task = Project::find($taskId);
-            if ($task) {
-                $task->status = 'paid'; // Update task status
-                $task->save();
-            }
-
-            // Redirect to the activity index page with task ID
-            return redirect()->route('activity.index', ['task_id' => $taskId])
-                            ->with('success', 'Payment successful! You can now rate the task.');
-        }
-
-        return redirect()->route('activity.index')
-                        ->with('error', 'Payment failed.');
-    }
-
-    
 }

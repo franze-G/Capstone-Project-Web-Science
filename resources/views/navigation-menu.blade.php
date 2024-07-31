@@ -1,21 +1,20 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-none">
     <!-- Primary Navigation Menu -->
     <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex text-white font-apercu">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     @if (auth()->user()->isClient())
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
+                        <a href="{{ route('dashboard') }}">
+                            <x-application-mark class="block h-9 w-auto" />
+                        </a>
                     @elseif(auth()->user()->isFreelancer())
-                    <a href="{{ route('freelancer.home') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
+                        <a href="{{ route('freelancer.home') }}">
+                            <x-application-mark class="block h-9 w-auto" />
+                        </a>
                     @endif
                 </div>
-
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -27,27 +26,23 @@
                         :active="request()->routeIs('client.freelance-display')">
                         {{ __('Freelancers') }}
                     </x-nav-link>
-
-                    <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
-                        {{ __('Team') }}
+                    <x-nav-link href="{{ route('client.freelance-display') }}"
+                        :active="request()->routeIs('client.freelance-display')">
+                        {{ __('Freelancers') }}
                     </x-nav-link>
-
-                    <x-nav-link href="{{ route('activity.index') }}" :active="request()->routeIs('activity.index')">
-                        {{ __('Activity') }}
-                    </x-nav-link>
-                    @elseif (Auth::user()->isFreelancer())
-                    <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
-                        {{ __('Overview') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
-                        {{ __('Task') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
+                    <x-nav-link href="{{ route('client.teams') }}" :active="request()->routeIs('client.teams')">
                         {{ __('Teams') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.index')">
-                        {{ __('Task') }}
-                    </x-nav-link>
+                    @elseif (Auth::user()->isFreelancer())
+                        <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
+                            {{ __('Overview') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
+                            {{ __('Task') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
+                            {{ __('Teams') }}
+                        </x-nav-link>
                     @endif
 
                 </div>
@@ -63,23 +58,24 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <button
-                                class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                <img class="h-8 w-8 rounded-full object-cover"
-                                    src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->firstname }}" />
-                            </button>
-                            @else
-                            <span class="inline-flex rounded-xl">
-                                <button type="button"
-                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition duration-150 ease-in-out">
-                                    {{ Auth::user()->firstname }}
-                                    <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
+                                <button
+                                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    <img class="h-8 w-8 rounded-full object-cover"
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="{{ Auth::user()->firstname }}" />
                                 </button>
-                            </span>
+                            @else
+                                <span class="inline-flex rounded-xl">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition duration-150 ease-in-out">
+                                        {{ Auth::user()->firstname }}
+                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </button>
+                                </span>
                             @endif
                         </x-slot>
 
@@ -94,24 +90,24 @@
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                            <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                {{ __('API Tokens') }}
-                            </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                    {{ __('API Tokens') }}
+                                </x-dropdown-link>
                             @endif
 
                             {{-- ito yung invitations sa freelance --}}
                             @if (Auth::user()->isFreelancer())
-                            <div class="border-t border-gray-200"></div>
+                                <div class="border-t border-gray-200"></div>
 
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Team Invitations') }}
-                            </div>
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Team Invitations') }}
+                                </div>
 
-                            @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                            <x-dropdown-link href="{{ route('team.invite') }}">
-                                {{ __('View Invitations') }}
-                            </x-dropdown-link>
-                            @endcan
+                                @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                    <x-dropdown-link href="{{ route('team.invite') }}">
+                                        {{ __('View Invitations') }}
+                                    </x-dropdown-link>
+                                @endcan
                             @endif
 
                             <div class="border-t border-gray-200"></div>
@@ -198,25 +194,25 @@
 
                 <!-- Team Management -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                <div class="border-t border-gray-200"></div>
+                    <div class="border-t border-gray-200"></div>
 
-                <div class="block px-4 py-2 text-xs text-gray-400">
-                    {{ __('Manage Team') }}
-                </div>
+                    <div class="block px-4 py-2 text-xs text-gray-400">
+                        {{ __('Manage Team') }}
+                    </div>
 
-                <!-- Team Settings -->
-                @if (Auth::user()->currentTeam)
-                @if (Auth::user()->isFreelancer() && Auth::user()->currentTeam->archived)
-                <x-responsive-nav-link class="opacity-50 cursor-not-allowed">
-                    {{ __('Team Settings') }}
-                </x-responsive-nav-link>
-                @else
-                <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                    :active="request()->routeIs('teams.show')">
-                    {{ __('Team Settings') }}
-                </x-responsive-nav-link>
-                @endif
-                @endif
+                    <!-- Team Settings -->
+                    @if (Auth::user()->currentTeam)
+                        @if (Auth::user()->isFreelancer() && Auth::user()->currentTeam->archived)
+                            <x-responsive-nav-link class="opacity-50 cursor-not-allowed">
+                                {{ __('Team Settings') }}
+                            </x-responsive-nav-link>
+                        @else
+                            <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
+                                :active="request()->routeIs('teams.show')">
+                                {{ __('Team Settings') }}
+                            </x-responsive-nav-link>
+                        @endif
+                    @endif
 
                     <!-- Only show "Create New Team" for users who can create teams -->
                     @if (Auth::user()->isClient() && auth()->user()->can('create', Laravel\Jetstream\Jetstream::newTeamModel()))

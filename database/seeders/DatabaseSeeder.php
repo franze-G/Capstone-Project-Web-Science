@@ -14,21 +14,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->withPersonalTeam()->create();
+        //uncomment mo nalang if ever
+        // User::factory(10)->withPersonalTeam()->create();s
+        // User::factory()->withPersonalTeam()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        //     'password' => bcrypt('123.321'),
+        //     'email_verified_at' => time()
+        // ]);
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('123.321'),
-            'email_verifie_at' => time()
-        ]);
+        // Project::factory()
+        //     ->count(30)
+        //     ->hasTask(30)
+        //     ->create();
 
-        Project::factory()
-        ->count(30)
-        ->hasTask(30)
-        ->create();
+        // $this->call(TaskSeeder::class);
 
-        $this->call(TaskSeeder::class);
-
+        //freelance seeder
+        $this->call(FreelanceSeeder::class);
     }
 }
