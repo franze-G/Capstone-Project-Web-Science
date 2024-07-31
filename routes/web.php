@@ -77,4 +77,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('rate-user/{userId}', [ClientController::class, 'rateUser']);
     Route::get('user-rating/{id}', [ClientController::class, 'getUserRating']);
+
+    Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
 });

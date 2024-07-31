@@ -287,32 +287,29 @@ class ClientController extends Controller
         ]);
     }
 
-    public function getUserProfile($userId)
+    public function viewProfile($userId)
     {
-        // Fetch the user details
         $user = User::findOrFail($userId);
 
-        // Fetch assigned tasks for the user
-        $assignedProjects = $user->assignedProjects;
+        $taskStatuses = Project::where('assigned_to', $userId)
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
 
-        // Count the number of assigned tasks
-        $totalTasks = $assignedProjects->count();
-
-        // Count tasks by status
-        $pendingTasks = $assignedProjects->where('status', 'pending')->count();
-        $inProgressTasks = $assignedProjects->where('status', 'in-progress')->count();
-        $completedTasks = $assignedProjects->where('status', 'completed')->count();
-
-        return response()->json([
+        $profile = [
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
             'email' => $user->email,
-            'role' => $user->role, // Assuming you have a 'role' column in the User model
             'star_rating' => $user->star_rating,
-            'total_tasks' => $totalTasks,
-            'pending_tasks' => $pendingTasks,
-            'in_progress_tasks' => $inProgressTasks,
-            'completed_tasks' => $completedTasks,
-        ]);
+            'task_statuses' => [
+                'pending' => $taskStatuses['pending'] ?? 0,
+                'in-progress' => $taskStatuses['in-progress'] ?? 0,
+                'completed' => $taskStatuses['completed'] ?? 0,
+            ],
+            'total_tasks' => array_sum($taskStatuses),
+        ];
+
+        return view('user.profile', compact('profile'));
     }
 }

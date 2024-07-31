@@ -27,23 +27,6 @@
                                     <!-- details -->
                                     <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}
                                     </h3>
-                                    <p class="text-slate-600">{{ $user->email }}</p>
-
-                                    <!-- stats -->
-                                    <p class="mt-2">Tasks Assigned: <span
-                                            class="font-semibold">{{ $user->assignedProjects->where('created_by', auth()->user()->id)->count() }}</span>
-                                    </p>
-                                    @if ($user->assignedProjects->where('created_by', auth()->user()->id)->count() > 0)
-                                        <p class="text-sm text-gray-300 mt-1">Pending: <span
-                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'pending')->where('created_by', auth()->user()->id)->count() }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-300 mt-1">In-Progress: <span
-                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'in-progress')->where('created_by', auth()->user()->id)->count() }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-300 mt-1">Completed: <span
-                                                class="font-semibold">{{ $user->assignedProjects->where('status', 'completed')->where('created_by', auth()->user()->id)->count() }}</span>
-                                        </p>
-                                    @endif
 
                                     <!-- Assign Task Button -->
                                     <button class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md"
@@ -51,25 +34,20 @@
                                         Assign Task
                                     </button>
 
-                                    <!-- Star Rating Component -->
-                                    <div class="flex items-center mt-2">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-5 h-5 cursor-pointer {{ $user->star_rating >= $i ? 'text-yellow' : 'text-gray' }}"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor" data-user-id="{{ $user->id }}"
-                                                data-rating="{{ $i }}"
-                                                onclick="rateUser({{ $user->id }}, {{ $i }})">
-                                                <path
-                                                    d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
-                                            </svg>
-                                        @endfor
-                                    </div>
-
-                                    <!-- Rate Button -->
-                                    <button id="rate-button-{{ $user->id }}"
-                                        class="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
-                                        onclick="submitRating({{ $user->id }})">
-                                        Rate
+                                    <button
+                                        onclick='showProfileModal({
+                                            id: {{ $user->id }},
+                                            firstname: "{{ $user->firstname }}",
+                                            lastname: "{{ $user->lastname }}",
+                                            email: "{{ $user->email }}",
+                                            star_rating: {{ $user->star_rating }},
+                                            pending_tasks: {{ $user->assignedProjects->where('status', 'pending')->count() }},
+                                            in_progress_tasks: {{ $user->assignedProjects->where('status', 'in-progress')->count() }},
+                                            completed_tasks: {{ $user->assignedProjects->where('status', 'completed')->count() }},
+                                            total_tasks: {{ $user->assignedProjects->count() }}
+                                        })'
+                                        class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md">
+                                        View Profile
                                     </button>
                                 </div>
                             @endforeach
@@ -116,3 +94,4 @@
 </x-app-layout>
 
 @include('modal.task-form')
+@include('modal.view-profile')
