@@ -43,9 +43,9 @@
                             {{ __('Overview') }}
                         </x-nav-link>
 
-                        <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
+                        {{-- <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
                             {{ __('Task') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
 
                         <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
                             {{ __('Teams') }}
@@ -185,7 +185,7 @@
                 </div>
             </div>
 
-            {{-- <!-- Hamburger -->
+            <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
@@ -198,10 +198,10 @@
                     </svg>
                 </button>
             </div>
-        </div> --}}
         </div>
+    </div>
 
-        {{-- <!-- Responsive Navigation Menu -->
+    <!-- Responsive Navigation Menu -->
     <div x-show="open" @click.away="open = false"
         class="fixed inset-0 z-50 overflow-y-auto bg-white shadow-lg sm:hidden">
         <div class="flex flex-col justify-center h-full px-4 py-6 space-y-6">
@@ -274,5 +274,5 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </nav>
