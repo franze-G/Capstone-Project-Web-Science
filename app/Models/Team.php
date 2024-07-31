@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
@@ -20,6 +21,9 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
+        'user_firstname',
+        'user_lastname',
+        'archived', // Add 'archived' to fillable
     ];
 
     /**
@@ -42,6 +46,33 @@ class Team extends JetstreamTeam
     {
         return [
             'personal_team' => 'boolean',
+            'archived' => 'boolean', // Add cast for 'archived'
         ];
+    }
+
+    /**
+     * Get the owner of the team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Scope a query to only include archived teams.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeArchived($query)
+    {
+        return $query->where('archived', true);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'team_id','team')->withPivot('user_firstname', 'team_name', 'role');
     }
 }

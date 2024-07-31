@@ -20,18 +20,31 @@ class AddTeamMember implements AddsTeamMembers
      */
     public function add(User $user, Team $team, string $email, ?string $role = null): void
     {
+        // Authorize the user to add a team member
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
+        // Validate the input
         $this->validate($team, $email, $role);
 
+        // Find the user by email
         $newTeamMember = Jetstream::findUserByEmailOrFail($email);
 
+        // Dispatch the event for adding a team member
         AddingTeamMember::dispatch($team, $newTeamMember);
 
+        // Attach the user to the team with the specified role
         $team->users()->attach(
-            $newTeamMember, ['role' => $role]
+            $newTeamMember->id, [
+
+                // same syntax sa creating ng team. need idagdag yung tatlong fillables which is firstname and lastname. yung team_name, name ang value nya sa fillables ng team.php tapos ifefetch lang sa team_user table.
+                'user_firstname' => $newTeamMember->firstname, // Include firstname
+                'user_lastname' => $newTeamMember->lastname,   // Include lastname
+                'team_name' => $team->name, // Include team name
+                'role' => $role
+            ]
         );
 
+        // Dispatch the event for a team member added
         TeamMemberAdded::dispatch($team, $newTeamMember);
     }
 
@@ -47,6 +60,8 @@ class AddTeamMember implements AddsTeamMembers
             'email.exists' => __('We were unable to find a registered user with this email address.'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
+        )->after(
+            $this->ensureUserIsFreelancer($email)
         )->validateWithBag('addTeamMember');
     }
 
@@ -58,7 +73,7 @@ class AddTeamMember implements AddsTeamMembers
     protected function rules(): array
     {
         return array_filter([
-            'email' => ['required', 'email', 'exists:users'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'role' => Jetstream::hasRoles()
                             ? ['required', 'string', new Role]
                             : null,
@@ -77,5 +92,26 @@ class AddTeamMember implements AddsTeamMembers
                 __('This user already belongs to the team.')
             );
         };
+    }
+
+    /**
+     * Ensure that the user has the role of freelancer.
+     */
+    protected function ensureUserIsFreelancer(string $email): Closure
+    {
+        return function ($validator) use ($email) {
+            if (!$this->isFreelancer($email)) {
+                $validator->errors()->add('email', __('Only freelancers can be added as team members.'));
+            }
+        };
+    }
+
+    /**
+     * Check if the user is a freelancer.
+     */
+    protected function isFreelancer(string $email): bool
+    {
+        $user = User::where('email', $email)->first();
+        return $user && $user->role === 'freelancer';
     }
 }

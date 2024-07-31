@@ -143,10 +143,12 @@ return [
     |
     */
 
+    //dito macoconfigure yung mga features ng jetstream. need baguhin process ng email verification.
+
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        // Features::emailVerification(),
+        Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([

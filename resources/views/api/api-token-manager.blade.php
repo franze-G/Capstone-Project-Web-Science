@@ -13,7 +13,8 @@
             <!-- Token Name -->
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="name" value="{{ __('Token Name') }}" />
-                <x-input id="name" type="text" class="mt-1 block w-full" wire:model="createApiTokenForm.name" autofocus />
+                <x-input id="name" type="text" class="mt-1 block w-full" wire:model="createApiTokenForm.name"
+                    autofocus />
                 <x-input-error for="name" class="mt-2" />
             </div>
 
@@ -25,7 +26,7 @@
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach (Laravel\Jetstream\Jetstream::$permissions as $permission)
                             <label class="flex items-center">
-                                <x-checkbox wire:model="createApiTokenForm.permissions" :value="$permission"/>
+                                <x-checkbox wire:model="createApiTokenForm.permissions" :value="$permission" />
                                 <span class="ms-2 text-sm text-gray-600">{{ $permission }}</span>
                             </label>
                         @endforeach
@@ -45,24 +46,31 @@
         </x-slot>
     </x-form-section>
 
-    @if ($this->user->tokens->isNotEmpty())
+    <!-- Toggle Archived Tokens View -->
+    <div class="mt-6">
+        <x-button wire:click="toggleViewingArchivedTokens">
+            {{ $viewingArchivedTokens ? __('Show Active Tokens') : __('Show Archived Tokens') }}
+        </x-button>
+    </div>
+
+    @if ($tokens->isNotEmpty())
         <x-section-border />
 
         <!-- Manage API Tokens -->
         <div class="mt-10 sm:mt-0">
             <x-action-section>
                 <x-slot name="title">
-                    {{ __('Manage API Tokens') }}
+                    {{ $viewingArchivedTokens ? __('Archived API Tokens') : __('Manage API Tokens') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('You may delete any of your existing tokens if they are no longer needed.') }}
+                    {{ $viewingArchivedTokens ? __('These tokens have been archived and are no longer active.') : __('You may delete or archive any of your existing tokens if they are no longer needed.') }}
                 </x-slot>
 
                 <!-- API Token List -->
                 <x-slot name="content">
                     <div class="space-y-6">
-                        @foreach ($this->user->tokens->sortBy('name') as $token)
+                        @foreach ($tokens->sortBy('name') as $token)
                             <div class="flex items-center justify-between">
                                 <div class="break-all">
                                     {{ $token->name }}
@@ -75,21 +83,39 @@
                                         </div>
                                     @endif
 
-                                    @if (Laravel\Jetstream\Jetstream::hasPermissions())
-                                        <button class="cursor-pointer ms-6 text-sm text-gray-400 underline" wire:click="manageApiTokenPermissions({{ $token->id }})">
-                                            {{ __('Permissions') }}
+                                    @if ($viewingArchivedTokens)
+                                        <button class="cursor-pointer ms-6 text-sm text-green-500"
+                                            wire:click="restoreApiToken({{ $token->id }})">
+                                            {{ __('Restore') }}
+                                        </button>
+                                    @else
+                                        @if (Laravel\Jetstream\Jetstream::hasPermissions())
+                                            <button class="cursor-pointer ms-6 text-sm text-gray-400 underline"
+                                                wire:click="manageApiTokenPermissions({{ $token->id }})">
+                                                {{ __('Permissions') }}
+                                            </button>
+                                        @endif
+
+                                        <button class="cursor-pointer ms-6 text-sm text-red-500"
+                                            wire:click="confirmApiTokenDeletion({{ $token->id }})">
+                                            {{ __('Delete') }}
+                                        </button>
+
+                                        <button class="cursor-pointer ms-6 text-sm text-yellow-500"
+                                            wire:click="confirmApiTokenArchival({{ $token->id }})">
+                                            {{ __('Archive') }}
                                         </button>
                                     @endif
-
-                                    <button class="cursor-pointer ms-6 text-sm text-red-500" wire:click="confirmApiTokenDeletion({{ $token->id }})">
-                                        {{ __('Delete') }}
-                                    </button>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </x-slot>
             </x-action-section>
+        </div>
+    @else
+        <div class="mt-4 text-sm text-gray-600">
+            {{ $viewingArchivedTokens ? __('No archived tokens found.') : __('No active tokens found.') }}
         </div>
     @endif
 
@@ -105,10 +131,9 @@
             </div>
 
             <x-input x-ref="plaintextToken" type="text" readonly :value="$plainTextToken"
-                class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500 w-full break-all"
-                autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                @showing-token-modal.window="setTimeout(() => $refs.plaintextToken.select(), 250)"
-            />
+                class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500 w-full break-all" autofocus
+                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                @showing-token-modal.window="setTimeout(() => $refs.plaintextToken.select(), 250)" />
         </x-slot>
 
         <x-slot name="footer">
@@ -128,7 +153,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach (Laravel\Jetstream\Jetstream::$permissions as $permission)
                     <label class="flex items-center">
-                        <x-checkbox wire:model="updateApiTokenForm.permissions" :value="$permission"/>
+                        <x-checkbox wire:model="updateApiTokenForm.permissions" :value="$permission" />
                         <span class="ms-2 text-sm text-gray-600">{{ $permission }}</span>
                     </label>
                 @endforeach
@@ -153,16 +178,37 @@
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you would like to delete this API token?') }}
+            {{ __('Are you sure you want to delete this API token? Once a token is deleted, it cannot be recovered.') }}
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingApiTokenDeletion')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('confirmingApiTokenDeletion', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-secondary-button>
 
             <x-danger-button class="ms-3" wire:click="deleteApiToken" wire:loading.attr="disabled">
                 {{ __('Delete') }}
+            </x-danger-button>
+        </x-slot>
+    </x-confirmation-modal>
+
+    <!-- Archive Token Confirmation Modal -->
+    <x-confirmation-modal wire:model.live="confirmingApiTokenArchival">
+        <x-slot name="title">
+            {{ __('Archive API Token') }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Are you sure you would like to archive this API token?') }}
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('confirmingApiTokenArchival', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-danger-button class="ms-3" wire:click="archiveApiToken" wire:loading.attr="disabled">
+                {{ __('Archive') }}
             </x-danger-button>
         </x-slot>
     </x-confirmation-modal>
