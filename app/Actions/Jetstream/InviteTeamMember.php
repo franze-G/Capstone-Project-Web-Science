@@ -5,7 +5,6 @@ namespace App\Actions\Jetstream;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\TeamInvitation as TeamInvitationModel;
-use App\Models\TeamInvitation as TeamInvitationModel;
 use Closure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Gate;
@@ -16,7 +15,6 @@ use Laravel\Jetstream\Contracts\InvitesTeamMembers;
 use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Rules\Role;
-use App\Mail\TeamInvitation as TeamInvitationMail;
 use App\Mail\TeamInvitation as TeamInvitationMail;
 
 class InviteTeamMember implements InvitesTeamMembers
@@ -37,16 +35,6 @@ class InviteTeamMember implements InvitesTeamMembers
             'team_user_lastname' => $team->owner->lastname,
             'user_id' => $user->id,
             // ito yung pang fetch ng mga info from team_invitation table
-        $invitation = TeamInvitationModel::create([
-            'team_id' => $team->id,
-            'team_name' => $team->name,
-            'team_user_id' => $team->owner->id,
-            'team_user_firstname' => $team->owner->firstname,
-            'team_user_lastname' => $team->owner->lastname,
-            'user_id' => $user->id,
-            // ito yung pang fetch ng mga info from team_invitation table
-            'email' => $email,
-            'role' => $role,
         ]);
 
         $acceptUrl = url('/team-invitation/accept/' . $invitation->id);
@@ -77,8 +65,8 @@ class InviteTeamMember implements InvitesTeamMembers
     {
         return array_filter([
             'email' => [
-                'required', 'email',
-                Rule::unique('team_invitations')->where(function (Builder $query) use ($team) {
+                'required',
+                'email',
                 Rule::unique('team_invitations')->where(function (Builder $query) use ($team) {
                     $query->where('team_id', $team->id);
                 }),
@@ -88,6 +76,7 @@ class InviteTeamMember implements InvitesTeamMembers
                 : null,
         ]);
     }
+
 
     protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {

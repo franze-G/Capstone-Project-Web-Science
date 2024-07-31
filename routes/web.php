@@ -1,10 +1,6 @@
 <?php
 
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\FreelanceController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TeamInviteController;
 use App\Mail\TeamInvitation;
 use App\Models\User;
 use App\Http\Controllers\FreelanceController;

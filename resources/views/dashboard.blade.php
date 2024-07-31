@@ -107,12 +107,3 @@
 
 @include('modal.task-form')
 @include('modal.view-profile')
-
-@include('modal.task-form')
-@include('modal.view-profile')
-
-
-@include('modal.task-form')
-
-{{--
-<script src="{{ asset('js/taskModal.js') }}"></script> --}}

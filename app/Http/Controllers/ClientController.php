@@ -15,8 +15,6 @@ class ClientController extends Controller
 {
     // Show registration form with optional role pre-filled
     public function showRegistrationForm(Request $request)
-    // Show registration form with optional role pre-filled
-    public function showRegistrationForm(Request $request)
     {
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type');
