@@ -13,16 +13,6 @@ use Illuminate\Support\Facades\Validator; // Import Validator for use in saveRat
 
 class ClientController extends Controller
 {
-    // Show registration form with optional role pre-filled
-    public function showRegistrationForm(Request $request)
-    {
-        // Fetch role from query parameters or session
-        $userType = $request->query('role') ?? session('user_type');
-
-        // Return registration view with the role parameter
-        return view('auth.register', compact('userType'));
-    }
-
     // Handle registration
     public function register(Request $request)
     {
@@ -312,5 +302,34 @@ class ClientController extends Controller
         ];
 
         return view('user.profile', compact('profile'));
+    }
+
+    public function displayRegisteredFreelancers()
+    {
+        $freelancers = User::where('role', 'freelancer')->get();
+        $freelancerCount = $freelancers->count();
+
+        return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
+    }
+
+    public function teams()
+    {
+        $user = Auth::user();
+        $role = $user->role;
+        $team = $user->currentTeam;
+
+        if ($role === 'freelancer') {
+            return view('freelance.teams', [
+                'role' => $role,
+                'team' => $team,
+            ]);
+        } else if ($role === 'client') {
+            return view('client.teams', [
+                'role' => $role,
+                'team' => $team,
+            ]);
+        } else {
+            return redirect()->back()->withErrors(__('Invalid role.'));
+        }
     }
 }
