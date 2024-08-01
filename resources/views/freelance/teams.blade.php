@@ -11,37 +11,37 @@
             <!-- Team Switcher -->
             <div class="flex flex-row justify-between items-center">
                 <div class="text-2xl font-bold">
-                    @if(auth()->user()->currentTeam)
-                    <div class="flex flex-wrap">
-                        @if (Auth::user()->isClient() || Auth::user()->isFreelancer())
-                        @php
-                        $teams = Auth::user()->isClient() ? Auth::user()->allTeams()->where('archived', false) :
-                        Auth::user()->teams->where('archived', false);
-                        @endphp
-                        @if ($teams->isEmpty())
-                        <div class="py-2 text-xs text-gray-400">
-                            {{ __('No Active Teams') }}
+                    @if (auth()->user()->currentTeam)
+                        <div class="flex flex-wrap">
+                            @if (Auth::user()->isClient() || Auth::user()->isFreelancer())
+                                @php
+                                    $teams = Auth::user()->isClient()
+                                        ? Auth::user()->allTeams()->where('archived', false)
+                                        : Auth::user()->teams->where('archived', false);
+                                @endphp
+                                @if ($teams->isEmpty())
+                                    <div class="py-2 text-xs text-gray-400">
+                                        {{ __('No Active Teams') }}
+                                    </div>
+                                @else
+                                    @foreach ($teams as $team)
+                                        <x-switchable-team :team="$team" />
+                                    @endforeach
+                                @endif
+                            @endif
                         </div>
-                        @else
-                        @foreach ($teams as $team)
-                        <x-switchable-team :team="$team" />
-                        @endforeach
-                        @endif
-                        @endif
-                    </div>
                     @endif
                 </div>
                 <div class="flex self-end gap-2">
-                    @if (Auth::user()->isClient() && auth()->user()->can('create',
-                    Laravel\Jetstream\Jetstream::newTeamModel()))
-                    <x-buttons.a-button :href="route('teams.create')">create team</x-buttons.a-button>
-                    <x-buttons.a-button :href="route('teams.index')">archive</x-buttons.a-button>
-                    <x-buttons.a-button class="bg-red-400" :href="route('teams.create')">delete</x-buttons.a-button>
+                    @if (Auth::user()->isClient() && auth()->user()->can('create', Laravel\Jetstream\Jetstream::newTeamModel()))
+                        <x-buttons.a-button :href="route('teams.create')">create team</x-buttons.a-button>
+                        <x-buttons.a-button :href="route('teams.index')">archive</x-buttons.a-button>
+                        <x-buttons.a-button class="bg-red-400" :href="route('teams.create')">delete</x-buttons.a-button>
 
-                    <!-- place it somewhere else since for freelance to-->
-                    @if (Auth::user()->isFreelancer())
-                    <x-buttons.a-button :href="route('team.invite')">create team</x-buttons.a-button>
-                    @endif
+                        <!-- place it somewhere else since for freelance to-->
+                        @if (Auth::user()->isFreelancer())
+                            <x-buttons.a-button :href="route('team.invite')">create team</x-buttons.a-button>
+                        @endif
                     @endif
 
                 </div>
@@ -49,51 +49,52 @@
 
         <!-- Team Owner -->
         <section class=" flex justify-between gap-10 items-start mb-6 m-4 border-b-2 border-slate-300/30 *:flex-col">
-            @if(auth()->user()->currentTeam)
-            <div class="flex w-1/4">
-                <h2 class="text-2xl font-semibold mb-4">{{ __('Team Owner') }}</h2>
-                <p class="text-white/50">The primary contact for the project team, facilitating collaboration and
-                    problem-solving to overcome
-                    challenges and achieve project goal.</p>
-            </div>
-            <div class="flex w-3/4">
-                <h2 class="font-semibold text-2xl mb-1">{{ auth()->user()->currentTeam->owner->firstname }}</h2>
-                <div class=" mb-4 leading-tight text-gray-900">
-                    <img class="w-14 h-14 rounded-full object-cover mb-3"
-                        src="{{ auth()->user()->currentTeam->owner->profile_photo_url }}"
-                        alt="{{ auth()->user()->currentTeam->owner->firstname }}">
-                    <x-buttons.email-button>{{ auth()->user()->currentTeam->owner->email }}</x-buttons.email-button>
+            @if (auth()->user()->currentTeam)
+                <div class="flex w-1/4">
+                    <h2 class="text-2xl font-semibold mb-4">{{ __('Team Owner') }}</h2>
+                    <p class="text-white/50">The primary contact for the project team, facilitating collaboration and
+                        problem-solving to overcome
+                        challenges and achieve project goal.</p>
                 </div>
-            </div>
+                <div class="flex w-3/4">
+                    <h2 class="font-semibold text-2xl mb-1">{{ auth()->user()->currentTeam->owner->firstname }}</h2>
+                    <div class=" mb-4 leading-tight text-gray-900">
+                        <img class="w-14 h-14 rounded-full object-cover mb-3"
+                            src="{{ auth()->user()->currentTeam->owner->profile_photo_url }}"
+                            alt="{{ auth()->user()->currentTeam->owner->firstname }}">
+                        <x-buttons.email-button>{{ auth()->user()->currentTeam->owner->email }}</x-buttons.email-button>
+                    </div>
+                </div>
             @endif
         </section>
 
         <!-- Team Members -->
         <section class="flex justify-between gap-10 mb-6 m-4 pb-4 border-b-2 border-slate-300/30 *:flex-col">
-            @if(auth()->user()->currentTeam)
-            <div class="flex w-1/4">
-                <h2 class="text-2xl font-semibold mb-4">{{ __('Team Members') }}</h2>
-                <p class="text-white/50">Manage your team composition in this section. Add or remove team members, and
-                    assign
-                    roles to encourage collaboration.
-                </p>
-            </div>
-            <div class="flex w-2/4">
-                @foreach ($team->users->sortBy('name') as $user)
-                <div class="flex items-center">
-                    <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
-                        alt="{{ $user->firstname }}">
-                    <div class="ms-4">{{ $user->firstname }} {{ $user->lastname }}</div>
+            @if (auth()->user()->currentTeam)
+                <div class="flex w-1/4">
+                    <h2 class="text-2xl font-semibold mb-4">{{ __('Team Members') }}</h2>
+                    <p class="text-white/50">Manage your team composition in this section. Add or remove team members,
+                        and
+                        assign
+                        roles to encourage collaboration.
+                    </p>
                 </div>
-                @endforeach
-            </div>
-            <div class="flex justify-end w-1/4">
-                <h2></h2>
-                <x-input.input-box id="email" name="email" type="email" wire:model="addTeamMemberForm.email"
-                    placeholder="freelancer@example.com" />
-                <x-input-error for="email" class="mt-2" />
-                <x-button class="ml-auto mt-3">add another</x-button>
-            </div>
+                <div class="flex w-2/4">
+                    @foreach ($team->users->sortBy('name') as $user)
+                        <div class="flex items-center">
+                            <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
+                                alt="{{ $user->firstname }}">
+                            <div class="ms-4">{{ $user->firstname }} {{ $user->lastname }}</div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="flex justify-end w-1/4">
+                    <h2></h2>
+                    <x-input.input-box id="email" name="email" type="email" wire:model="addTeamMemberForm.email"
+                        placeholder="freelancer@example.com" />
+                    <x-input-error for="email" class="mt-2" />
+                    <x-button class="ml-auto mt-3">add another</x-button>
+                </div>
             @endif
         </section>
 
@@ -114,48 +115,47 @@
 
         <!-- eto yung dropdown to be fixed inside the view na mismo -->
         @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-        <div class="ml-3 relative text-black">
-            <x-dropdown align="right" width="60">
-                <x-slot name="trigger">
-                    <span class="inline-flex rounded-xl">
-                        <button type="button"
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                            {{ Auth::user()->firstname }}
-                            <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                            </svg>
-                        </button>
-                    </span>
-                </x-slot>
+            <div class="ml-3 relative text-black">
+                <x-dropdown align="right" width="60">
+                    <x-slot name="trigger">
+                        <span class="inline-flex rounded-xl">
+                            <button type="button"
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                {{ Auth::user()->firstname }}
+                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                </svg>
+                            </button>
+                        </span>
+                    </x-slot>
 
-                <x-slot name="content">
-                    @if (Auth::user()->isClient() || Auth::user()->isFreelancer())
-                    <div class="w-60">
+                    <x-slot name="content">
+                        @if (Auth::user()->isClient() || Auth::user()->isFreelancer())
+                            <div class="w-60">
 
-                        <!-- Team Settings -->
-                        @if (Auth::user()->currentTeam)
-                        @if (
-                        (Auth::user()->isClient() && Auth::user()->allTeams()->where('archived',
-                        false)->isEmpty()) ||
-                        (Auth::user()->isFreelancer() && Auth::user()->teams->where('archived',
-                        false)->isEmpty()))
-                        <x-dropdown-link class="opacity-50 cursor-not-allowed">
-                            {{ __('Team Settings') }}
-                        </x-dropdown-link>
-                        @else
-                        <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                            {{ __('Team Settings') }}
-                        </x-dropdown-link>
+                                <!-- Team Settings -->
+                                @if (Auth::user()->currentTeam)
+                                    @if (
+                                        (Auth::user()->isClient() && Auth::user()->allTeams()->where('archived', false)->isEmpty()) ||
+                                            (Auth::user()->isFreelancer() && Auth::user()->teams->where('archived', false)->isEmpty()))
+                                        <x-dropdown-link class="opacity-50 cursor-not-allowed">
+                                            {{ __('Team Settings') }}
+                                        </x-dropdown-link>
+                                    @else
+                                        <x-dropdown-link
+                                            href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                            {{ __('Team Settings') }}
+                                        </x-dropdown-link>
+                                    @endif
+                                @endif
+
+                            </div>
                         @endif
-                        @endif
-
-                    </div>
-                    @endif
-                </x-slot>
-            </x-dropdown>
-        </div>
+                    </x-slot>
+                </x-dropdown>
+            </div>
         @endif
     </div>
 </x-app-layout>

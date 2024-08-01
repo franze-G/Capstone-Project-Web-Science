@@ -19,27 +19,26 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if (Auth::user()->isClient())
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('client.freelance-display') }}"
-                        :active="request()->routeIs('client.freelance-display')">
-                        {{ __('Freelancers') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('client.freelance-display') }}"
-                        :active="request()->routeIs('client.freelance-display')">
-                        {{ __('Freelancers') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('client.teams') }}" :active="request()->routeIs('client.teams')">
-                        {{ __('Teams') }}
-                    </x-nav-link>
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('client.freelance-display') }}" :active="request()->routeIs('client.freelance-display')">
+                            {{ __('Freelancers') }}
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('client.teams') }}" :active="request()->routeIs('client.teams')">
+                            {{ __('Teams') }}
+                        </x-nav-link>
                     @elseif (Auth::user()->isFreelancer())
                         <x-nav-link href="{{ route('freelancer.home') }}" :active="request()->routeIs('freelancer.home')">
                             {{ __('Overview') }}
                         </x-nav-link>
+
                         <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
                             {{ __('Task') }}
                         </x-nav-link>
+
                         <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
                             {{ __('Teams') }}
                         </x-nav-link>

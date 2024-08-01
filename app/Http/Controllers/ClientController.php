@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
-    // Show registration form with optional role pre-filled
+
     public function showRegistrationForm(Request $request)
     {
         // Fetch role from query parameters or session
         $userType = $request->query('role') ?? session('user_type');
-        // Use the session to fetch the user_type
-        return view('auth.register', compact('userType')); // Pass userType to the view
+
+        // Return registration view with the role parameter
+        return view('auth.register', compact('userType'));
     }
 
     // Handle registration
@@ -48,6 +49,7 @@ class ClientController extends Controller
         // Redirect based on account type.
         if ($user->role === 'client') {
             return redirect()->route('dashboard');
+
         } else {
             return redirect()->route('freelancer.home'); //bugged, check client controller,routes/web.php, config/fortify
         }
@@ -89,38 +91,6 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
-    // Method to get task counts
-    protected function getTaskCounts($user)
-    {
-        // Initialize counts
-        $pendingCount = 0;
-        $inProgressCount = 0;
-        $completedCount = 0;
-
-        // Initialize tasks collection as empty if null
-        $tasks = collect();
-
-        if ($user->currentTeam) {
-            // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
-            $tasks = Project::where('created_by', $user->id)
-                ->orWhere('assigned_id', $user->id)
-                ->get();
-        } else {
-            // If the user is not part of a team, fetch tasks created by the user
-            $tasks = Project::where('created_by', $user->id)->get();
-        }
-
-        // Count tasks by status
-        $pendingCount = $tasks->where('status', 'pending')->count();
-        $inProgressCount = $tasks->where('status', 'in-progress')->count();
-        $completedCount = $tasks->where('status', 'completed')->count();
-
-        return [
-            'pending' => $pendingCount,
-            'inProgress' => $inProgressCount,
-            'completed' => $completedCount
-        ];
-    }
 
     //Client
     public function displayRegisteredFreelancers()
@@ -246,4 +216,82 @@ class ClientController extends Controller
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+
+    public function viewProfile($userId)
+    {
+        $user = User::findOrFail($userId);
+            $taskStatuses = Project::where('assigned_to', $userId)
+                ->selectRaw('status, count(*) as count')
+                ->groupBy('status')
+                ->pluck('count', 'status')
+                ->toArray();
+
+        $profile = [
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'star_rating' => $user->star_rating,
+                'task_statuses' => [
+                    'pending' => $taskStatuses['pending'] ?? 0,
+                    'in-progress' => $taskStatuses['in-progress'] ?? 0,
+                    'completed' => $taskStatuses['completed'] ?? 0,
+                ],
+                'total_tasks' => array_sum($taskStatuses),
+            ];
+
+            return view('user.profile', compact('profile'));
+    }
+
+    public function freelancerTeams()
+    {
+        $user = Auth::user();
+        $role = $user->role;
+        $team = $user->currentTeam;
+        return view('freelance.teams', [
+            'role' => $role,
+            'team' => $team,
+        ]);
+    }
+
+    public function freelancerTasks()
+    {
+        $user = Auth::user();
+        return view('freelance.tasks', [
+            'user' => $user,
+        ]);
+    }
+
+    protected function getTaskCounts($user)
+    {
+        // Initialize task counts
+        $pendingCount = 0;
+        $inProgressCount = 0;
+        $completedCount = 0;
+
+        // Initialize tasks collection as empty if null
+        $tasks = collect();
+
+        if ($user->currentTeam) {
+            // If the user is part of a team, fetch tasks assigned to the user and tasks created by the user
+            $tasks = Project::where('created_by', $user->id)
+                             ->orWhere('assigned_id', $user->id)
+                             ->get();
+        } else {
+            // If the user is not part of a team, fetch tasks created by the user
+            $tasks = Project::where('created_by', $user->id)->get();
+        }
+
+        // Count tasks by status
+        $pendingCount = $tasks->where('status', 'pending')->count();
+        $inProgressCount = $tasks->where('status', 'in-progress')->count();
+        $completedCount = $tasks->where('status', 'completed')->count();
+
+        return [
+            'pending' => $pendingCount,
+            'inProgress' => $inProgressCount,
+            'completed' => $completedCount
+        ];
+    }
+
+
 }
