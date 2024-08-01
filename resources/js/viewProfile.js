@@ -41,13 +41,15 @@ function fetchAndDisplayRating(userId) {
     fetch(`/user-rating/${userId}`)
         .then((response) => response.json())
         .then((data) => {
-            if (data.rating !== undefined) {
-                updateStars(userId, data.rating);
-                currentRating = data.rating; // Update currentRating with fetched rating
-            }
+            // Update stars with the fetched rating or set to 0 if no rating is available
+            updateStars(userId, data.rating || 0);
+            currentRating = data.rating || 0; // Update currentRating with fetched rating or default to 0
         })
         .catch((error) => {
             console.error("Error fetching rating:", error);
+            // Reset stars and rating on error
+            updateStars(userId, 0);
+            currentRating = 0;
         });
 }
 
