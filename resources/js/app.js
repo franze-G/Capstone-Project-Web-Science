@@ -1,9 +1,9 @@
+// Import necessary files
 import "./bootstrap";
 import "./modal";
 import "./payment";
 import "./taskModal";
 
-// Import profile, star rating functionality, and the close profile modal function from the combined file
 // Import profile, star rating functionality, and the close profile modal function from the combined file
 import {
     showProfileModal,

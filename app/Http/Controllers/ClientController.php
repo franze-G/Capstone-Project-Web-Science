@@ -220,28 +220,28 @@ class ClientController extends Controller
     public function viewProfile($userId)
     {
         $user = User::findOrFail($userId);
-            $taskStatuses = Project::where('assigned_to', $userId)
-                ->selectRaw('status, count(*) as count')
-                ->groupBy('status')
-                ->pluck('count', 'status')
-                ->toArray();
+        $taskStatuses = Project::where('assigned_to', $userId)
+        ->selectRaw('status, count(*) as count')
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
 
         $profile = [
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email,
-                'star_rating' => $user->star_rating,
-                'task_statuses' => [
-                    'pending' => $taskStatuses['pending'] ?? 0,
-                    'in-progress' => $taskStatuses['in-progress'] ?? 0,
-                    'completed' => $taskStatuses['completed'] ?? 0,
-                ],
-                'total_tasks' => array_sum($taskStatuses),
-            ];
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'email' => $user->email,
+            'star_rating' => $user->star_rating,
+            
+            'task_statuses' => [
+            'pending' => $taskStatuses['pending'] ?? 0,
+            'in-progress' => $taskStatuses['in-progress'] ?? 0,
+            'completed' => $taskStatuses['completed'] ?? 0,
+            ],
+            'total_tasks' => array_sum($taskStatuses),
+        ];
 
-            return view('user.profile', compact('profile'));
+        return view('user.profile', compact('profile'));
     }
-
     public function freelancerTeams()
     {
         $user = Auth::user();

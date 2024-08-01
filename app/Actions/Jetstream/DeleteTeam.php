@@ -3,7 +3,6 @@
 namespace App\Actions\Jetstream;
 
 use App\Models\Team;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class DeleteTeam
@@ -14,9 +13,12 @@ class DeleteTeam
      * @param  \App\Models\Team  $team
      * @return void
      */
-   public function delete(Team $team)
+    public function delete(Team $team, $deleter): void
     {
-        $team->purge();
+        DB::transaction(function () use ($team) {
+            // Perform the deletion
+            $team->delete();
+        });
     }
     /**
      * Archive the given team.
@@ -28,5 +30,4 @@ class DeleteTeam
     {
         $team->update(['archived' => true]);
     }
-
 }

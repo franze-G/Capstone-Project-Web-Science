@@ -1,4 +1,4 @@
-<div id="profileModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+<div id="profileModal" class="hidden fixed inset-0 bg-gray bg-opacity-50 overflow-y-auto h-full w-full">
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <h2 id="userName" class="text-xl font-bold mb-4"></h2>
         <p class="mb-2">Email: <span id="userEmail"></span></p>

@@ -77,5 +77,6 @@ return [
     */
 
     'profile_photo_disk' => 'public',
+    'delete_team' => App\Actions\Jetstream\DeleteTeam::class,
 
 ];
