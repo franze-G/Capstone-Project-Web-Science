@@ -15,14 +15,15 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+
     <!-- Styles -->
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-black">
+<body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen">
+    <div class="min-h-screen bg-black">
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
@@ -35,12 +36,14 @@
         @endif
 
         <!-- Page Content -->
-        <main class="flex-grow">
+        <main>
             {{ $slot }}
+
         </main>
     </div>
 
     @stack('modals')
+
     @livewireScripts
 </body>
 
