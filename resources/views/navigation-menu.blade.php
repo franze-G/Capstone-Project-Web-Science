@@ -31,9 +31,9 @@
                             {{ __('Teams') }}
                         </x-nav-link>
 
-                        <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
+                        {{-- <x-nav-link href="{{ route('teams.index') }}" :active="request()->routeIs('teams.index')">
                             {{ __('Team') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
 
                         <x-nav-link href="{{ route('activity.index') }}" :active="request()->routeIs('activity.index')">
                             {{ __('Activity') }}
@@ -108,6 +108,22 @@
                                             <x-switchable-team :team="$team" />
                                         @endforeach
                                     @endif
+
+                                    {{-- ito yung invitations sa freelance --}}
+                                    @if (Auth::user()->isFreelancer())
+                                        <div class="border-t border-gray-200"></div>
+
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            {{ __('Team Invitations') }}
+                                        </div>
+
+                                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                            <x-dropdown-link href="{{ route('team.invite') }}">
+                                                {{ __('View Invitations') }}
+                                            </x-dropdown-link>
+                                        @endcan
+                                    @endif
+
                                 </div>
                             </x-slot>
                         </x-dropdown>

@@ -35,6 +35,9 @@ class InviteTeamMember implements InvitesTeamMembers
             'team_user_lastname' => $team->owner->lastname,
             'user_id' => $user->id,
             // ito yung pang fetch ng mga info from team_invitation table
+
+            'email' => $email,
+            'role' => $role,
         ]);
 
         $acceptUrl = url('/team-invitation/accept/' . $invitation->id);

@@ -19,29 +19,31 @@
             <x-card.dash-card title="In Progress" count="{{ $pendingCount }}"></x-card.dash-card>
             <x-card.dash-card title="Completed" count="{{ $pendingCount }}"></x-card.dash-card>
 
-            <!-- Team Members Card View -->
-            <div class="p-5 bg-black">
-                <h2 class="text-2xl font-semibold mb-4">Team Members</h2>
+            @if (isset($team))
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-black text-black">
-                    @foreach ($team->users->sortBy('name') as $user)
-                        <div class="p-4 rounded-lg shadow-lg text-slate-800 bg-zinc-100">
-                            <!-- img -->
-                            <img class="w-full h-32 object-cover rounded-lg" src="{{ $user->profile_photo_url }}"
-                                alt="{{ $user->firstname }}">
+                <!-- Team Members Card View -->
+                <div class="p-5 bg-black">
+                    <h2 class="text-2xl font-semibold mb-4">Team Members</h2>
 
-                            <!-- details -->
-                            <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}
-                            </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-black text-black">
+                        @foreach ($team->users->sortBy('name') as $user)
+                            <div class="p-4 rounded-lg shadow-lg text-slate-800 bg-zinc-100">
+                                <!-- img -->
+                                <img class="w-full h-32 object-cover rounded-lg" src="{{ $user->profile_photo_url }}"
+                                    alt="{{ $user->firstname }}">
 
-                            <!-- Assign Task Button -->
-                            <button class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md"
-                                onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
-                                Assign Task
-                            </button>
+                                <!-- details -->
+                                <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}
+                                </h3>
 
-                            <button
-                                onclick='showProfileModal({
+                                <!-- Assign Task Button -->
+                                <button class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md"
+                                    onclick="showAssignTaskModal('{{ $user->id }}', '{{ $user->firstname }} {{ $user->lastname }}')">
+                                    Assign Task
+                                </button>
+
+                                <button
+                                    onclick='showProfileModal({
                                     id: {{ $user->id }},
                                     firstname: "{{ $user->firstname }}",
                                     lastname: "{{ $user->lastname }}",
@@ -52,13 +54,14 @@
                                     completed_tasks: {{ $user->assignedProjects->where('status', 'completed')->count() }},
                                     total_tasks: {{ $user->assignedProjects->count() }}
                                 })'
-                                class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md">
-                                View Profile
-                            </button>
-                        </div>
-                    @endforeach
+                                    class="bg-emerald text-white/90 mt-2 w-full py-2 rounded-md">
+                                    View Profile
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
 
