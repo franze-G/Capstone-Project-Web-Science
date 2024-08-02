@@ -32,7 +32,7 @@ Route::get('register', [ClientController::class, 'showRegistrationForm'])->name(
 
 // Handle registration
 Route::post('register', [ClientController::class, 'register'])->name('register');
-
+ 
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
 

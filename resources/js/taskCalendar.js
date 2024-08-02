@@ -21,9 +21,14 @@ export function initializeCalendar() {
             try {
                 const response = await fetch("/api/calendar-tasks");
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    throw new Error(
+                        `Network response was not ok: ${response.statusText}`
+                    );
                 }
                 const tasks = await response.json();
+
+                console.log("Tasks fetched from API:", tasks); // Debugging line to see fetched tasks
+
                 successCallback(
                     tasks.map((task) => ({
                         id: task.id,

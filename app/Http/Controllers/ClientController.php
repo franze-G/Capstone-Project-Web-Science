@@ -255,18 +255,24 @@ class ClientController extends Controller
         // Ensure the user is authenticated
         if (Auth::check()) {
             $user = Auth::user();
-            
+    
             // Fetch completed tasks assigned by the currently logged-in client
             $completedTasks = Project::where('created_by', $user->id)
                                     ->where('status', 'completed')
                                     ->get();
-
-            // Return the view with the completed tasks
+    
+            // Fetch the team associated with the user
+            $team = Team::where('user_id', $user->id)->first(); // Adjust if needed
+    
+            $teamMembers = $team ? $team->usersInATeam : collect(); // Fetch users if team exists
+    
+            // Return the view with the completed tasks and team members
             return view('client.activity', [
-                'completedTasks' => $completedTasks
+                'completedTasks' => $completedTasks,
+                'teamMembers' => $teamMembers,
             ]);
         }
-
+    
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
