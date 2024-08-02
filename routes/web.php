@@ -7,6 +7,10 @@ use App\Http\Controllers\FreelanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamInviteController;
+use App\Models\Project;
+use App\Models\Task;
+use Database\Seeders\FreelanceSeeder;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -80,4 +84,5 @@ Route::middleware('auth')->group(function () {
     Route::get('user-rating/{id}', [ClientController::class, 'getUserRating']);
 
     Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
+    
 });

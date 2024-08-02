@@ -76,4 +76,18 @@ class FreelanceController extends Controller
             'user' => $user,
         ]);
     }
+
+    public function getTasksForCalendar()
+    {
+        $tasks = Project::all(); // Fetch tasks, adjust the query as needed
+
+        return response()->json($tasks->map(function ($task) {
+            return [
+                'id' => $task->id,
+                'title' => $task->title,
+                'due_date' => $task->due_date->toDateString(), // Ensure date is in YYYY-MM-DD format
+                'priority' => $task->priority,
+            ];
+        }));
+    }
 }

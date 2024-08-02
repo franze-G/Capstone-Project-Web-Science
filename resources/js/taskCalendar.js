@@ -1,35 +1,49 @@
-document.addEventListener("DOMContentLoaded", function () {
-    var calendarEl = document.getElementById("calendar");
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+import { Calendar } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+
+export function initializeCalendar() {
+    const calendarEl = document.getElementById("calendar");
+    if (!calendarEl) {
+        console.error("Calendar element not found.");
+        return;
+    }
+
+    const calendar = new Calendar(calendarEl, {
+        plugins: [dayGridPlugin, interactionPlugin],
         initialView: "dayGridMonth",
         headerToolbar: {
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
+            right: "dayGridMonth,dayGridWeek,dayGridDay",
         },
-        events: "/api/projects",
-        eventClick: function (info) {
-            // Customize this to show project details or open your existing modal
-            alert(
-                "Project: " +
-                    info.event.title +
-                    "\nStatus: " +
-                    info.event.extendedProps.status +
-                    "\nPriority: " +
-                    info.event.extendedProps.priority
-            );
-            info.jsEvent.preventDefault();
-        },
-        eventColor: function (info) {
-            switch (info.event.extendedProps.priority) {
-                case "high":
-                    return "#FF4136";
-                case "medium":
-                    return "#FF851B";
-                default:
-                    return "#2ECC40";
+        events: async function (info, successCallback, failureCallback) {
+            try {
+                const response = await fetch("/api/calendar-tasks");
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const tasks = await response.json();
+                successCallback(
+                    tasks.map((task) => ({
+                        id: task.id,
+                        title: `${task.title} (${task.priority})`, // Display title and priority
+                        start: task.due_date, // Ensure this is in YYYY-MM-DD format
+                    }))
+                );
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+                failureCallback(error);
             }
         },
+        editable: true,
+        eventClick: function (info) {
+            console.log("Event clicked:", info.event);
+        },
+        eventDrop: function (info) {
+            console.log("Event dropped:", info.event);
+        },
     });
+
     calendar.render();
-});
+}

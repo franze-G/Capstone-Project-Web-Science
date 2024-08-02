@@ -2,8 +2,6 @@ import "./bootstrap";
 import "./modal";
 import "./payment";
 import "./taskModal";
-import "./taskCalendar"; // Import the taskCalendar.js file
-
 // Import profile, star rating functionality, and the close profile modal function from the combined file
 import {
     showProfileModal,
@@ -15,3 +13,11 @@ import {
 window.showProfileModal = showProfileModal;
 window.submitRating = submitRating;
 window.closeProfileModal = closeProfileModal;
+
+import { initializeCalendar } from "./taskCalendar";
+
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("calendar")) {
+        initializeCalendar();
+    }
+});

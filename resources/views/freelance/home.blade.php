@@ -26,32 +26,9 @@
                     </div>
 
                     <!-- Calendar Container -->
-                    <div id="calendar"></div>
+                    <div id="calendar" style="color: black"></div>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['dayGrid'],
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
-                },
-                events: @json(
-                    $tasks->map(function ($task) {
-                            return [
-                                'title' => $task->title,
-                                'start' => $task->due_date,
-                                'color' => $task->priority === 'High' ? 'red' : 'blue', // Color based on priority
-                            ];
-                        })->toArray()),
-            });
-            calendar.render();
-        });
-    </script> --}}
 </x-app-layout>

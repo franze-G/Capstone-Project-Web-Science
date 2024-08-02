@@ -120,4 +120,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(User::class, 'assigned_id');
     }
+
+    public function allProjects()
+    {
+        return $this->createdProjects->merge($this->assignedProjects);
+    }
 }
