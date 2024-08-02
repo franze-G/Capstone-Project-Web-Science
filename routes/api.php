@@ -9,6 +9,3 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/calendar-tasks', [FreelanceController::class, 'getTasksForCalendar']);
-
-
-

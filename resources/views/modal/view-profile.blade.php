@@ -1,5 +1,8 @@
 <div id="profileModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+
+
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+
         <h2 id="userName" class="text-xl font-bold mb-4"></h2>
         <p class="mb-2">Email: <span id="userEmail"></span></p>
 
@@ -7,13 +10,12 @@
         <div class="mb-4">
             <p class="mb-2">Star Rating:</p>
             <div class="flex items-center" id="starRatingContainer">
-                @for ($i = 1; $i <= 5; $i++)
-                    <svg class="w-5 h-5 cursor-pointer star-rating" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24" fill="currentColor" data-rating="{{ $i }}">
-                        <path
-                            d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
+                @for ($i = 1; $i <= 5; $i++) <svg class="w-5 h-5 cursor-pointer star-rating"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" data-rating="{{ $i }}">
+                    <path
+                        d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27z" />
                     </svg>
-                @endfor
+                    @endfor
             </div>
         </div>
 

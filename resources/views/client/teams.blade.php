@@ -84,6 +84,7 @@
           <img class="w-8 h-8 rounded-full object-cover" src="{{ $user->profile_photo_url }}"
             alt="{{ $user->firstname }}">
           <div class="ms-4">{{ $user->firstname }} {{ $user->lastname }}</div>
+          <div class="ml-4">{{ $user->email }}</div>
         </div>
         @endforeach
       </div>

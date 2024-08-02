@@ -47,17 +47,62 @@
     }
 }
 
-/* event in calendar */
-.fc-event-title {
-    font-size: 12px;
-    font-weight: bold;
+/* calendar */
+.fc-toolbar-title {
+    font-size: 2rem;
+    font-family: "Tan-Pearl";
+    color: #718355;
+    cursor: default;
+}
+#calendar .fc-day-today {
+    background-color: rgba(113, 131, 85, 0.3);
+    color: #718355;
+}
+#calendar .fc-daygrid-day-number {
+    font-family: "Tan-Pearl";
+}
+#calendar .fc-button {
+    text-transform: capitalize;
+    background-color: #718355;
+    border-color: #fff;
+    border-radius: 12px;
+}
+#calendar .fc-button-group {
+    gap: 0.4rem;
+}
+#calendar .fc-button:hover {
+    background-color: #cfe1b9;
+    color: #151515;
+}
+#calendar .fc-button-primary:focus {
+    box-shadow: 0 0 0 2px #cfe1b9; /* Optional: Change focus outline color */
 }
 
+/* event in calendar */
+.fc-event-title {
+    font-size: 14px;
+    font-weight: 400;
+}
 /* events in calendar */
 .fc-event {
-    background-color: gray;
-    border-radius: 2px; /* Rounded corners */
-    border: white;
-    color: black;
-    margin-bottom: 4px;
+    padding: 8px;
+    background-color: #718355;
+    border-radius: 6px; /* Rounded corners */
+    border: #718355;
 }
+
+/* scrollbar in dashboard */
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #718355;
+    border-radius: 0.25rem;
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #151515;
+}
+/* gpt nalang pag gusto ma support yung other browsers */
