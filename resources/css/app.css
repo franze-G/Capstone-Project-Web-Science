@@ -46,3 +46,18 @@
         src: url("/public/fonts/apercu-bold.ttf") format("ttf");
     }
 }
+
+/* event in calendar */
+.fc-event-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* events in calendar */
+.fc-event {
+    background-color: gray;
+    border-radius: 2px; /* Rounded corners */
+    border: white;
+    color: black;
+    margin-bottom: 4px;
+}
