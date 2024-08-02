@@ -66,6 +66,27 @@ class ClientController extends Controller
             // Get task counts
             $taskCounts = $this->getTaskCounts($user);
 
+            // Initialize an empty array for formatted tasks
+            $formattedTasks = [];
+
+            if ($role === 'freelancer') {
+                // Fetch tasks for freelancers
+                $tasks = $this->getTasksForFreelancer($user);
+
+                // Format tasks for FullCalendar
+                $formattedTasks = $tasks->map(function ($task) {
+                    return [
+                        'title' => $task->title,
+                        'start' => $task->due_date->toIso8601String(), // Adjust if due_date is not a Carbon instance
+                        'end' => $task->end_date ? $task->end_date->toIso8601String() : null, // Optional end date
+                        'extendedProps' => [
+                            'status' => $task->status,
+                            'priority' => $task->priority,
+                        ],
+                    ];
+                });
+            }
+
             // Return view based on the user's role
             if ($role === 'client') {
                 // For clients (owners), display the default dashboard
@@ -84,6 +105,7 @@ class ClientController extends Controller
                     'pendingCount' => $taskCounts['pending'],
                     'inProgressCount' => $taskCounts['inProgress'],
                     'completedCount' => $taskCounts['completed'],
+                    'formattedTasks' => $formattedTasks, // Pass formatted tasks to the view
                 ]);
             }
         }
@@ -91,6 +113,16 @@ class ClientController extends Controller
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+
+    protected function getTasksForFreelancer($user)
+    {
+        // Fetch tasks assigned to or created by the freelancer
+        return Project::where(function ($query) use ($user) {
+            $query->where('assigned_id', $user->id)
+                ->orWhere('created_by', $user->id);
+        })->get();
+    }
+
 
     // Method to get task counts
     protected function getTaskCounts($user)

@@ -65,6 +65,13 @@
                                         View Profile
                                     </button>
 
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
+
                                 </div>
                             @endforeach
                         </div>

@@ -2,6 +2,7 @@ import "./bootstrap";
 import "./modal";
 import "./payment";
 import "./taskModal";
+import "./taskCalendar"; // Import the taskCalendar.js file
 
 // Import profile, star rating functionality, and the close profile modal function from the combined file
 import {
