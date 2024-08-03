@@ -2,9 +2,9 @@
     <div class="m-10 text-white">
         {{-- <x-texts.title>
             @if (isset($team))
-                {{ $team->name }} Dashboard
+            {{ $team->name }} Dashboard
             @else
-            
+
             @endif
         </x-texts.title> --}}
 
@@ -31,12 +31,12 @@
                 </div>
                 <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
-                        <div class="bg-white text-black p-10 rounded-lg shadow-md mb-4">
-                            <p class="text-xl font-semibold">{{ $task['title'] }}</p>
-                            <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
-                        </div>
+                    <div class="bg-white text-black p-10 rounded-lg shadow-md mb-4">
+                        <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                        <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
+                    </div>
                     @empty
-                        <div>No completed tasks available.</div>
+                    <div>No completed tasks available.</div>
                     @endforelse
                 </div>
             </div>

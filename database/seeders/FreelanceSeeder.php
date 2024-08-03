@@ -14,6 +14,6 @@ class FreelanceSeeder extends Seeder
     {
         //gets the freelancer factory change mo count kung gano karami gusto mo
         //php artisan db:seed --class=FreelanceSeeder
-        \App\Models\User::factory(FreelanceFactory::class)->count(25)->create();
+        \App\Models\User::factory(FreelanceFactory::class)->count(15)->create();
     }
 }
