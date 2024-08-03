@@ -381,25 +381,25 @@ class ClientController extends Controller
 
     public function displayRegisteredFreelancers()
     {
-        // Fetch freelancers and include their star_rating
+        // Fetch only freelancers
         $freelancers = User::where('role', 'freelancer')->get();
         $freelancerCount = $freelancers->count();
-
+    
         return view('client.freelance-display', [
             'freelancers' => $freelancers,
             'freelancerCount' => $freelancerCount,
         ]);
     }
-
+    
     public function sortRegisteredFreelancers(Request $request)
     {
-        $query = User::query();
-
+        $query = User::where('role', 'freelancer'); // Filter to only freelancers
+    
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where('position', 'like', "%{$search}%");
         }
-
+    
         if ($request->has('sort') && $request->sort) {
             switch ($request->sort) {
                 case 'firstname_asc':
@@ -416,19 +416,20 @@ class ClientController extends Controller
                     break;
             }
         }
-
+    
         $freelancers = $query->get();
         $freelancerCount = $freelancers->count();
-
+    
         if ($request->wantsJson()) {
             return response()->json([
                 'html' => view('client.freelancers-partial', compact('freelancers'))->render(),
                 'count' => $freelancerCount,
             ]);
         }
-
+    
         return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
     }
+    
 
 
     public function teams()
