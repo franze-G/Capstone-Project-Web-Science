@@ -29,9 +29,9 @@
                     <h2 class="text-2xl font-semibold">Notifications</h2>
                     <p class="text-white/50">Tasks update and such</p>
                 </div>
-                <div class="flex flex-col gap-3 mt-6 *:bg-emerald/25 overflow-y-auto max-h-60">
+                <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
-                        <div class="bg-white text-black p-4 rounded-lg shadow-md mb-4">
+                        <div class="bg-white text-black p-10 rounded-lg shadow-md mb-4">
                             <p class="text-xl font-semibold">{{ $task['title'] }}</p>
                             <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
                         </div>

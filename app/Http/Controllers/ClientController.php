@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Validator; // Import Validator for use in saveRat
 class ClientController extends Controller
 {
 
+   // RegisterController.php
+
     public function showRegistrationForm(Request $request)
     {
         // Fetch role from query parameters or session
@@ -23,6 +25,7 @@ class ClientController extends Controller
         // Return registration view with the role parameter
         return view('auth.register', compact('userType'));
     }
+
     // Handle registration
     public function register(Request $request)
     {
