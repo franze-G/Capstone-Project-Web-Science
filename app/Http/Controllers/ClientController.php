@@ -57,59 +57,63 @@ class ClientController extends Controller
     
     // Show client dashboard or freelancer home based on user role
     public function index()
-    {
-        if (Auth::check()) {
-            $user = Auth::user();
-            $role = $user->role;
-            $team = $user->currentTeam; // Get the current team if available
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+        $role = $user->role;
+        $team = $user->currentTeam; // Get the current team if available
 
-            // Get task counts
-            $taskCounts = $this->getTaskCounts($user);
+        // Get task counts
+        $taskCounts = $this->getTaskCounts($user);
 
-            // Initialize an empty array for formatted tasks
-            $formattedTasks = [];
+        // Initialize an empty array for formatted tasks
+        $formattedTasks = [];
 
-            if ($role === 'freelancer') {
-                // Fetch tasks for freelancers
-                $tasks = $this->getTasksForFreelancer($user);
+        // Fetch all completed tasks based on user role
+        $completedTasks = Project::where('status', 'completed')->get();
 
-                // Format tasks for FullCalendar
-                $formattedTasks = $tasks->map(function ($task) {
-                    return [
-                        'title' => $task->title,
-                        'start' => $task->due_date->toIso8601String(), // Adjust if due_date is not a Carbon instance
-                        'end' => $task->end_date ? $task->end_date->toIso8601String() : null, // Optional end date
-                        'extendedProps' => [
-                            'status' => $task->status,
-                            'priority' => $task->priority,
-                        ],
-                    ];
-                });
-            }
+        if ($role === 'freelancer') {
+            // Fetch tasks for freelancers
+            $tasks = $this->getTasksForFreelancer($user);
 
-            // Return view based on the user's role
-            if ($role === 'client') {
-                // For clients (owners), display the default dashboard
-                return view('dashboard', [
-                    'role' => $role,
-                    'team' => $team,
-                    'pendingCount' => $taskCounts['pending'],
-                    'inProgressCount' => $taskCounts['inProgress'],
-                    'completedCount' => $taskCounts['completed'],
-                ]);
-            } elseif ($role === 'freelancer') {
-                // For freelancers (members), display the freelancer dashboard
-                return view('freelance.home', [
-                    'role' => $role,
-                    'team' => $team,
-                    'pendingCount' => $taskCounts['pending'],
-                    'inProgressCount' => $taskCounts['inProgress'],
-                    'completedCount' => $taskCounts['completed'],
-                    'formattedTasks' => $formattedTasks, // Pass formatted tasks to the view
-                ]);
-            }
+            // Format tasks for FullCalendar
+            $formattedTasks = $tasks->map(function ($task) {
+                return [
+                    'title' => $task->title,
+                    'start' => $task->due_date->toIso8601String(), // Adjust if due_date is not a Carbon instance
+                    'end' => $task->end_date ? $task->end_date->toIso8601String() : null, // Optional end date
+                    'extendedProps' => [
+                        'status' => $task->status,
+                        'priority' => $task->priority,
+                    ],
+                ];
+            });
         }
 
+        // Return view based on the user's role
+        if ($role === 'client') {
+            // For clients (owners), display the default dashboard
+            return view('dashboard', [
+                'role' => $role,
+                'team' => $team,
+                'pendingCount' => $taskCounts['pending'],
+                'inProgressCount' => $taskCounts['inProgress'],
+                'completedCount' => $taskCounts['completed'],
+                'completedTasks' => $completedTasks, // Pass completed tasks to the view
+            ]);
+        } elseif ($role === 'freelancer') {
+            // For freelancers (members), display the freelancer dashboard
+            return view('freelance.home', [
+                'role' => $role,
+                'team' => $team,
+                'pendingCount' => $taskCounts['pending'],
+                'inProgressCount' => $taskCounts['inProgress'],
+                'completedCount' => $taskCounts['completed'],
+                'formattedTasks' => $formattedTasks, // Pass formatted tasks to the view
+                'completedTasks' => $completedTasks, // Pass completed tasks to the view
+            ]);
+        }
+    }
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
@@ -155,7 +159,7 @@ class ClientController extends Controller
             'inProgress' => $inProgressCount,
             'completed' => $completedCount
         ];
-    }
+    }   
 
     public function freelancerTasks()
     {
@@ -277,6 +281,26 @@ class ClientController extends Controller
         return redirect()->route('login');
     }
 
+    public function showNotifications()
+    {
+        // Fetch completed tasks using activityView method
+        $completedTasks = Project::where('created_by', auth()->id())
+                                ->where('status', 'completed')
+                                ->get()
+                                ->map(function($task) {
+                                    return [
+                                        'title' => $task->title,
+                                        'service_fee' => $task->service_fee,
+                                    ];
+                                });
+    
+        return view('dashboard', [
+            'completedTasks' => $completedTasks,
+        ]);
+    }
+    
+
+
     public function rateUser(Request $request, $userId)
     {
         // Validate the incoming request data
@@ -353,12 +377,19 @@ class ClientController extends Controller
 
     public function displayRegisteredFreelancers()
     {
+        // Fetch freelancers and include their star_rating
         $freelancers = User::where('role', 'freelancer')->get();
         $freelancerCount = $freelancers->count();
-
-        return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
+    
+        return view('client.freelance-display', [
+            'freelancers' => $freelancers,
+            'freelancerCount' => $freelancerCount,
+        ]);
     }
-
+    
+    
+    
+    
     public function teams()
     {
         $user = Auth::user();
@@ -378,5 +409,13 @@ class ClientController extends Controller
         } else {
             return redirect()->back()->withErrors(__('Invalid role.'));
         }
+    }
+
+    protected function getStarRatings()
+    {
+        return User::where('role', 'freelancer')
+                   ->get()
+                   ->pluck('star_rating', 'id')
+                   ->toArray();
     }
 }

@@ -8,27 +8,23 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-blue-100 p-4 rounded-lg">
-                            <h3 class="text-lg font-semibold text-blue-800">Pending Projects</h3>
-                            <p class="text-2xl text-blue-600">{{ $pendingCount }}</p>
-                        </div>
-                        <div class="bg-yellow-100 p-4 rounded-lg">
-                            <h3 class="text-lg font-semibold text-yellow-800">In-Progress Projects</h3>
-                            <p class="text-2xl text-yellow-600">{{ $inProgressCount }}</p>
-                        </div>
-                        <div class="bg-green-100 p-4 rounded-lg">
-                            <h3 class="text-lg font-semibold text-green-800">Completed Projects</h3>
-                            <p class="text-2xl text-green-600">{{ $completedCount }}</p>
-                        </div>
+            <div class="bg-black overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="flex flex-col w-full md:w-3/4">
+                    <div class="flex flex-col">
+                        <h2 class="text-2xl text-white font-semibold">Project Summary</h2>
+                        <p class="text-white/50">Summary of project details, tasks, notifications, and calendar</p>
                     </div>
-
-                    <!-- Calendar Container -->
-                    <div id="calendar" style="color: black"></div>
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-6 mr-10 mb-10 *:bg-olivegreen/60 text-white">
+                        <x-card.dash-card title="Pending" count="{{ $pendingCount }}"></x-card.dash-card>
+                        <x-card.dash-card title="In Progress" count="{{ $inProgressCount }}"></x-card.dash-card>
+                        <x-card.dash-card title="Completed" count="{{ $completedCount }}"></x-card.dash-card>
+                    </div>
                 </div>
+                <!-- Calendar Container -->
+                <div id="calendar" class="text-white"></div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

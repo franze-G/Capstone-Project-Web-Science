@@ -84,5 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::get('user-rating/{id}', [ClientController::class, 'getUserRating']);
 
     Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
+
+    Route::get('/notifications', [ClientController::class, 'showNotifications'])->name('notifications');
+
     
 });

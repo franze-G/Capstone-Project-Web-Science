@@ -27,7 +27,7 @@ export default {
             colors: {
                 // Changed from 'color' to 'colors'
                 black: "#151515",
-                yellow: "#ffd60a",
+                yellow: "#fcbf49",
                 //grays
                 gray: "#8E8E93",
                 lightgray: "#AEAEB2",
