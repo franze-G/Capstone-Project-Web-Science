@@ -3,12 +3,15 @@ import "./bootstrap";
 import "./modal";
 import "./payment";
 import "./taskModal";
+
 import {
     showProfileModal,
     submitRating,
     closeProfileModal,
 } from "./viewProfile";
+
 import { initializeCalendar } from "./taskCalendar";
+
 import "./freelanceSort"; // Import the freelanceSort.js file
 
 // Make functions globally available if needed

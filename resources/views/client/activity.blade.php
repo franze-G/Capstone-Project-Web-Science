@@ -1,6 +1,12 @@
 <x-app-layout>
 
     <div class="m-10 text-white">
+        <!-- Display success message if available -->
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
         <x-texts.title>Completed Tasks</x-texts.title>
 
         <section class="flex flex-col md:flex-row border-b-2 border-slate-300/30 pb-6 mb-4">

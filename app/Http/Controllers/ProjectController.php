@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User; // Import the User model
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -58,14 +59,18 @@ class ProjectController extends Controller
     
         // Redirect to the dashboard with a success message
         if ($request->ajax()) {
-            // Return JSON response for AJAX requests
+            Log::info('Returning JSON response', ['response' => [
+                'success' => true,
+                'message' => 'Project assigned successfully.',
+            ]]);
+        
             return response()->json([
                 'success' => true,
                 'message' => 'Project assigned successfully.',
             ]);
         } else {
-            // Redirect to the dashboard with a success message
-            return redirect()->route('dashboard')->with('success', 'Project assigned successfully.');
+            Log::info('Redirecting with success message');
+            return redirect()->route('activity.index')->with('success', 'Project assigned successfully.');
         }
     }
     
