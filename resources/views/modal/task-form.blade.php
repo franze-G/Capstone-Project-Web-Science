@@ -14,7 +14,7 @@
                 <label for="title" class="block text-gray-700">Task Title:</label>
                 <input id="title" name="title" type="text" class="w-full p-2 border rounded-lg" required>
                 @error('title')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -23,7 +23,7 @@
                 <label for="description" class="block text-gray-700">Task Description:</label>
                 <textarea id="description" name="description" rows="4" class="w-full p-2 border rounded-lg"></textarea>
                 @error('description')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -33,17 +33,16 @@
                 <input id="service_fee" name="service_fee" type="number" step="0.01"
                     class="w-full p-2 border rounded-lg" required>
                 @error('service_fee')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
             <!-- Due Date Field -->
             <div class="mb-4">
                 <label for="dueDate" class="block text-gray-700">Due Date and Time:</label>
-                <input id="dueDate" name="due_date" type="datetime-local" class="w-full p-2 border rounded-lg"
-                    required>
+                <input id="dueDate" name="due_date" type="datetime-local" class="w-full p-2 border rounded-lg" required>
                 @error('due_date')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -55,7 +54,7 @@
                     <option value="high">High</option>
                 </select>
                 @error('priority')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -65,7 +64,7 @@
                 <input id="taskImages" name="images[]" type="file" accept="image/*" multiple
                     class="w-full p-2 border rounded-lg">
                 @error('images.*')
-                    <div class="text-red-500 text-sm">{{ $message }}</div>
+                <div class="text-red-500 text-sm">{{ $message }}</div>
                 @enderror
                 <small class="text-gray-500">You can upload up to 3 images.</small>
             </div>

@@ -32,7 +32,7 @@ Route::get('register', [ClientController::class, 'showRegistrationForm'])->name(
 
 // Handle registration
 Route::post('register', [ClientController::class, 'register'])->name('register');
- 
+
 // Redirect based on user role
 Route::middleware('auth')->group(function () {
 
@@ -41,9 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::get('client/teams', [ClientController::class, 'teams'])->name('client.teams');
     Route::get('/activities', [ClientController::class, 'activityView'])->name('activity.index');
     Route::get('client/freelance-display', [ClientController::class, 'displayRegisteredFreelancers'])->name('client.freelance-display');
+    Route::get('client/freelance-display', [ClientController::class, 'sortRegisteredFreelancers'])->name('client.freelance-display');
 
     //for freelancers
-        
+
     Route::get('freelance/home', [ClientController::class, 'index'])->name('freelancer.home');
     Route::get('freelance/teams', [ClientController::class, 'teams'])->name('freelancer.teams');
     Route::get('freelance/tasks', [FreelanceController::class, 'freelancerTasks'])->name('freelancer.tasks');
@@ -86,6 +87,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
 
     Route::get('/notifications', [ClientController::class, 'showNotifications'])->name('notifications');
-
-    
 });
