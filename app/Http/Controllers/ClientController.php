@@ -395,29 +395,42 @@ class ClientController extends Controller
     {
         $query = User::where('role', 'freelancer'); // Filter to only freelancers
     
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where('position', 'like', "%{$search}%");
-        }
-    
-        if ($request->has('sort') && $request->sort) {
-            switch ($request->sort) {
-                case 'firstname_asc':
-                    $query->orderBy('firstname', 'asc');
-                    break;
-                case 'firstname_desc':
-                    $query->orderBy('firstname', 'desc');
-                    break;
-                case 'position_asc':
-                    $query->orderBy('position', 'asc');
-                    break;
-                case 'position_desc':
-                    $query->orderBy('position', 'desc');
-                    break;
+        // Check for reset request
+        if ($request->has('reset') && $request->reset) {
+            // Reset logic: Fetch all freelancers without additional filtering or sorting
+            $freelancers = $query->get();
+            
+            // Clear any existing search or sort parameters
+            $request->merge(['search' => null, 'sort' => null]);
+        } else {
+            // Apply search filter if provided
+            if ($request->has('search') && $request->search) {
+                $search = $request->search;
+                $query->where('position', 'like', "%{$search}%");
             }
+    
+            // Apply sorting if provided
+            if ($request->has('sort') && $request->sort) {
+                switch ($request->sort) {
+                    case 'firstname_asc':
+                        $query->orderBy('firstname', 'asc');
+                        break;
+                    case 'firstname_desc':
+                        $query->orderBy('firstname', 'desc');
+                        break;
+                    case 'position_asc':
+                        $query->orderBy('position', 'asc');
+                        break;
+                    case 'position_desc':
+                        $query->orderBy('position', 'desc');
+                        break;
+                }
+            }
+    
+            // Fetch filtered and sorted freelancers
+            $freelancers = $query->get();
         }
     
-        $freelancers = $query->get();
         $freelancerCount = $freelancers->count();
     
         if ($request->wantsJson()) {
@@ -430,7 +443,6 @@ class ClientController extends Controller
         return view('client.freelance-display', compact('freelancers', 'freelancerCount'));
     }
     
-
 
     public function teams()
     {

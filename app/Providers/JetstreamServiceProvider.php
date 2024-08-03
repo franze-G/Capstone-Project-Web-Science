@@ -54,6 +54,8 @@ class JetstreamServiceProvider extends ServiceProvider
             'delete',
         ])->description('Client can add freelance to team and assign task to each member.');
 
+        //add team members sa team settings ng client side. 
+
         Jetstream::role('Freelance', 'Freelance', [
             'read',
             'update',
