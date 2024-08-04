@@ -5,7 +5,6 @@ let currentRating = 0; // To keep track of the current rating selection
 export function showProfileModal(user) {
     const modal = document.getElementById("profileModal");
 
-    // Populate the modal with user data
     modal.querySelector(
         "#userName"
     ).textContent = `${user.firstname} ${user.lastname}`;
