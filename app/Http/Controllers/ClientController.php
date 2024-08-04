@@ -66,20 +66,22 @@ class ClientController extends Controller
             $user = Auth::user();
             $role = $user->role;
             $team = $user->currentTeam; // Get the current team if available
-
+    
             // Get task counts
             $taskCounts = $this->getTaskCounts($user);
-
-            // Initialize an empty array for formatted tasks
+    
+            // Initialize empty arrays for formatted tasks and in-progress tasks
             $formattedTasks = [];
-
-            // Fetch all completed tasks based on user role
+            $inProgressTasks = [];
+    
+            // Fetch all completed tasks and in-progress tasks based on user role
             $completedTasks = Project::where('status', 'completed')->get();
-
+            $inProgressTasks = Project::where('status', 'in-progress')->get();
+    
             if ($role === 'freelancer') {
                 // Fetch tasks for freelancers
                 $tasks = $this->getTasksForFreelancer($user);
-
+    
                 // Format tasks for FullCalendar
                 $formattedTasks = $tasks->map(function ($task) {
                     return [
@@ -93,7 +95,7 @@ class ClientController extends Controller
                     ];
                 });
             }
-
+    
             // Return view based on the user's role
             if ($role === 'client') {
                 // For clients (owners), display the default dashboard
@@ -104,6 +106,7 @@ class ClientController extends Controller
                     'inProgressCount' => $taskCounts['inProgress'],
                     'completedCount' => $taskCounts['completed'],
                     'completedTasks' => $completedTasks, // Pass completed tasks to the view
+                    'inProgressTasks' => $inProgressTasks, // Pass in-progress tasks to the view
                 ]);
             } elseif ($role === 'freelancer') {
                 // For freelancers (members), display the freelancer dashboard
@@ -115,12 +118,14 @@ class ClientController extends Controller
                     'completedCount' => $taskCounts['completed'],
                     'formattedTasks' => $formattedTasks, // Pass formatted tasks to the view
                     'completedTasks' => $completedTasks, // Pass completed tasks to the view
+                    'inProgressTasks' => $inProgressTasks, // Pass in-progress tasks to the view
                 ]);
             }
         }
         // Redirect to login if user is not authenticated
         return redirect()->route('login');
     }
+    
 
     protected function getTasksForFreelancer($user)
     {
@@ -303,7 +308,27 @@ class ClientController extends Controller
         ]);
     }
 
+    public function showTaskActivity()
+    {
+        // Fetch tasks with 'in-progress' status
+        $inProgressTasks = Project::where('created_by', auth()->id())
+            ->where('status', 'in-progress')
+            ->get()
+            ->map(function ($task) {
+                return [
+                    'title' => $task->title,
+                    'service_fee' => $task->service_fee,
+                    'assigned_firstname' => $task->assigned_firstname,
+                    'assigned_lastname' => $task->assigned_lastname,
+                    'due_date' => $task->due_date, // Add any additional fields if needed
+                    'priority' => $task->priority,
+                ];
+            });
 
+        return view('dashboard', [
+            'inProgressTasks' => $inProgressTasks,
+        ]);
+    }
 
     public function rateUser(Request $request, $userId)
     {

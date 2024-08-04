@@ -27,13 +27,17 @@
             <div class="flex flex-col w-full md:w-1/4 mt-6 md:mt-0">
                 <div class="flex flex-col">
                     <h2 class="text-2xl font-semibold">Notifications</h2>
-                    <p class="text-white/50">Completed tasks waiting for verification</p>
+                    <p class="text-white/50">Completed tasks awaiting for verification</p>
                 </div>
                 <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
                         <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
                             <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                            <p class="text-sm font-gray-600">Assigned to: {{ $task['assigned_firstname'] }}
+                                {{ $task['assigned_lastname'] }}</p>
                             <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
+                            <p class="text-sm text-gray-600 mt-2">Due Date: {{ $task['due_date']->format('F j, Y') }}
+                            </p>
                             <p class="text-sm text-gray-300 mt-2">Status:{{ $task['status'] }}</p>
                         </div>
                     @empty
@@ -55,46 +59,25 @@
             </div>
             <div class="flex flex-col w-full md:w-1/4 mt-6 md:mt-0">
                 <div class="flex flex-col">
-                    <h2 class="text-2xl font-semibold">Your Feedbacks</h2>
-                    <p class="text-white/50">Your freelance feed and reports</p>
+                    <h2 class="text-2xl font-semibold">Task Activity</h2>
+                    <p class="text-white/50">Update for all in-progress tasks</p>
                 </div>
-                <div class="flex flex-col gap-3 mt-6 *:bg-zinc-500 overflow-y-auto max-h-60">
-                    {{-- @foreach ($notifications as $notification) --}}
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    <div>Make a notification component</div>
-                    {{-- @endforeach --}}
+                <div class="flex flex-col gap-4 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
+                    @forelse ($inProgressTasks as $task)
+                        <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
+                            <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                            <p class="text-sm text-gray-600">Assigned to: {{ $task['assigned_firstname'] }}
+                                {{ $task['assigned_lastname'] }}</p>
+                            <p class="text-sm text-gray-600 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
+                            <p class="text-sm text-gray-600 mt-2">Due Date: {{ $task['due_date']->format('F j, Y') }}
+                            </p>
+                            <p class="text-sm text-gray-600 mt-2">Priority: {{ $task['priority'] }}</p>
+                        </div>
+                    @empty
+                        <div class="text-white">No in-progress tasks available.</div>
+                    @endforelse
                 </div>
+
             </div>
         </section>
     </div>

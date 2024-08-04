@@ -87,4 +87,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{userId}/profile', [ClientController::class, 'viewProfile'])->name('user.profile');
 
     Route::get('/notifications', [ClientController::class, 'showNotifications'])->name('notifications');
+
+    Route::get('/task-activity', [ClientController::class, 'showTaskActivity'])->name('task.activity');
 });

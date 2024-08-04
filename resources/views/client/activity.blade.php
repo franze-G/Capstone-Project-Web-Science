@@ -89,6 +89,7 @@
                                                 firstname: "{{ $member->firstname }}",
                                                 lastname: "{{ $member->lastname }}",
                                                 email: "{{ $member->email }}",
+                                                position: "{{ $member->position }}",
                                                 star_rating: {{ $member->star_rating ?? 0 }},
                                                 pending_tasks: {{ $member->assignedProjects->where(' status', 'pending'
                                     )->count() }},
