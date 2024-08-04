@@ -1,5 +1,5 @@
 <div id="taskModal"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden ">
+    class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden z-50">
     <div class="bg-black text-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h3 id="taskModalTitle" class="text-xl font-semibold mb-4"></h3>
         <p id="taskModalDescription" class="mb-4"></p>
