@@ -32,7 +32,7 @@
                 <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
                         <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
-                            <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                            <p class="text-xl font-semibold capitalize">{{ $task['title'] }}</p>
                             <p class="text-sm font-gray-600">Assigned to: {{ $task['assigned_firstname'] }}
                                 {{ $task['assigned_lastname'] }}</p>
                             <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
@@ -65,7 +65,7 @@
                 <div class="flex flex-col gap-4 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($inProgressTasks as $task)
                         <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
-                            <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                            <p class="text-xl font-semibold capitalize">{{ $task['title'] }}</p>
                             <p class="text-sm text-gray-600">Assigned to: {{ $task['assigned_firstname'] }}
                                 {{ $task['assigned_lastname'] }}</p>
                             <p class="text-sm text-gray-600 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>

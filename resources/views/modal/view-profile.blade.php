@@ -13,10 +13,9 @@
             </button>
         </div>
 
-        <h2 id="userName" class="text-2xl font-bold mb-2 capitalize text-center"></h2>
+        <h2 id="userName" class="text-2xl font-bold mb-2 mt-8 capitalize text-center"></h2>
         <p class="mb-2 text-center text-sm"><span id="userEmail"></span></p>
         <p class="mb-2 text-center text-md font-semibold"><span id="position"></span></p>
-
         <!-- Task Statistics -->
         <div class="flex flex-col justify-center items-center mb-6 mt-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-700">

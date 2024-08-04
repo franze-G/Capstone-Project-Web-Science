@@ -1,8 +1,8 @@
 <div id="taskModal"
     class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden z-50">
     <div class="bg-black text-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h3 id="taskModalTitle" class="text-xl font-semibold mb-4"></h3>
-        <p id="taskModalDescription" class="mb-4"></p>
+        <h3 id="taskModalTitle" class="text-xl font-semibold mb-4 capitalize"></h3>
+        <p class="mb-4">Description: <span id="taskModalDescription" class="mb-4"></span></p>
         <p class="mb-4">Due Date: <span id="taskModalDueDate"></span></p>
         <p class="mb-4">Priority: <span id="taskModalPriority"></span></p>
         <p class="mb-4">Service Fee: <span id="taskModalServiceFee"></span></p>
