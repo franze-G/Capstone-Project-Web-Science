@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             actionsDiv.innerHTML += `
                 <form action="/freelance/tasks/${task.id}/complete" method="POST" class="inline ms-2">
                     <input type="hidden" name="_token" value="${csrfToken}">
-                    <button type="submit" class="bg-emerald text-black px-4 py-2 rounded">Complete Task</button>
+                    <button type="submit" class="bg-emeraldlight2 text-black px-4 py-2 rounded">Complete Task</button>
                 </form>
             `;
         }

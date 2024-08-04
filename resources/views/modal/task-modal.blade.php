@@ -1,12 +1,13 @@
 <div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h3 id="taskModalTitle" class="text-xl font-semibold mb-4"></h3>
-        <p id="taskModalDescription" class="mb-4"></p>
-        <p class="mb-4">Due Date: <span id="taskModalDueDate"></span></p>
-        <p class="mb-4">Priority: <span id="taskModalPriority"></span></p>
-        <p class="mb-4">Service Fee: <span id="taskModalServiceFee"></span></p>
-        <p class="mb-4">Assigned to: <span id="taskModalAssignedTo"></span></p>
-        <p class="mb-4">Status: <span id="taskModalStatus"></span></p>
+
+        <h3 id="taskModalTitle" class="font-sfpro text-2xl font-semibold mb-4 capitalize text-center"></h3>
+        <p class="mb-4 font-semibold">Description: <span id="taskModalDescription" class="mb-4"></span></p>
+        <p class="mb-4 font-semibold">Due Date: <span class="" id="taskModalDueDate"></span></p>
+        <p class="mb-4 font-semibold">Priority: <span class="" id="taskModalPriority"></span></p>
+        <p class="mb-4 font-semibold">Service Fee: <span class="" id="taskModalServiceFee"></span></p>
+        <p class="mb-4 font-semibold">Assigned to: <span class="" id="taskModalAssignedTo"></span></p>
+        <p class="mb-4 font-semibold">Status: <span class="capitalize" id="taskModalStatus"></span></p>
 
         <div id="taskActions" class="flex justify-end mt-4">
             <!-- Actions will be inserted here by JavaScript -->

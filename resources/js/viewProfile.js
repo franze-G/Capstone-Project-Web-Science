@@ -10,12 +10,13 @@ export function showProfileModal(user) {
         "#userName"
     ).textContent = `${user.firstname} ${user.lastname}`;
     modal.querySelector("#userEmail").textContent = user.email;
+    modal.querySelector("#position").textContent = user.position;
     modal.querySelector("#userPendingTasks").textContent = user.pending_tasks;
     modal.querySelector("#userInProgressTasks").textContent =
         user.in_progress_tasks;
     modal.querySelector("#userCompletedTasks").textContent =
         user.completed_tasks;
-    modal.querySelector("#userTotalTasks").textContent = user.total_tasks;
+    // modal.querySelector("#userTotalTasks").textContent = user.total_tasks;
 
     // Set up star rating
     fetchAndDisplayRating(user.id);

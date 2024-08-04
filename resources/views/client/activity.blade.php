@@ -15,18 +15,17 @@
                     <div class="bg-black overflow-hidden shadow-xl sm:rounded-xl">
 
                         <!-- Display Completed Tasks -->
-                        <div class="p-5 bg-black">
+                        <div class="p-5 bg-black flex flex-col">
                             @if ($completedTasks->isEmpty())
                                 <p class="text-gray-400">No completed tasks found.</p>
                             @else
-                                <ul class="list-disc pl-5">
+                                <div class="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach ($completedTasks as $task)
-                                        <li class="bg-white text-black p-4 rounded-lg shadow-md mb-4">
-                                            <div class="flex flex-col">
+                                        <div class="bg-white text-black p-4 rounded-lg shadow-md">
+                                            <div class="">
                                                 <p class="text-xl font-semibold">{{ $task->title }}</p>
                                                 <p class="text-sm text-gray-400">Assigned To:
-                                                    {{ $task->assigned_firstname }}
-                                                    {{ $task->assigned_lastname }}</p>
+                                                    {{ $task->assigned_firstname }} {{ $task->assigned_lastname }}</p>
                                                 <p class="text-sm text-gray-300 mt-2">Due Date: {{ $task->due_date }}
                                                 </p>
                                                 <p class="text-sm text-gray-300 mt-2">Priority: {{ $task->priority }}
@@ -54,11 +53,12 @@
                                                     Pay
                                                 </button>
                                             </div>
-                                        </li>
+                                        </div>
                                     @endforeach
-                                </ul>
+                                </div>
                             @endif
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                                                 class="w-full h-32 object-cover rounded-lg mb-2">
 
                                             <!-- Name -->
-                                            <h3 class="text-lg font-semibold">{{ $member->firstname }}
+                                            <h3 class="text-lg font-semibold capitalize">{{ $member->firstname }}
                                                 {{ $member->lastname }}</h3>
 
                                             <!-- Buttons -->
@@ -99,11 +99,12 @@
                                                 firstname: "{{ $member->firstname }}",
                                                 lastname: "{{ $member->lastname }}",
                                                 email: "{{ $member->email }}",
+                                                position: "{{ $member->position }}",
                                                 star_rating: {{ $member->star_rating ?? 0 }},
                                                 pending_tasks: {{ $member->assignedProjects->where('status', 'pending')->count() }},
                                                 in_progress_tasks: {{ $member->assignedProjects->where('status', 'in-progress')->count() }},
                                                 completed_tasks: {{ $member->assignedProjects->where('status', 'completed')->count() }},
-                                                total_tasks: {{ $member->assignedProjects->count() }}
+                                                {{-- total_tasks: {{ $member->assignedProjects->count() }} --}}
                                             })'
                                                 class="bg-emerald text-white py-2 px-4 rounded mt-2 hover:bg-emerald-600 transition-colors duration-200">
                                                 View Profile
