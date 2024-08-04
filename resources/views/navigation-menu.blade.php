@@ -41,11 +41,7 @@
                         {{ __('Overview') }}
                     </x-nav-link>
 
-                    @if (Auth::user()->isFreelancer())
-                    {{-- <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
-                        {{ __('Task') }}
-                    </x-nav-link> --}}
-
+                    @if (Auth::user()->currentTeam)
                     <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
                         {{ __('Teams') }}
                     </x-nav-link>
@@ -55,7 +51,6 @@
                     </x-nav-link>
                     @endif
                     @endif
-
                 </div>
             </div>
 
@@ -128,11 +123,15 @@
                                 <div class="block px-4 py-2 text-xs text-gray-400">
                                     {{ __('Your Teams') }}
                                 </div>
-                                @foreach (Auth::user()->teams as $team)
+                                @forelse (Auth::user()->teams as $team)
                                 @if (!$team->archived)
-                                <x-switchable-team :team="$team" />
+                                <div class="flex flex-col pl-4">
+                                    <x-switchable-team :team="$team" />
+                                </div>
                                 @endif
-                                @endforeach
+                                @empty
+                                <div>{{ __('No Teams') }}</div>
+                                @endforelse
                                 @endif
 
                                 <!-- Team Invitations for Freelancers -->
