@@ -1,38 +1,38 @@
-<div id="profileModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+<div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full">
 
+    <div class="relative top-60 mx-auto p-5 border w-fit shadow-lg rounded-md bg-black text-white">
 
-    <div class="relative top-20 mx-auto p-5 border w-max shadow-lg rounded-md bg-white">
+        <!-- Close Button Container -->
+        <div class="absolute top-2 left-2">
+            <button onclick="closeProfileModal()"
+                class="bg-gray-500 text-black p-2 rounded hover:bg-gray-600 flex items-center justify-center">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
 
-        <h2 id="userName" class="text-2xl *:font-sfprodisplay font-bold mb-4 capitalize text-center"></h2>
+        <h2 id="userName" class="text-2xl font-bold mb-4 capitalize text-center"></h2>
         <p class="mb-2 text-center text-sm"><span id="userEmail"></span></p>
         <p class="mb-2 text-center text-sm font-semibold"><span id="position"></span></p>
 
-        <!-- Star Rating System -->
-
         <!-- Task Statistics -->
-        <div class="mb-6">
-            {{-- <h3 class="font-bold text-lg mb-2">Task Statistics</h3> --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-gray-700">
-
-                <p class="flex justify-between"><span class="font-semibold">Pending Tasks:</span> <span
+        <div class=" flex flex-col justify-center items-center mb-6">
+            <div class="mr-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-gray-700">
+                <p class="flex justify-between w-full"><span class="font-semibold">Pending Tasks:</span> <span
                         id="userPendingTasks"></span></p>
-
-                <p class="flex justify-between"><span class="font-semibold">In Progress:</span> <span
+                <p class="flex justify-between w-full"><span class="font-semibold">In Progress:</span> <span
                         id="userInProgressTasks"></span></p>
-
-                <p class="flex justify-between"><span class="font-semibold">Completed:</span> <span
+                <p class="flex justify-between w-full"><span class="font-semibold">Completed:</span> <span
                         id="userCompletedTasks"></span></p>
-
-                {{-- <p class="flex justify-between"><span class="font-semibold">Total Tasks:</span> <span
-                        id="userTotalTasks"></span></p> --}}
             </div>
         </div>
 
-
-
-        <div class="mb-4">
-            <p class="mb-2">Star Rating:</p>
-            <div class="flex items-center" id="starRatingContainer">
+        <!-- Star Rating System -->
+        <div class="flex flex-col items-center mb-4">
+            <p class="mb-2">Rating</p>
+            <div class="flex items-center mb-4" id="starRatingContainer">
                 @for ($i = 1; $i <= 5; $i++)
                     <svg class="w-5 h-5 cursor-pointer star-rating" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24" fill="currentColor" data-rating="{{ $i }}">
@@ -41,17 +41,10 @@
                     </svg>
                 @endfor
             </div>
+            <button id="rate-button" class="px-4 py-2 bg-emeraldlight2 text-black rounded" onclick="submitRating()">
+                Rate
+            </button>
         </div>
 
-        <!-- Rate Button -->
-        <button id="rate-button" class="ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="submitRating()">
-            Rate
-        </button>
-
-        <!-- Close Button -->
-        <button onclick="closeProfileModal()"
-            class="w-full mt-4 bg-gray-500 text-black px-4 py-2 rounded hover:bg-gray-600">
-            Close
-        </button>
     </div>
 </div>
