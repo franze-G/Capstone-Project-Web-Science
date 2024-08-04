@@ -27,16 +27,17 @@
             <div class="flex flex-col w-full md:w-1/4 mt-6 md:mt-0">
                 <div class="flex flex-col">
                     <h2 class="text-2xl font-semibold">Notifications</h2>
-                    <p class="text-white/50">Tasks update and such</p>
+                    <p class="text-white/50">Completed tasks waiting for verification</p>
                 </div>
                 <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
-                    <div class="bg-white text-black p-10 rounded-lg shadow-md mb-4">
-                        <p class="text-xl font-semibold">{{ $task['title'] }}</p>
-                        <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
-                    </div>
+                        <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
+                            <p class="text-xl font-semibold">{{ $task['title'] }}</p>
+                            <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
+                            <p class="text-sm text-gray-300 mt-2">Status:{{ $task['status'] }}</p>
+                        </div>
                     @empty
-                    <div>No completed tasks available.</div>
+                        <div>No completed tasks available.</div>
                     @endforelse
                 </div>
             </div>

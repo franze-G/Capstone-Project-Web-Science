@@ -42,9 +42,9 @@
                     </x-nav-link>
 
                     @if (Auth::user()->isFreelancer())
-                    <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
+                    {{-- <x-nav-link href="{{ route('freelancer.tasks') }}" :active="request()->routeIs('freelancer.tasks')">
                         {{ __('Task') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
 
                     <x-nav-link href="{{ route('freelancer.teams') }}" :active="request()->routeIs('freelancer.teams')">
                         {{ __('Teams') }}
