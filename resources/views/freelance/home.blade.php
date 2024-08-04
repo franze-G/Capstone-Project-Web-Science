@@ -2,7 +2,7 @@
     <div class="m-10 text-white">
         <section class="flex flex-col md:flex-row border-b-2 border-slate-300/30 pb-6 mb-4">
             <div class="flex flex-col w-full">
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-3">
                     <h2 class="text-2xl text-white font-semibold">@if (isset($team))
                         {{ $team->name }} Dashboard
                         @else
@@ -18,12 +18,12 @@
             </div>
         </section>
 
-        <section class="flex flex-col md:flex-row border-b-2 border-slate-300/30 pb-6 mb-4">
+        <section class="flex flex-col md:flex-row border-b-2 border-slate-300/30 pb-6 mb-3">
             <div class="flex flex-col w-full">
                 <h2 class="text-2xl text-white font-semibold">Invitations</h2>
-                <a href=" {{ route('team.invite') }}" class="text-emerald hover:text-emeraldlight3 hover:scale-105">
+                <a href=" {{ route('team.invite') }}"
+                    class="text-emerald hover:text-olivegreen hover:underline hover:underline-offset-2">
                     {{ __('View team invitations') }}</a>
-            </div>
         </section>
 
         <section class="flex flex-col">
