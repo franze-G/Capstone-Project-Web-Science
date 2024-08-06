@@ -24,28 +24,13 @@
                         required autofocus autocomplete="lastname" />
                 </div>
             </div>
-
             <!-- roles -->
-            <!-- <div class="mt-4">
-                <x-label value="{{ __('Role') }}" />
-                <div class="flex items-center gap-6">
-                    <input type="radio" name="role" value="client" id="client" {{ old('role', $userType) === 'client' ? 'checked' : '' }} class="mr-2" required />
-                    <x-label for="client" value="{{ __('Client') }}" class="mr-4" />
-                    {{-- ito yung nag fefetch ng role from welcome blade --}}
+            <x-label value="{{ __('Role') }}" class="mt-4 mb-1" />
 
-                    <input type="radio" name="role" value="freelancer" id="freelancer" {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }} class="mr-2" required />
-                    <x-label for="freelancer" value="{{ __('Freelancer') }}" />
-                </div>
-            </div> -->
-
-
-            <!-- roles -->
-            <x-label value="{{ __('Role') }}" class="mt-4 mb-1 " />
             <div class="grid w-full gap-6 md:grid-cols-2">
                 <div>
                     <input type="radio" name="role" value="client" id="client"
-                        {{ old('role', $userType) === 'client' ? 'checked' : '' }}
-                        class="hidden peer" />
+                        {{ old('role', $userType) === 'client' ? 'checked' : '' }} class="hidden peer" />
                     <label for="client"
                         class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div class="block">
@@ -61,12 +46,11 @@
                 </div>
                 <div>
                     <input type="radio" name="role" value="freelancer" id="freelancer"
-                        {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }}
-                        class="hidden peer" required />
+                        {{ old('role', $userType) === 'freelancer' ? 'checked' : '' }} class="hidden peer" required />
                     <label for="freelancer"
-                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer e rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        class="inline-flex items-center justify-between w-full p-5 text-gray-500 border border-gray-300 cursor-pointer rounded-xl dark:hover:text-gray-300 dark:border-gray-300 dark:peer-checked:text-emerald peer-checked:border-emerald peer-checked:text-emeraldlight1 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                         <div class="block">
-                            <div class="w-full text-lg font-semibold">Freelance</div>
+                            <div class="w-full text-lg font-semibold">Freelancer</div>
                             <div class="w-full">looking for work</div>
                         </div>
                         <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -77,6 +61,7 @@
                     </label>
                 </div>
             </div>
+
 
             <div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />
@@ -112,17 +97,17 @@
                                         '<a target="_blank" href="' .
                                         route('terms.show') .
                                         '"
-                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
+                                                                                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
                                         __('Terms
-                                                                of Service') .
+                                                                                                                                of Service') .
                                         '</a>',
                                     'privacy_policy' =>
                                         '<a target="_blank" href="' .
                                         route('policy.show') .
                                         '"
-                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
+                                                                                                                                class="p-1 text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald">' .
                                         __('Privacy
-                                                                Policy') .
+                                                                                                                                Policy') .
                                         '</a>',
                                 ]) !!}
                             </div>

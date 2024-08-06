@@ -1,4 +1,4 @@
-<x-action-section>
+<x-action-section class="text-white">
     <x-slot name="title">
         {{ __('Manage Team') }}
     </x-slot>
@@ -9,7 +9,8 @@
 
     <x-slot name="content">
         <div class="max-w-xl text-sm text-gray-600">
-            {{ __('You can choose to delete or archive this team. Deleting a team will permanently remove all of its data. Archiving a team will mark it as archived but retain its data.') }}
+            {{ __('You can choose to delete or archive this team. Deleting a team will permanently remove all of its
+            data. Archiving a team will mark it as archived but retain its data.') }}
         </div>
 
         <div class="mt-5">
@@ -30,11 +31,12 @@
                 {{ __('Archive Team') }}
             </x-slot>
 
-            <x-slot name="content">
-                {{ __('Are you sure you want to archive this team? Archiving the team will mark it as archived but retain its data for future reference.') }}
+            <x-slot name="content" class="bg-emerald/35">
+                {{ __('Are you sure you want to archive this team? Archiving the team will mark it as archived but
+                retain its data for future reference.') }}
             </x-slot>
 
-            <x-slot name="footer">
+            <x-slot name="footer" class="bg-emerald/35">
                 <x-secondary-button wire:click="$toggle('confirmingTeamArchiving')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
                 </x-secondary-button>
@@ -51,11 +53,12 @@
                 {{ __('Delete Team') }}
             </x-slot>
 
-            <x-slot name="content">
-                {{ __('Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted.') }}
+            <x-slot name="content" class="bg-emerald/35">
+                {{ __('Are you sure you want to delete this team? Once a team is deleted, all of its resources and data
+                will be permanently deleted.') }}
             </x-slot>
 
-            <x-slot name="footer">
+            <x-slot name="footer" class="bg-emerald/35">
                 <x-secondary-button wire:click="$toggle('confirmingTeamDeletion')" wire:loading.attr="disabled">
                     {{ __('Cancel') }}
                 </x-secondary-button>

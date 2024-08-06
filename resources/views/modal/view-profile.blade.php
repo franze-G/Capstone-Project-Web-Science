@@ -1,12 +1,44 @@
-<div id="profileModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <h2 id="userName" class="text-xl font-bold mb-4"></h2>
-        <p class="mb-2">Email: <span id="userEmail"></span></p>
+<div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full font-sfpro">
+
+    <div class="relative top-60 mx-auto p-5 border w-fit shadow-lg rounded-md bg-black text-white">
+
+        <!-- Close Button Container -->
+        <div class="absolute top-2 left-2">
+            <button onclick="closeProfileModal()"
+                class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 flex items-center justify-center">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <h2 id="userName" class="text-2xl font-bold mb-2 mt-8 capitalize text-center"></h2>
+        <p class="mb-2 text-center text-sm"><span id="userEmail"></span></p>
+        <p class="mb-2 text-center text-md font-semibold"><span id="position"></span></p>
+        <!-- Task Statistics -->
+        <div class="flex flex-col justify-center items-center mb-6 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-700">
+                <div class="flex justify-between w-full">
+                    <span class="font-semibold">Pending Tasks:</span>
+                    <span id="userPendingTasks" class="ml-2"></span>
+                </div>
+                <div class="flex justify-between w-full">
+                    <span class="font-semibold">In Progress:</span>
+                    <span id="userInProgressTasks" class="ml-0"></span>
+                </div>
+                <div class="flex justify-between w-full">
+                    <span class="font-semibold">Completed:</span>
+                    <span id="userCompletedTasks" class="ml-2"></span>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Star Rating System -->
-        <div class="mb-4">
-            <p class="mb-2">Star Rating:</p>
-            <div class="flex items-center" id="starRatingContainer">
+        <div class="flex flex-col items-center mb-4">
+            <p class="mb-2">Rating</p>
+            <div class="flex items-center mb-4" id="starRatingContainer">
                 @for ($i = 1; $i <= 5; $i++)
                     <svg class="w-5 h-5 cursor-pointer star-rating" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24" fill="currentColor" data-rating="{{ $i }}">
@@ -15,24 +47,11 @@
                     </svg>
                 @endfor
             </div>
+            <button id="rate-button" class="font-sfprodisplay px-4 py-1 bg-emeraldlight2 text-black rounded-lg"
+                onclick="submitRating()">
+                Rate
+            </button>
         </div>
 
-        <!-- Rate Button -->
-        <button id="rate-button" class="ml-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="submitRating()">
-            Rate
-        </button>
-
-        <!-- Task Statistics -->
-        <h3 class="font-bold mb-2">Task Statistics</h3>
-        <p>Pending Tasks: <span id="userPendingTasks"></span></p>
-        <p>In Progress Tasks: <span id="userInProgressTasks"></span></p>
-        <p>Completed Tasks: <span id="userCompletedTasks"></span></p>
-        <p class="mb-4">Total Tasks: <span id="userTotalTasks"></span></p>
-
-        <!-- Close Button -->
-        <button onclick="closeProfileModal()"
-            class="w-full mt-4 bg-gray-500 text-black px-4 py-2 rounded hover:bg-gray-600">
-            Close
-        </button>
     </div>
 </div>

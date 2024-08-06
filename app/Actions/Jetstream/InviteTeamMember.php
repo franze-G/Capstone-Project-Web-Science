@@ -35,10 +35,14 @@ class InviteTeamMember implements InvitesTeamMembers
             'team_user_lastname' => $team->owner->lastname,
             'user_id' => $user->id,
             // ito yung pang fetch ng mga info from team_invitation table
+
             'email' => $email,
             'role' => $role,
         ]);
 
+        $acceptUrl = url('/team-invitation/accept/' . $invitation->id);
+
+        Mail::to($email)->send(new TeamInvitationMail($invitation, $acceptUrl));
         $acceptUrl = url('/team-invitation/accept/' . $invitation->id);
 
         Mail::to($email)->send(new TeamInvitationMail($invitation, $acceptUrl));
@@ -55,6 +59,8 @@ class InviteTeamMember implements InvitesTeamMembers
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
         )->after(
             $this->ensureUserIsFreelancer($email)
+        )->after(
+            $this->ensureUserIsFreelancer($email)
         )->validateWithBag('addTeamMember');
     }
 
@@ -62,16 +68,18 @@ class InviteTeamMember implements InvitesTeamMembers
     {
         return array_filter([
             'email' => [
-                'required', 'email',
+                'required',
+                'email',
                 Rule::unique('team_invitations')->where(function (Builder $query) use ($team) {
                     $query->where('team_id', $team->id);
                 }),
             ],
             'role' => Jetstream::hasRoles()
-                            ? ['required', 'string', new Role]
-                            : null,
+                ? ['required', 'string', new Role]
+                : null,
         ]);
     }
+
 
     protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {

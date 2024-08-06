@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
+                        console.log("Task assigned successfully.");
                         alert("Task assigned successfully.");
                         hideAssignTaskModal();
                     } else {

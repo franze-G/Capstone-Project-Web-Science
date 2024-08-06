@@ -5,17 +5,17 @@ let currentRating = 0; // To keep track of the current rating selection
 export function showProfileModal(user) {
     const modal = document.getElementById("profileModal");
 
-    // Populate the modal with user data
     modal.querySelector(
         "#userName"
     ).textContent = `${user.firstname} ${user.lastname}`;
     modal.querySelector("#userEmail").textContent = user.email;
+    modal.querySelector("#position").textContent = user.position;
     modal.querySelector("#userPendingTasks").textContent = user.pending_tasks;
     modal.querySelector("#userInProgressTasks").textContent =
         user.in_progress_tasks;
     modal.querySelector("#userCompletedTasks").textContent =
         user.completed_tasks;
-    modal.querySelector("#userTotalTasks").textContent = user.total_tasks;
+    // modal.querySelector("#userTotalTasks").textContent = user.total_tasks;
 
     // Set up star rating
     fetchAndDisplayRating(user.id);
@@ -41,13 +41,15 @@ function fetchAndDisplayRating(userId) {
     fetch(`/user-rating/${userId}`)
         .then((response) => response.json())
         .then((data) => {
-            if (data.rating !== undefined) {
-                updateStars(userId, data.rating);
-                currentRating = data.rating; // Update currentRating with fetched rating
-            }
+            // Update stars with the fetched rating or set to 0 if no rating is available
+            updateStars(userId, data.rating || 0);
+            currentRating = data.rating || 0; // Update currentRating with fetched rating or default to 0
         })
         .catch((error) => {
             console.error("Error fetching rating:", error);
+            // Reset stars and rating on error
+            updateStars(userId, 0);
+            currentRating = 0;
         });
 }
 

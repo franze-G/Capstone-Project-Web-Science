@@ -47,16 +47,18 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role('admin', 'Administrator', [
+        Jetstream::role('Client', 'Client', [
             'create',
             'read',
             'update',
             'delete',
-        ])->description('Administrator users can perform any action.');
+        ])->description('Client can add freelance to team and assign task to each member.');
 
-        Jetstream::role('editor', 'Editor', [
+        //add team members sa team settings ng client side. 
+
+        Jetstream::role('Freelance', 'Freelance', [
             'read',
             'update',
-        ])->description('Editor users have the ability to read, create, and update.');
+        ])->description('Freelance have the ability to update task and receive payment by their respective client.');
     }
 }

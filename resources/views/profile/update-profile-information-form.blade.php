@@ -36,7 +36,7 @@
                 </span>
             </div>
 
-            <x-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
+            <x-secondary-button class="mt-5 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
                 {{ __('Select A New Photo') }}
             </x-secondary-button>
 
@@ -53,15 +53,15 @@
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="firstname" value="{{ __('Firstname') }}" />
-            <x-input id="firstname" type="text" class="mt-1 block w-full" wire:model="state.firstname" required
-                autocomplete="firstname" />
+            <x-input id="firstname" type="text" class="mt-1 block w-full text-black" wire:model="state.firstname"
+                required autocomplete="firstname" />
             <x-input-error for="firstname" class="mt-2" />
         </div>
 
         <!-- Position -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="position" value="{{ __('Position') }}" />
-            <x-input id="position" type="text" class="mt-1 block w-full" wire:model="state.position" required
+            <x-input id="position" type="text" class="mt-1 block w-full text-black" wire:model="state.position"
                 autocomplete="position" />
             <x-input-error for="position" class="mt-2" />
         </div>
@@ -70,7 +70,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('Email') }}" />
             <div class="flex items-center">
-                <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required
+                <x-input id="email" type="email" class="mt-1 block w-full text-black" wire:model="state.email" required
                     autocomplete="username" />
 
                 @if ($this->user->hasVerifiedEmail())
