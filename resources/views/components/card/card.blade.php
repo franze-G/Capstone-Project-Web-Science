@@ -4,9 +4,9 @@
     <!-- details -->
     <h3 class="text-lg font-semibold mt-2">{{ $user->firstname }} {{ $user->lastname }}</h3>
     <!-- position -->
-    <p class="text-slate-600 "> {{ $user->position }}</p>
+    <p class="text-slate-600 font-semibold"> {{ $user->position }}</p>
     <!-- completed tasks -->
-    <p class="mt-2 ">Completed Tasks<span class="font-semibold"> {{-- {{$user->tasks->count()}} --}}</span></p>
+    {{-- <p class="mt-2 ">Completed Tasks<span class="font-semibold"> {{$user->tasks->count()}}</span></p> --}}
     <!-- star rating -->
     <p>Rating <span class="font-semibold">
             @for ($i = 1; $i <= 5; $i++)
