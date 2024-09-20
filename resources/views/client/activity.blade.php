@@ -69,17 +69,17 @@
                         @if ($teamMembers->isNotEmpty())
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                                 @foreach ($teamMembers as $member)
-                                    <div class="p-4 rounded-xl shadow-lg bg-emerald/35 ">
+                                    <div class="p-4 rounded-xl shadow-lg bg-white">
                                         <!-- Profile Image -->
                                         <img src="{{ $member->profile_photo_url }}"
                                             alt="{{ $member->firstname }} {{ $member->lastname }}"
                                             class="w-full h-32 object-cover rounded-lg mb-2">
                                         <!-- Name -->
-                                        <h3 class="text-lg font-semibold">{{ $member->firstname }}
+                                        <h3 class="text-lg font-semibold text-black">{{ $member->firstname }}
                                             {{ $member->lastname }}</h3>
 
                                         <!-- Buttons -->
-                                        <button class="bg-emerald py-2 px-4 rounded mt-2"
+                                        <button class="bg-emeraldlight2 text-black font-black py-2 px-4 rounded mt-2"
                                             onclick="showAssignTaskModal('{{ $member->id }}', '{{ $member->firstname }} {{ $member->lastname }}')">
                                             Assign Task
                                         </button>
@@ -97,7 +97,7 @@
                                     completed_tasks: {{ $member->assignedProjects->where('status', 'completed')->count() }},
                                     total_tasks: {{ $member->assignedProjects->count() }}
                                     })'
-                                            class="bg-emerald text-white py-2 px-4 rounded mt-2 hover:bg-emerald-600
+                                            class="bg-emeraldlight2 text-black font-black py-2 px-4 rounded mt-2 hover:bg-emerald-600
                                     transition-colors duration-200">
                                             View Profile
                                         </button>

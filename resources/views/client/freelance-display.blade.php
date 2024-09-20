@@ -7,18 +7,26 @@
             </div>
             <div class="flex items-center space-x-2 pb-4">
                 <x-modals.sort-modal />
-                <div class="relative">
-                    <form method="GET" action="{{ route('client.freelance-display') }}" id="search-form" class="flex">
+
+                <div class="relative flex items-center">
+                    <form method="GET" action="{{ route('client.freelance-display') }}" id="search-form"
+                        class="flex space-x-4">
                         <input type="text" name="search" placeholder="Search Job Titles"
                             value="{{ request('search') }}"
                             class="p-2 bg-gray/30 rounded-lg focus:outline-none focus:ring-olivegreen">
 
-                        <button type="submit" class="p-2 bg-olivegreen rounded-lg hover:bg-olivegreen">Search</button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-olivegreen text-white rounded-lg hover:bg-olivegreen-dark focus:outline-none focus:ring-2 focus:ring-olivegreen focus:ring-opacity-50">
+                            Search
+                        </button>
 
                         <button type="button" id="reset-btn"
-                            class="p-2 bg-red-600 rounded-lg hover:bg-red-700">Reset</button>
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
+                            Reset
+                        </button>
                     </form>
                 </div>
+
             </div>
         </div>
 

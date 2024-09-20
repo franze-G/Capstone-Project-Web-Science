@@ -30,7 +30,7 @@ export default {
                 yellow: "#fcbf49",
                 //grays
                 gray: "#8E8E93",
-                lightgray: "#AEAEB2",
+                lightgray: "#D9D9D9",
                 //greens
                 emerald: "#718355",
                 emeraldlight1: "#87986A",

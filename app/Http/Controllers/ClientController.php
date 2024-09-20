@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator; // Import Validator for use in saveRat
 class ClientController extends Controller
 {
 
-   // RegisterController.php
+//    RegisterController.php
 
     public function showRegistrationForm(Request $request)
     {
@@ -26,7 +26,6 @@ class ClientController extends Controller
         return view('auth.register', compact('userType'));
     }
 
-    // Handle registration
     public function register(Request $request)
     {
         // Validate the registration data
