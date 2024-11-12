@@ -31,17 +31,17 @@
                 </div>
                 <div class="flex flex-col gap-3 mt-6 *:bg-lightgray/60 overflow-y-auto max-h-60 rounded-md">
                     @forelse ($completedTasks as $task)
-                        <div class="bg-white p-10 rounded-lg shadow-md mb-4 text-white">
+                        <div class="bg-white p-4 rounded-lg shadow-md mb-4 text-white">
                             <p class="text-xl font-semibold capitalize">{{ $task['title'] }}</p>
                             <p class="text-sm font-gray-600">Assigned to: {{ $task['assigned_firstname'] }}
                                 {{ $task['assigned_lastname'] }}</p>
-                            <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
+                            {{-- <p class="text-sm text-gray-300 mt-2">Service Fee: ₱{{ $task['service_fee'] }}</p>
                             <p class="text-sm text-gray-600 mt-2">Due Date: {{ $task['due_date']->format('F j, Y') }}
-                            </p>
-                            <p class="text-sm text-gray-300 mt-2">Status:{{ $task['status'] }}</p>
+                            </p> --}}
+                            <p class="text-sm text-gray-300 mt-2">Status: {{ Str::ucfirst($task['status']) }}</p>
                         </div>
                     @empty
-                        <div>No completed tasks available.</div>
+                        <div class="bg-white p-4 rounded-lg shadow-md mb-4">No completed tasks available.</div>
                     @endforelse
                 </div>
             </div>
@@ -74,7 +74,7 @@
                             <p class="text-sm text-gray-600 mt-2">Priority: {{ $task['priority'] }}</p>
                         </div>
                     @empty
-                        <div class="text-white">No in-progress tasks available.</div>
+                        <div class="bg-white p-2 rounded-lg shadow-md mb-4">No In-progress tasks available.</div>
                     @endforelse
                 </div>
 
